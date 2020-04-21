@@ -7,7 +7,7 @@ from config import *
 
 Base = declarative_base()
 
-engine = create_engine("sqlite://::memory::", echo=True)
+engine = create_engine("sqlite:///::memory::", echo=True)
 
 
 class Trade(Base):
@@ -16,31 +16,33 @@ class Trade(Base):
     """
     __tablename__ = 'trades'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
 
     seller = Column(Integer)
     buyer = Column(Integer)
+    price = Column(Integer)
 
     currency = Column(String)
+    coin = Column(String)
     wallet = Column(String)
 
     payment_status = Column(Boolean)
     created_at = Column(String)
 
     def __repr__(self):
-        return "<Trade(id='%d')>" % (self.id)
+        return "<Trade(id='%s')>" % (self.id)
 
 
 
 # Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 
 Session = sessionmaker(bind=engine, autoflush=False)
 
 session = Session()
 
-# import pdb; pdb.set_trace()
+import pdb; pdb.set_trace()
 
 session.close()
 
