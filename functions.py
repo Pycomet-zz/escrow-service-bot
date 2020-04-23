@@ -5,6 +5,12 @@ import random
 import string
 from datetime import datetime
 
+client = Client(API_KEY, API_SECRET)
+accounts = client.get_accounts()
+
+eth_account = accounts.data[3]
+btc_account = accounts.data[4]
+
 def get_price(coin_code, currency_code):
     """
     Returning the current btc/eth price for specified currency
@@ -33,8 +39,15 @@ def get_recent_trade(user):
     """
     Return a trade matching a seller
     """
-    trade = session.query(Trade).filter(Trade.seller == user.id)[-1]
-    return trade
+    try:
+        trade = session.query(Trade).filter(Trade.seller == user.id)[-1]
+        return trade
+    except:
+        trade = session.query(Trade).filter(Trade.buyer == user.id)[-1]
+        return trade
+    finally:
+        return "Not Found"
+
 
 def open_new_trade(user, currency):
     """
@@ -75,3 +88,40 @@ def add_wallet(user, address):
     trade = get_recent_trade(user)
     trade.wallet = address
     session.add(trade) 
+
+
+def send_trade_info(user):
+    """
+    Send Out Trade Information To User
+    """
+    trade = get_recent_trade(user)
+
+    bot.send_message(
+        user.id,
+        emoji.emojize(
+            f"""
+    Trade Details
+    -----------------
+
+    ID --> <b>{trade.id}</b>
+    Price --> <b>{trade.price} {trade.currency}</b>
+    Preferred method of payment --> <b>{trade.coin}</b>
+    Created on --> <b>{trade.created_at}</b>
+
+    Share only the trade ID with your customer to allow his/her join the trade. They would receive all the related information when they join.
+            """,
+            use_aliases=True
+        ),
+        parse_mode=telegram.ParseMode.HTML,
+    )
+
+
+def delete_trade(trade_id):
+    "Delete Trade"
+    trade = session.query(Trade).filter(Trade.id == trade_id).delete()
+    
+    if trade == None:
+        return "Not Found!"
+    else:
+        session.commit()
+        return "Complete!"

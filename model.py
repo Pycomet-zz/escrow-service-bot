@@ -42,7 +42,7 @@ Session = sessionmaker(bind=engine, autoflush=False)
 
 session = Session()
 
-import pdb; pdb.set_trace()
+# import pdb; pdb.set_trace()
 
 session.close()
 

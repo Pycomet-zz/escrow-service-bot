@@ -82,24 +82,6 @@ def select_coin(user):
     """
     Selecting the right coin option for trade
     """
-    # bot.send_message(
-    #     user.id,
-    #     emoji.emojize(
-    #         f"""
-    # New Trade Created
-    # -----------------
-
-    # Trade ID --> <b>{trade.id}</b>. 
-    
-    # Share this information with only your buyer to allow his/her join the trade.
-
-    # Please provide the following information to complete the creation of the trade.
-    #         """,
-    #         use_aliases=True
-    #     ),
-    #     parse_mode=telegram.ParseMode.HTML,
-    # )
-
     keyboard = coin_menu()
 
     bot.send_message(
@@ -158,15 +140,38 @@ def process_trade(msg):
         address=wallet
     )
 
-    ### Send Out Trade Information
+    send_trade_info(msg.from_user)
+
 
 
 @bot.message_handler(regexp="^Delete")
-def delete_trade(msg):
+def delete_request(msg):
     """
     This is an option to delete trade by id
     """
-    pass
+    question = bot.send_message(
+        msg.from_user.id,
+        emoji.emojize(
+            ":warning: What is the ID of the trade ? ",
+            use_aliases=True
+        )
+    )
+    
+    bot.register_next_step_handler(question, trade_delete)
+
+
+def trade_delete(msg):
+    """
+    Deleting the trade
+    """
+    trade_id = msg.text
+
+    status = delete_trade(trade_id)
+
+    bot.send_message(
+        msg.from_user.id,
+        f"Deleting Trade {trade_id} {status}"
+    )
 
 ######################BUYER GRID#####################
 
