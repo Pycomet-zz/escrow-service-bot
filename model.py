@@ -7,7 +7,7 @@ from config import *
 
 Base = declarative_base()
 
-engine = create_engine("sqlite:///::memory::", echo=True)
+engine = create_engine("sqlite:///dbsqlite.db", connect_args={'check_same_thread': False}, echo=False)
 
 
 class Trade(Base):
@@ -29,6 +29,8 @@ class Trade(Base):
     payment_status = Column(Boolean)
     created_at = Column(String)
     is_open = Column(Boolean)
+
+    receive_address_id = Column(String)
 
     def __repr__(self):
         return "<Trade(id='%s')>" % (self.id)

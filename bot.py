@@ -2,7 +2,7 @@ from config import *
 from keyboard import *
 from functions import *
 
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(TOKEN, threaded=True)
 
 @bot.message_handler(commands=['start'])
 def start(msg):
@@ -115,7 +115,7 @@ def trade_address(msg):
 
     add_price(
         user=msg.from_user,
-        price=price
+        price=float(price)
         )
 
     #REQUEST WALLET ADDRESS
@@ -222,23 +222,24 @@ def join_trade(msg):
     if trade != "Not Found":
 
         #Amount To Be Paid
-        coin_price = get_price(
+        coin_price = get_coin_price(
             coin_code=trade.coin,
             currency_code=trade.currency
         )
-        service_charge = 0.01 * float(coin_price)
+
+        coin_value = float(trade.price)/float(coin_price)
+
+        service_charge = 0.01 * float(coin_value)
         fees = 2 * 0.0149
 
-        pay_price = float(coin_price) + service_charge + float(fees)
+        pay_price = float(coin_value) + service_charge + float(fees)
 
-        if trade.coin == "BTC":
-            receive_wallet = btc_account.get_address().address
-        elif trade.coin == "ETH":
-            receive_wallet = eth_account.get_address().address
+        price = "%.4f" % pay_price
 
+        receive_wallet = get_receive_address(trade)
 
         bot.send_message(
-            trade.seller,
+            trade.buyer,
             emoji.emojize(
                 f"""
     Trade Details
@@ -250,12 +251,23 @@ def join_trade(msg):
         <b>Created on --> {trade.created_at}</b>
         <b>Payment Complete --> {trade.payment_status}</b>
 
-:alert: <b>You are expected to pay {pay_price}{trade.coin} to {receive_wallet} to recieve goods from seller</b>
+:point_right: <b>You are expected to pay {price} {trade.coin} to wallet address below to recieve goods from seller</b>
+
+:point_right: {receive_wallet}
 
                 """,
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML,
+        )
+
+        bot.send_message(
+            trade.seller,
+            emoji.emojize(
+                "<b>Buyer Just Joined Trade!!</b>",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML
         )
 
     else:
@@ -287,36 +299,49 @@ def report_trade(msg):
     """
     Send reports to admin for cross checking
     """
-    trade = get_recent_trade(msg.from_user)
+    trade = get_trade(msg.text)
 
     keyboard = refund_menu()
 
-    bot.send_message(
-        "@codefred",
-        emoji.emojize(
-            f"""
-Trade Report From {msg.from_user.id} - {msg.from_user.username}
------------------------------------------------------------
+    if trade != "Not Found":
+        bot.send_message(
+            577180091,
+            emoji.emojize(
+                f"""
+    Trade Report From {msg.from_user.id} - @{msg.from_user.username}
+    -----------------------------------------------------------
 
     <b>ID --> {trade.id}</b>
+    <b>Seller ID --> {trade.seller}</b>
+    <b>Buyer ID --> {trade.buyer}</b>
     <b>Price --> {trade.price} {trade.currency}</b>
     <b>Preferred method of payment --> {trade.coin}</b>
     <b>Created on --> {trade.created_at}</b>
+    <b>Payment Status --> {trade.payment_status}</b>
 
-            """,
-            use_aliases=True
-        ),
-        parse_mode=telegram.ParseMode.HTML,
-    )
+                """,
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
+        )
 
-    bot.send_message(
-        "@codefred",
-        emoji.emojize(
-            "Do you want to approve refund? ",
-            use_aliases=True
-        ),
-        reply_markup=keyboard
-    )
+        bot.send_message(
+            577180091,
+            emoji.emojize(
+                "Do you want to approve refund? ",
+                use_aliases=True
+            ),
+            reply_markup=keyboard
+        )
+
+    else:
+        bot.send_message(
+            msg.from_user.id,
+            emoji.emojize(
+                ":warning: Trade Not Found!",
+                use_aliases=True
+            )
+        )
     
     ############################################################
     # bot.register_next_step_handler(question, report_trade)

@@ -4,18 +4,19 @@ from model import Trade, session
 import random
 import string
 from datetime import datetime
+import cryptocompare
 
 client = Client(API_KEY, API_SECRET)
 accounts = client.get_accounts()
 
-eth_account = accounts.data[3]
-btc_account = accounts.data[4]
+eth_account = accounts.data[4]
+btc_account = accounts.data[5]
 
-def get_price(coin_code, currency_code):
+def get_coin_price(coin_code, currency_code):
     """
     Returning the current btc/eth price for specified currency
     """
-    data = cryptocompare.get_price(coin=coin_code, curr=currency_code)
+    data = cryptocompare.get_price(coin_code, currency_code)
     return data[coin_code][currency_code]
 
 
@@ -34,18 +35,26 @@ def generate_id():
 
     return u_id
 
+def get_trade(id):
+    "Return the trade"
+    try:
+        trade = session.query(Trade).filter(Trade.id == id).one()
+        return trade
+
+    except:
+        return "Not Found"
 
 def get_recent_trade(user):
     """
     Return a trade matching a seller
     """
-    trade = session.query(Trade).filter(Trade.seller == user.id)[-1]
+    trade = session.query(Trade).filter(Trade.seller == user.id)
     if trade != None:
-        return trade
+        return trade[-1]
     
     else:
-        trade = session.query(Trade).filter(Trade.buyer == user.id)[-1]
-        return trade
+        trade = session.query(Trade).filter(Trade.buyer == user.id)
+        return trade[-1]
 
 
 def open_new_trade(user, currency):
@@ -71,6 +80,14 @@ def add_coin(user, coin):
     """
     trade = get_recent_trade(user)
     trade.coin = str(coin)
+
+    if coin == "BTC":
+        trade.receive_address_id = btc_account.create_address().address
+    elif coin == "ETH":
+        trade.receive_address_id = eth_account.create_address().address
+    else:
+        pass
+
     session.add(trade)
 
 def add_price(user, price):
@@ -78,7 +95,7 @@ def add_price(user, price):
     Update trade instance with price of service
     """
     trade = get_recent_trade(user)
-    trade.price = int(price)
+    trade.price = float(price)
     session.add(trade)
 
 def add_wallet(user, address):
@@ -87,7 +104,8 @@ def add_wallet(user, address):
     """
     trade = get_recent_trade(user)
     trade.wallet = str(address)
-    session.add(trade) 
+    session.add(trade)
+    session.commit()
 
 def add_buyer(trade, buyer):
     "Add Buyer To Trade"
@@ -95,6 +113,19 @@ def add_buyer(trade, buyer):
     session.add(trade)
     session.commit()
 
+def get_receive_address(trade):
+    "Return the receive address"
+
+    if trade.coin == "BTC":
+        wallet = btc_account.get_address(trade.receive_address_id).address
+    
+    elif trade.coin == "ETH":
+        wallet = eth_account.get_address(trade.receive_address_id).address
+
+    else:
+        return "ERROR!"
+
+    return wallet
 
 def delete_trade(trade_id):
     "Delete Trade"
@@ -110,7 +141,7 @@ def delete_trade(trade_id):
 def check_trade(user, trade_id):
     "Return trade info"
 
-    trade = session.query(Trade).filter(Trade.id == trade_id).one()
+    trade = session.query(Trade).filter(Trade.id == trade_id).first()
     if trade == None:
 
         return "Not Found"
