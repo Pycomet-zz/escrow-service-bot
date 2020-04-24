@@ -58,6 +58,7 @@ def open_new_trade(user, currency):
         currency = currency,
         payment_status = False,
         created_at = str(datetime.now()),
+        is_open = True,
         )
 
     session.add(trade)
@@ -120,3 +121,12 @@ def check_trade(user, trade_id):
             buyer=user
         )
         return trade
+
+
+def get_trades(user):
+    "Retrun list of trades the user is in"
+    
+    sells = session.query(Trade).filter(Trade.seller == user.id).all()
+    buys = session.query(Trade).filter(Trade.buyer == user.id).all()
+
+    return sells, buys

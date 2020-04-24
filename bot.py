@@ -231,6 +231,12 @@ def join_trade(msg):
 
         pay_price = float(coin_price) + service_charge + float(fees)
 
+        if trade.coin == "BTC":
+            receive_wallet = btc_account.get_address().address
+        elif trade.coin == "ETH":
+            receive_wallet = eth_account.get_address().address
+
+
         bot.send_message(
             trade.seller,
             emoji.emojize(
@@ -242,8 +248,9 @@ def join_trade(msg):
         <b>Price --> {trade.price} {trade.currency}</b>
         <b>Preferred method of payment --> {trade.coin}</b>
         <b>Created on --> {trade.created_at}</b>
+        <b>Payment Complete --> {trade.payment_status}</b>
 
-:alert: <b>You are expected to pay {pay_price}{trade.coin} to {trade.wallet} to recieve goods from seller</b>
+:alert: <b>You are expected to pay {pay_price}{trade.coin} to {receive_wallet} to recieve goods from seller</b>
 
                 """,
                 use_aliases=True
@@ -317,6 +324,10 @@ Trade Report From {msg.from_user.id} - {msg.from_user.username}
 
 
 
+
+
+
+
 ######################UNIVERSAL GRID#####################
 
 @bot.message_handler(regexp="^Trade")
@@ -324,14 +335,85 @@ def trade_history(msg):
     """
     Return all the trades the user is involved in
     """
-    pass
+    user = msg.from_user
+
+    bot.send_message(
+        user.id,
+        emoji.emojize(
+            """
+    <b>TRADE HISTORY</b>
+            """,
+            use_aliases=True
+        ),
+        parse_mode=telegram.ParseMode.HTML,
+    )
+
+    sells, buys = get_trades(user)
+
+    for sell in sells:
+
+        bot.send_message(
+            user.id,
+            emoji.emojize(
+                f"""
+<b>SELLER ROLE</b>
+------------------
+<b>ID --> {sell.id}</b>
+<b>Price --> {sell.price} {sell.currency}</b>
+<b>Preferred method of payment --> {sell.coin}</b>
+<b>Created on --> {sell.created_at}</b>
+<b>Payment Complete --> {sell.payment_status}</b>
+                """,
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
+        )
+
+    for buy in buys:
+
+        bot.send_message(
+            user.id,
+            emoji.emojize(
+                f"""
+<b>BUYER ROLE</b>
+------------------
+<b>ID --> {buy.id}</b>
+<b>Price --> {buy.price} {buy.currency}</b>
+<b>Preferred method of payment --> {buy.coin}</b>
+<b>Created on --> {buy.created_at}</b>
+<b>Payment Complete --> {buy.payment_status}</b>
+                """,
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
+        )
+
+
 
 @bot.message_handler(regexp="^Rules")
 def rules(msg):
     """
     List of Rules
     """
-    pass
+
+    bot.send_message(
+        msg.from_user.id,
+        emoji.emojize(
+            f"""
+<b>ESCROW SERVICE RULES</b>
+---------------------------
+1.  Trades can only be created by a seller.
+
+2.  Funds deposited by the buyer are only released to seller after the goods received are affirmed by the buyer.
+
+3.  Transaction price and trade currency should be agreed between both parties before trade is created.
+
+4.  If a party is reported, the other party receives their refund and the guilty party banned from this service.
+            """,
+            use_aliases=True
+        ),
+        parse_mode=telegram.ParseMode.HTML,
+    )
 
 
 
@@ -375,9 +457,9 @@ def callback_answer(call):
             coin="ETH")
         trade_price(call.from_user)
 
-    elif call.data == "1":
-        #Refund
-        
+    # elif call.data == "1":
+    #     #Refund
+    #### CHECK TO APPROVE PAYMENTS AND REFUND/PAYMENT PROCESS
 
     else:
         pass

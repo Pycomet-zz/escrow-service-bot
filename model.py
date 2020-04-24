@@ -28,6 +28,7 @@ class Trade(Base):
 
     payment_status = Column(Boolean)
     created_at = Column(String)
+    is_open = Column(Boolean)
 
     def __repr__(self):
         return "<Trade(id='%s')>" % (self.id)
