@@ -140,7 +140,26 @@ def process_trade(msg):
         address=wallet
     )
 
-    send_trade_info(msg.from_user)
+    trade = get_recent_trade(msg.from_user)
+
+    bot.send_message(
+        trade.seller,
+        emoji.emojize(
+            f"""
+Trade Details
+-----------------
+
+    <b>ID --> {trade.id}</b>
+    <b>Price --> {trade.price} {trade.currency}</b>
+    <b>Preferred method of payment --> {trade.coin}</b>
+    <b>Created on --> {trade.created_at}</b>
+
+Share only the trade ID with your customer to allow his/her join the trade. They would receive all the related information when they join.
+            """,
+            use_aliases=True
+        ),
+        parse_mode=telegram.ParseMode.HTML,
+    )
 
 
 
@@ -176,18 +195,127 @@ def trade_delete(msg):
 ######################BUYER GRID#####################
 
 @bot.message_handler(regexp="^Join")
-def join_trade(msg):
+def join_request(msg):
     """
     Lets a user receive trade information by ID
     """
-    pass
+    question = bot.send_message(
+        msg.from_user.id,
+        emoji.emojize(
+            "What is the ID of the trade you wish to join ? ",
+            use_aliases=True
+        )
+    )
+    
+    bot.register_next_step_handler(question, join_trade)
+
+def join_trade(msg):
+    """
+    Validate Buyer To Trade ID
+    """
+    trade_id = msg.text
+
+    trade = check_trade(
+        user=msg.from_user,
+        trade_id=trade_id)
+
+    if trade != "Not Found":
+
+        #Amount To Be Paid
+        coin_price = get_price(
+            coin_code=trade.coin,
+            currency_code=trade.currency
+        )
+        service_charge = 0.01 * float(coin_price)
+        fees = 2 * 0.0149
+
+        pay_price = float(coin_price) + service_charge + float(fees)
+
+        bot.send_message(
+            trade.seller,
+            emoji.emojize(
+                f"""
+    Trade Details
+    -----------------
+
+        <b>ID --> {trade.id}</b>
+        <b>Price --> {trade.price} {trade.currency}</b>
+        <b>Preferred method of payment --> {trade.coin}</b>
+        <b>Created on --> {trade.created_at}</b>
+
+:alert: <b>You are expected to pay {pay_price}{trade.coin} to {trade.wallet} to recieve goods from seller</b>
+
+                """,
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
+        )
+
+    else:
+        bot.send_message(
+            msg.from_user.id,
+            emoji.emojize(
+                ":warning: Trade Not Found!",
+                use_aliases=True
+            )
+        )
+
 
 @bot.message_handler(regexp="^Report")
-def report_trade(msg):
+def report_request(msg):
     """
     Sends a report to the Admin regarding a particular trade
     """
-    pass
+    question = bot.send_message(
+        msg.from_user.id,
+        emoji.emojize(
+            "What is the ID of the trade you wish to report ? ",
+            use_aliases=True
+        )
+    )
+    
+    bot.register_next_step_handler(question, report_trade)
+
+def report_trade(msg):
+    """
+    Send reports to admin for cross checking
+    """
+    trade = get_recent_trade(msg.from_user)
+
+    keyboard = refund_menu()
+
+    bot.send_message(
+        "@codefred",
+        emoji.emojize(
+            f"""
+Trade Report From {msg.from_user.id} - {msg.from_user.username}
+-----------------------------------------------------------
+
+    <b>ID --> {trade.id}</b>
+    <b>Price --> {trade.price} {trade.currency}</b>
+    <b>Preferred method of payment --> {trade.coin}</b>
+    <b>Created on --> {trade.created_at}</b>
+
+            """,
+            use_aliases=True
+        ),
+        parse_mode=telegram.ParseMode.HTML,
+    )
+
+    bot.send_message(
+        "@codefred",
+        emoji.emojize(
+            "Do you want to approve refund? ",
+            use_aliases=True
+        ),
+        reply_markup=keyboard
+    )
+    
+    ############################################################
+    # bot.register_next_step_handler(question, report_trade)
+
+
+
 
 ######################UNIVERSAL GRID#####################
 
@@ -235,13 +363,21 @@ def callback_answer(call):
 
     elif call.data == "btc":
         #update trade information
-        add_coin(call.from_user, "BTC")
+        add_coin(
+            user=call.from_user,
+            coin="BTC")
         trade_price(call.from_user)
     
     elif call.data == "eth":
         #update trade information
-        add_coin(call.from_user, "ETH")
+        add_coin(
+            user=call.from_user,
+            coin="ETH")
         trade_price(call.from_user)
+
+    elif call.data == "1":
+        #Refund
+        
 
     else:
         pass

@@ -52,3 +52,11 @@ def coin_menu():
     
     keyboard.add(a,b)
     return keyboard
+
+def refund_menu():
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    a = types.InlineKeyboardButton(text=emoji.emojize("Yes", use_aliases=True), callback_data="1")
+    b = types.InlineKeyboardButton(text=emoji.emojize("No", use_aliases=True), callback_data="2")
+    
+    keyboard.add(a,b)
+    return keyboard

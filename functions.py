@@ -39,14 +39,13 @@ def get_recent_trade(user):
     """
     Return a trade matching a seller
     """
-    try:
-        trade = session.query(Trade).filter(Trade.seller == user.id)[-1]
+    trade = session.query(Trade).filter(Trade.seller == user.id)[-1]
+    if trade != None:
         return trade
-    except:
+    
+    else:
         trade = session.query(Trade).filter(Trade.buyer == user.id)[-1]
         return trade
-    finally:
-        return "Not Found"
 
 
 def open_new_trade(user, currency):
@@ -70,7 +69,7 @@ def add_coin(user, coin):
     Update trade instance with coin preference
     """
     trade = get_recent_trade(user)
-    trade.coin = coin
+    trade.coin = str(coin)
     session.add(trade)
 
 def add_price(user, price):
@@ -78,7 +77,7 @@ def add_price(user, price):
     Update trade instance with price of service
     """
     trade = get_recent_trade(user)
-    trade.price = price
+    trade.price = int(price)
     session.add(trade)
 
 def add_wallet(user, address):
@@ -86,34 +85,14 @@ def add_wallet(user, address):
     Update trade instance with wallet for seller
     """
     trade = get_recent_trade(user)
-    trade.wallet = address
+    trade.wallet = str(address)
     session.add(trade) 
 
-
-def send_trade_info(user):
-    """
-    Send Out Trade Information To User
-    """
-    trade = get_recent_trade(user)
-
-    bot.send_message(
-        user.id,
-        emoji.emojize(
-            f"""
-    Trade Details
-    -----------------
-
-    ID --> <b>{trade.id}</b>
-    Price --> <b>{trade.price} {trade.currency}</b>
-    Preferred method of payment --> <b>{trade.coin}</b>
-    Created on --> <b>{trade.created_at}</b>
-
-    Share only the trade ID with your customer to allow his/her join the trade. They would receive all the related information when they join.
-            """,
-            use_aliases=True
-        ),
-        parse_mode=telegram.ParseMode.HTML,
-    )
+def add_buyer(trade, buyer):
+    "Add Buyer To Trade"
+    trade.buyer = buyer.id
+    session.add(trade)
+    session.commit()
 
 
 def delete_trade(trade_id):
@@ -125,3 +104,19 @@ def delete_trade(trade_id):
     else:
         session.commit()
         return "Complete!"
+
+
+def check_trade(user, trade_id):
+    "Return trade info"
+
+    trade = session.query(Trade).filter(Trade.id == trade_id).one()
+    if trade == None:
+
+        return "Not Found"
+
+    else:
+        add_buyer(
+            trade=trade,
+            buyer=user
+        )
+        return trade
