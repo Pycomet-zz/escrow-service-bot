@@ -194,6 +194,8 @@ def trade_delete(msg):
 
 ######################BUYER GRID#####################
 
+trade = ""
+
 @bot.message_handler(regexp="^Join")
 def join_request(msg):
     """
@@ -215,6 +217,7 @@ def join_trade(msg):
     """
     trade_id = msg.text
 
+    global trade
     trade = check_trade(
         user=msg.from_user,
         trade_id=trade_id)
@@ -230,7 +233,7 @@ def join_trade(msg):
         coin_value = float(trade.price)/float(coin_price)
 
         service_charge = 0.01 * float(coin_value)
-        fees = 2 * 0.0149
+        fees = (0.0149 * coin_value) * 2
 
         pay_price = float(coin_value) + service_charge + float(fees)
 
@@ -238,6 +241,7 @@ def join_trade(msg):
 
         receive_wallet = get_receive_address(trade)
 
+        #SEND TO BUYER
         bot.send_message(
             trade.buyer,
             emoji.emojize(
@@ -259,8 +263,10 @@ def join_trade(msg):
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML,
+            reply_markup=confirm(),
         )
 
+        ##SEND TO SELLER
         bot.send_message(
             trade.seller,
             emoji.emojize(
@@ -279,6 +285,48 @@ def join_trade(msg):
             )
         )
 
+def validate_pay(msg):
+    "Receives the transaction hash for checking"
+    global trade
+    trade_hash = msg.text
+
+    status = check_payment(trade, trade_hash)
+
+    if status == "Approved":
+
+        ##SEND TO SELLER
+        bot.send_message(
+            trade.seller,
+            emoji.emojize(
+                "<b>Buyer Payment Confirmed Successfully. Please release the goods to the buyer before being paid</b>",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML
+        )
+
+        ##SEND TO BUYER
+        bot.send_message(
+            trade.buyer,
+            emoji.emojize(
+                "<b>Payment Confirmed Sucessfully. Seller has been instructed to release the goods to you.</b>",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
+            reply_markup=confirm_goods()
+        )
+
+    else:
+
+        ##SEND TO SELLER
+        bot.send_message(
+            trade.buyer,
+            emoji.emojize(
+                "<b>Payment Still Pending! Please cross check the transaction hash and try again.</b>",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML
+        )
+    
 
 @bot.message_handler(regexp="^Report")
 def report_request(msg):
@@ -301,11 +349,10 @@ def report_trade(msg):
     """
     trade = get_trade(msg.text)
 
-    keyboard = refund_menu()
-
     if trade != "Not Found":
+
         bot.send_message(
-            577180091,
+            ADMIN_ID,
             emoji.emojize(
                 f"""
     Trade Report From {msg.from_user.id} - @{msg.from_user.username}
@@ -325,14 +372,13 @@ def report_trade(msg):
             parse_mode=telegram.ParseMode.HTML,
         )
 
-        bot.send_message(
-            577180091,
-            emoji.emojize(
-                "Do you want to approve refund? ",
-                use_aliases=True
-            ),
-            reply_markup=keyboard
+        question = bot.send_message(
+            msg.from_user.id,
+            "What is your complaint on <b>Trade -> {msg.text}</b> ? ",
+            parse_mode=telegram.ParseMode.HTML,
         )
+
+        bot.register_next_step_handler(question, trade_complaint)
 
     else:
         bot.send_message(
@@ -343,15 +389,64 @@ def report_trade(msg):
             )
         )
     
-    ############################################################
-    # bot.register_next_step_handler(question, report_trade)
+
+def trade_complaint(msg):
+    """
+    User complaint on Trade
+    """
+
+    compliant = msg.text
+    keyboard = refund_menu()
+
+    bot.send_message(
+        ADMIN_ID,
+        emoji.emojize(
+            """
+<b>Compliant --></b> {compliant}
+
+    Do you want to approve refund? 
+            """,
+            use_aliases=True
+        ),
+        reply_markup=keyboard,
+        parse_mode=telegram.ParseMode.HTML,
+    )
 
 
 
+def refund_to_buyer(msg):
+    "Refund Coins Back To Buyer"
 
+    trade_id = msg.text
 
+    trade = get_trade(trade_id)
 
+    if trade.payment_status == True:
 
+        question = bot.send_message(
+            trade.buyer,
+            f"A refund was requested for your funds on trade {trade.id}. Please paste a wallet address to receive in {trade.coin}"
+        )
+        bot.register_next_step_handler(question, refund_coins)
+
+def refund_coins(msg):
+    "Payout refund"
+
+    wallet = msg.text
+    trade = get_recent_trade(msg.from_user)
+
+    pay_to_buyer(trade, wallet)
+
+    bot.send_message(
+        ADMIN_ID,
+        emoji.emojize(
+            """
+<b>Refunds Paid</b> 
+            """,
+            use_aliases=True
+        ),
+        parse_mode=telegram.ParseMode.HTML,
+    )
 
 ######################UNIVERSAL GRID#####################
 
@@ -388,6 +483,7 @@ def trade_history(msg):
 <b>Preferred method of payment --> {sell.coin}</b>
 <b>Created on --> {sell.created_at}</b>
 <b>Payment Complete --> {sell.payment_status}</b>
+<b>Trade still open --> {sell.is_open}</b>
                 """,
                 use_aliases=True
             ),
@@ -407,6 +503,7 @@ def trade_history(msg):
 <b>Preferred method of payment --> {buy.coin}</b>
 <b>Created on --> {buy.created_at}</b>
 <b>Payment Complete --> {buy.payment_status}</b>
+<b>Trade still open --> {buy.is_open}</b>
                 """,
                 use_aliases=True
             ),
@@ -482,9 +579,53 @@ def callback_answer(call):
             coin="ETH")
         trade_price(call.from_user)
 
-    # elif call.data == "1":
-    #     #Refund
-    #### CHECK TO APPROVE PAYMENTS AND REFUND/PAYMENT PROCESS
+    elif call.data == "payment_confirmation":
+        #Check payment confirmation
+        question = bot.send_message(
+            call.from_user.id,
+            ":point_right: Paste the transaction hash for confirmation below",
+        )
+        bot.register_next_step_handler(question, validate_pay)
+
+    elif call.data == "goods_received":
+        ### Pay The Seller
+        pay_funds_to_seller(trade)
+
+        ##SEND TO SELLER
+        bot.send_message(
+            trade.seller,
+            emoji.emojize(
+                "<b>TRADE ENDED!!. Your payment has been sent!</b>",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML
+        )
+
+        ##SEND TO BUYER
+        bot.send_message(
+            trade.buyer,
+            emoji.emojize(
+                "<b>TRADE ENDED!!</b>",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
+        )
+
+    elif call.data == "goods_not_received":
+        #### Open Dispute
+        bot.send_message(
+            call.from_user.id,
+            "Please contact the seller to send you the goods right away. If seller refuses, report the trade from the menu",
+        )
+
+
+    elif call.data == "refund":
+        # Refund coins to buyer
+        question = bot.send_message(
+            ADMIN_ID,
+            "What is the trade ID ? "
+        )
+        bot.register_next_step_handler(question, refund_to_buyer)
 
     else:
         pass

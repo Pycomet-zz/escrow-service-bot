@@ -161,3 +161,109 @@ def get_trades(user):
     buys = session.query(Trade).filter(Trade.buyer == user.id).all()
 
     return sells, buys
+
+def confirm_pay(trade):
+    "Confirm Payment"
+    trade.payment_status = True
+    session.add(trade)
+    session.commit()
+
+def check_payment(trade, hash):
+    "Returns Status Of Payment"
+
+    try:
+        tx = blockexplorer.get_tx(hash)
+
+        #Check if it is the same
+        if trade.coin == "BTC":
+            transaction_hash = btc_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
+        else:
+            transaction_hash = eth_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
+
+        if transaction_hash == tx.hash:
+            confirm_pay(trade)
+            return "Approved"
+
+    except:
+        return "Pending"
+
+def pay_funds_to_seller(trade):
+    "Calculate Fees And Send Funds To Seller"
+    coin_price = get_coin_price(
+        coin_code=trade.coin,
+        currency_code=trade.currency
+    )
+
+    value = float(trade.price)/float(coin_price)
+
+    service_charge = 0.01 * float(value)
+    fees = 0.0149 * value
+
+    pay_price = float(value) - service_charge + fees
+
+    price = "%.4f" % pay_price
+
+    if trade.coin == "BTC":
+        btc_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "BTC"
+        )
+        close_trade(trade)
+
+    elif trade.coion == "ETH":
+        eth_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "ETH",
+        )
+        close_trade(trade)
+
+    else:
+        pass
+
+
+def close_trade(trade):
+    "Closing The Trade"
+    trade.is_open = False
+    session.add(trade)
+    session.commit()
+
+
+
+
+def pay_to_buyer(trade, wallet):
+    "Send Funds To Buyer"
+
+    coin_price = get_coin_price(
+        coin_code=trade.coin,
+        currency_code=trade.currency
+    )
+
+    value = float(trade.price)/float(coin_price)
+
+    service_charge = 0.01 * float(value)
+    fees = 0.0149 * value
+
+    pay_price = float(value) - service_charge + fees
+
+    price = "%.4f" % pay_price
+
+    if trade.coin == "BTC":
+        btc_account.send_money(
+            to = wallet,
+            amount = str(price),
+            currency = "BTC"
+        )
+        close_trade(trade)
+
+    elif trade.coion == "ETH":
+        eth_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "ETH",
+        )
+        close_trade(trade)
+
+    else:
+        pass
