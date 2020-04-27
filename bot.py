@@ -583,7 +583,7 @@ def callback_answer(call):
         #Check payment confirmation
         question = bot.send_message(
             call.from_user.id,
-            ":point_right: Paste the transaction hash for confirmation below",
+            emoji.emojize(":point_right: Paste the transaction hash for confirmation below", use_aliases=True),
         )
         bot.register_next_step_handler(question, validate_pay)
 
@@ -634,5 +634,5 @@ def callback_answer(call):
 
 
 
-print("bot running!")
-bot.polling(none_stop=True)
+# print("bot running!")
+# bot.polling(none_stop=True)
