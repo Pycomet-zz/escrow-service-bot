@@ -1,5 +1,5 @@
 from config import *
-
+import os
 server = Flask(__name__)
 
 from bot import *
@@ -14,15 +14,15 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://roipartybot.herokuapp.com/' + TOKEN)
+    bot.set_webhook(url='https://escrowbbot.herokuapp.com/' + TOKEN)
     return "!", 200
 
-print("bot polling...")
-bot.remove_webhook()
-bot.polling(none_stop=True)
+# print("bot polling...")
+# bot.remove_webhook()
+# bot.polling(none_stop=True)
 
-# if __name__ == "__main__":
-#     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+if __name__ == "__main__":
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
 
 
