@@ -7,8 +7,10 @@ from config import *
 
 Base = declarative_base()
 
-engine = create_engine("sqlite:///dbsqlite.db", connect_args={'check_same_thread': False}, echo=False)
-
+engine = create_engine(
+    "postgres://mkedfkiekfmfim:e6bcccb977c4c7a242fa857cbd4285308d5a96052bffb15aa4e45c925108daff@ec2-54-159-112-44.compute-1.amazonaws.com:5432/d88bdvbmhui1ks",
+    echo=False)
+#    connect_args={'check_same_thread': False},
 
 class Trade(Base):
     """
