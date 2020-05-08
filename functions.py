@@ -1,5 +1,5 @@
 from config import *
-from model import Trade, session
+from model import Trade, Dispute, session
 
 import random
 import string
@@ -267,3 +267,38 @@ def pay_to_buyer(trade, wallet):
 
     else:
         pass
+
+
+
+#######################DISPUTE############################
+def create_dispute(user, trade):
+    "Returns a newly created disput to a trade"
+
+    dispute = Dispute(
+        id = generate_id(),
+        user = user.id,
+        info = trade,
+    )
+    trade.dispute = True
+
+    if user.id == trade.seller and user.id == trade.buyer:
+        dispute.is_buyer = True
+        dispute.is_seller = True
+
+    elif user.id != trade.seller and user.id == trade.buyer:
+        dispute.is_buyer = True
+        dispute.is_seller = False       
+
+    elif user.id == trade.seller and user.id != trade.buyer:
+        dispute.is_buyer = False
+        dispute.is_seller = True
+
+    else:
+        dispute.is_seller = False
+        dispute.is_buyer = False
+
+    session.add(dispute)
+    session.add(trade)
+    session.commit()
+
+    return dispute

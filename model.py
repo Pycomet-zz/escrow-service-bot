@@ -34,9 +34,24 @@ class Trade(Base):
 
     receive_address_id = Column(String)
 
+    dispute = Column(Boolean)
+
     def __repr__(self):
         return "<Trade(id='%s')>" % (self.id)
 
+
+class Dispute(Base):
+    """
+    SQLAlchemy ORM Dispute Model
+    """
+    __tablename__ = "disputes"
+
+    id = Column(Integer, unique=True, primary_key=True)
+    user = Column(Integer)
+    is_seller = Column(Boolean)
+    is_buyer = Column(Boolean)
+
+    trade = relationship("Trade", backref="info")
 
 
 # Base.metadata.drop_all(bind=engine)
@@ -47,7 +62,6 @@ Session = sessionmaker(bind=engine, autoflush=False)
 
 session = Session()
 
-# import pdb; pdb.set_trace()
 
 session.close()
 

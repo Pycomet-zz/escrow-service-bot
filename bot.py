@@ -241,7 +241,7 @@ def join_trade(msg):
 
         receive_wallet = get_receive_address(trade)
 
-        #SEND TO BUYER
+        #SEND TO BUYER########
         bot.send_message(
             trade.buyer,
             emoji.emojize(
@@ -266,7 +266,7 @@ def join_trade(msg):
             reply_markup=confirm(),
         )
 
-        ##SEND TO SELLER
+        ##SEND ALERT TO SELLER#########
         bot.send_message(
             trade.seller,
             emoji.emojize(
@@ -294,7 +294,7 @@ def validate_pay(msg):
 
     if status == "Approved":
 
-        ##SEND TO SELLER
+        ##SEND CONFIRMATION TO SELLER
         bot.send_message(
             trade.seller,
             emoji.emojize(
@@ -304,7 +304,7 @@ def validate_pay(msg):
             parse_mode=telegram.ParseMode.HTML
         )
 
-        ##SEND TO BUYER
+        ##SEND CONFIRMATION TO BUYER
         bot.send_message(
             trade.buyer,
             emoji.emojize(
@@ -317,7 +317,7 @@ def validate_pay(msg):
 
     else:
 
-        ##SEND TO SELLER
+        ##SEND ALERT TO SELLER
         bot.send_message(
             trade.buyer,
             emoji.emojize(
@@ -351,11 +351,14 @@ def report_trade(msg):
 
     if trade != "Not Found":
 
+        user = msg.from_user
+        dispute = create_dispute(user, trade)
+
         bot.send_message(
             ADMIN_ID,
             emoji.emojize(
                 f"""
-    Trade Report From {msg.from_user.id} - @{msg.from_user.username}
+    Dispute Report {dispute.id} - by @{msg.from_user.username}
     -----------------------------------------------------------
 
     <b>ID --> {trade.id}</b>
@@ -413,6 +416,19 @@ def trade_complaint(msg):
     )
 
 
+    bot.reply_to(
+        msg,
+        emoji.emojize(
+            """
+Your complaint has been mailed to the administrator. Please await further instructions regarding this trade.
+            """,
+            use_aliases=True
+        )
+    )
+    
+
+
+##REFUND PROCESS FOR BUYER
 
 def refund_to_buyer(msg):
     "Refund Coins Back To Buyer"
