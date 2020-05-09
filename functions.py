@@ -48,14 +48,20 @@ def get_recent_trade(user):
     """
     Return a trade matching a seller
     """
-    trade = session.query(Trade).filter(Trade.seller == user.id)
-    if trade != None:
-        return trade[-1]
+    trades = session.query(Trade).filter(Trade.seller == user.id)
+    if trades.count() != 0:
+        dates = [trade.updated_at for trade in trades]
+        position = dates.index(max(dates))
+
+        return trades[position]
     
     else:
-        trade = session.query(Trade).filter(Trade.buyer == user.id)
-        return trade[-1]
+        trades = session.query(Trade).filter(Trade.buyer == user.id)
 
+        dates = [trade.updated_at for trade in trades]
+        position = dates.index(max(dates))
+
+        return trades[position]
 
 def open_new_trade(user, currency):
     """
@@ -67,6 +73,7 @@ def open_new_trade(user, currency):
         currency = currency,
         payment_status = False,
         created_at = str(datetime.now()),
+        updated_at = str(datetime.now()),
         is_open = True,
         )
 
@@ -104,12 +111,14 @@ def add_wallet(user, address):
     """
     trade = get_recent_trade(user)
     trade.wallet = str(address)
+    trade.updated_at = str(datetime.now())
     session.add(trade)
     session.commit()
 
 def add_buyer(trade, buyer):
     "Add Buyer To Trade"
     trade.buyer = buyer.id
+    trade.updated_at = str(datetime.now())
     session.add(trade)
     session.commit()
 
@@ -165,6 +174,7 @@ def get_trades(user):
 def confirm_pay(trade):
     "Confirm Payment"
     trade.payment_status = True
+    trade.updated_at = str(datetime.now())
     session.add(trade)
     session.commit()
 
@@ -226,6 +236,7 @@ def pay_funds_to_seller(trade):
 def close_trade(trade):
     "Closing The Trade"
     trade.is_open = False
+    trade.updated_at = str(datetime.now())
     session.add(trade)
     session.commit()
 
@@ -277,7 +288,8 @@ def create_dispute(user, trade):
     dispute = Dispute(
         id = generate_id(),
         user = user.id,
-        info = trade,
+        created_on = str(datetime.now()),
+        trade = trade,
     )
     trade.dispute = True
 

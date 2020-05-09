@@ -2,8 +2,6 @@ from config import *
 import os
 server = Flask(__name__)
 
-from bot import *
-
 
 @server.route('/' + TOKEN, methods=['POST'])
 def getMessage():
@@ -16,6 +14,8 @@ def webhook():
     bot.remove_webhook()
     bot.set_webhook(url='https://escrowbbot.herokuapp.com/' + TOKEN)
     return "!", 200
+
+
 
 print("bot polling...")
 bot.remove_webhook()
