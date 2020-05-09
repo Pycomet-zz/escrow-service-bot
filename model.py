@@ -59,6 +59,7 @@ class Dispute(Base):
 
     id = Column(Integer, unique=True, primary_key=True)
     user = Column(Integer)
+    complaint = Column(String)
     created_on = Column(String)
     trade_id = Column(ForeignKey("trades.id"))
 

@@ -282,6 +282,17 @@ def pay_to_buyer(trade, wallet):
 
 
 #######################DISPUTE############################
+def get_dispute(id):
+    "Returns the dispute on attached to this user"
+
+    user_id = id
+    dispute = session.query(Dispute).filter(Dispute.user == user_id)
+    if dispute == None:
+        return "No Dispute"
+    else:
+        return dispute[-1]
+
+
 def create_dispute(user, trade):
     "Returns a newly created disput to a trade"
 
@@ -311,6 +322,12 @@ def create_dispute(user, trade):
 
     session.add(dispute)
     session.add(trade)
-    session.commit()
 
     return dispute
+
+def add_complaint(dispute, text):
+    "Add Complaint Message"
+
+    dispute.complaint = text
+    session.add(dispute)
+    session.commit()

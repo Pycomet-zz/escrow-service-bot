@@ -72,8 +72,14 @@ def trade_complaint(msg):
     User complaint on Trade
     """
 
-    compliant = msg.text
     keyboard = refund_menu()
+
+    dispute = get_dispute(msg.from_user.id)
+
+    add_complaint(
+        dispute = dispute,
+        text = msg.text,
+    )
 
     bot.send_message(
         ADMIN_ID,
