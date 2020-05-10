@@ -28,30 +28,9 @@ def report_trade(msg):
         user = msg.from_user
         dispute = create_dispute(user, trade)
 
-        bot.send_message(
-            ADMIN_ID,
-            emoji.emojize(
-                f"""
-    Dispute Report {dispute.id} - by @{msg.from_user.username}
-    -----------------------------------------------------------
-
-    <b>ID --> {trade.id}</b>
-    <b>Seller ID --> {trade.seller}</b>
-    <b>Buyer ID --> {trade.buyer}</b>
-    <b>Price --> {trade.price} {trade.currency}</b>
-    <b>Preferred method of payment --> {trade.coin}</b>
-    <b>Created on --> {trade.created_at}</b>
-    <b>Payment Status --> {trade.payment_status}</b>
-
-                """,
-                use_aliases=True
-            ),
-            parse_mode=telegram.ParseMode.HTML,
-        )
-
         question = bot.send_message(
             msg.from_user.id,
-            "What is your complaint on <b>Trade -> {msg.text}</b> ? ",
+            f"What is your complaint on <b>Trade -> {msg.text}</b> ? ",
             parse_mode=telegram.ParseMode.HTML,
         )
 
@@ -81,13 +60,27 @@ def trade_complaint(msg):
         text = msg.text,
     )
 
+    trade = dispute.trade
+
     bot.send_message(
         ADMIN_ID,
         emoji.emojize(
             """
-<b>Compliant --></b> {compliant}
+<b>Trade Compliant</b>
+----------------------
+{dispute.compliant}
 
-    Do you want to approve refund? 
+    ---------------------------------------
+    <b>ID --> {trade.id}</b>
+    <b>Seller ID --> {trade.seller}</b>
+    <b>Buyer ID --> {trade.buyer}</b>
+    <b>Price --> {trade.price} {trade.currency}</b>
+    <b>Preferred method of payment --> {trade.coin}</b>
+    <b>Created on --> {trade.created_at}</b>
+    <b>Payment Status --> {trade.payment_status}</b>
+    <b>Is Open --> {trade.is_open}</b>
+
+Do you want to approve refund to buyer? 
             """,
             use_aliases=True
         ),

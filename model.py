@@ -80,7 +80,6 @@ class Dispute(Base):
 
 # Base.metadata.drop_all(bind=engine)
 # Base.metadata.create_all(bind=engine)
-# import pdb; pdb.set_trace()
 
 
 Session = sessionmaker(bind=engine, autoflush=False)

@@ -289,8 +289,11 @@ def get_dispute(id):
     dispute = session.query(Dispute).filter(Dispute.user == user_id)
     if dispute == None:
         return "No Dispute"
-    else:
+
+    elif dispute.count() >= 1:
         return dispute[-1]
+    else:
+        return dispute
 
 
 def create_dispute(user, trade):
@@ -302,7 +305,7 @@ def create_dispute(user, trade):
         created_on = str(datetime.now()),
         trade = trade,
     )
-    trade.dispute = True
+    trade.dispute.append(dispute)
 
     if user.id == trade.seller and user.id == trade.buyer:
         dispute.is_buyer = True
