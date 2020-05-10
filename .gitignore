@@ -1,5 +1,5 @@
 env
-config.py
+./config.py
 .vscode
 __pycache__
 handlers/__pycache__
