@@ -179,17 +179,11 @@ def validate_pay(msg):
 
 
 
-
-
-
 ##REFUND PROCESS FOR BUYER
 
 def refund_to_buyer(msg):
     "Refund Coins Back To Buyer"
-
-    trade_id = msg.text
-
-    trade = get_trade(trade_id)
+    trade = get_recent_trade(msg)
 
     if trade.payment_status == True:
 
@@ -198,6 +192,16 @@ def refund_to_buyer(msg):
             f"A refund was requested for your funds on trade {trade.id}. Please paste a wallet address to receive in {trade.coin}"
         )
         bot.register_next_step_handler(question, refund_coins)
+    
+    else:
+        bot.send_message(
+            msg.id,
+              emoji.emojize(
+                ":warning: Buyer Has Not Made Payments Yet!!",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML
+        )
 
 def refund_coins(msg):
     "Payout refund"
@@ -217,3 +221,25 @@ def refund_coins(msg):
         ),
         parse_mode=telegram.ParseMode.HTML,
     )
+
+
+
+##REFUND PROCES SELLER TO RECEIVE FUNDS
+
+def refund_to_seller(msg):
+    "Refund Coins Back To Buyer"
+    trade = get_recent_trade(msg)
+
+    if trade.payment_status == True:
+
+        pay_funds_to_seller(trade)
+    
+    else:
+        bot.send_message(
+            msg.id,
+              emoji.emojize(
+                ":warning: Buyer Has Not Made Payments Yet!!",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML
+        )

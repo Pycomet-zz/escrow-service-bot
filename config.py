@@ -1,3 +1,4 @@
+import os
 import telegram
 import telebot
 from telebot import types
@@ -9,14 +10,13 @@ from coinbase.wallet.client import Client
 
 
 # Configuration variable
-TOKEN = "1222989785:AAE-o7ayaLOKr3Cw_O_3PKSeJ2jtgT6VB04"
+TOKEN = os.getenv("TOKEN")
 
-
-ADMIN_ID = 577180091
+ADMIN_ID = os.getenv("ADMIN_ID")
 
 # Coinbase API for payments
-API_KEY = "x0zSLqHir18lLzlZ"
-API_SECRET = "g04EhUsja3HXcnQYf79Ga2s7tBbWGrxi"
+API_KEY = os.getenv("API_KEY")
+API_SECRET = os.getenv("API_SECRET")
 
 bot = telebot.TeleBot(TOKEN, threaded=True)
 

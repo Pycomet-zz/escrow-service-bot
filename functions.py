@@ -268,9 +268,9 @@ def pay_to_buyer(trade, wallet):
         )
         close_trade(trade)
 
-    elif trade.coion == "ETH":
+    elif trade.coin == "ETH":
         eth_account.send_money(
-            to = trade.wallet,
+            to = wallet,
             amount = str(price),
             currency = "ETH",
         )
@@ -294,6 +294,11 @@ def get_dispute(id):
         return dispute[-1]
     else:
         return dispute
+
+def get_dispute_by_id(id):
+    "Return The Dispute By ID"
+    dispute = session.query(Dispute).filter(Dispute.id == id).first()
+    return dispute
 
 
 def create_dispute(user, trade):

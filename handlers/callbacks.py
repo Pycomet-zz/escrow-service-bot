@@ -3,6 +3,8 @@ from keyboard import *
 from functions import *
 from bot import *
 
+from handlers.verdict import *
+
 # Callback Handlers
 @bot.callback_query_handler(func=lambda call: True)
 def callback_answer(call):
@@ -112,13 +114,21 @@ def callback_answer(call):
         )
 
 
-    elif call.data == "refund":
-        # Refund coins to buyer
+    elif call.data == "verdict":
+        #Pass Verdict
         question = bot.send_message(
-            ADMIN_ID,
-            "What is the trade ID ? "
+            call.from_user.id,
+            "What is your final decision to the trade? "
         )
-        bot.register_next_step_handler(question, refund_to_buyer)
+        bot.register_next_step_handler(question, pass_verdict)
+
+
+    elif call.data == "refund_to_buyer":
+        #Pass Verdict
+        refund_to_buyer(call.from_user)
+    
+    elif call.data == "pay_to_seller":
+        refund_to_seller(call.from_user)
 
 
 

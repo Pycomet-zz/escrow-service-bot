@@ -53,9 +53,9 @@ def coin_menu():
     keyboard.add(a,b)
     return keyboard
 
-def refund_menu():
+def give_verdict():
     keyboard = types.InlineKeyboardMarkup(row_width=2)
-    a = types.InlineKeyboardButton(text=emoji.emojize("Yes", use_aliases=True), callback_data="refund")
+    a = types.InlineKeyboardButton(text=emoji.emojize("Yes", use_aliases=True), callback_data="verdict")
     b = types.InlineKeyboardButton(text=emoji.emojize("No", use_aliases=True), callback_data="2")
     
     keyboard.add(a,b)
@@ -74,4 +74,9 @@ def confirm_goods():
     keyboard.add(a, b)
     return keyboard
 
-
+def refunds():
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    a = types.InlineKeyboardButton(text=emoji.emojize(":man: To Buyer", use_aliases=True), callback_data="refund_to_buyer")
+    b = types.InlineKeyboardButton(text=emoji.emojize(":man: To Seller", use_aliases=True), callback_data="pay_to_seller")
+    keyboard.add(a, b)
+    return keyboard

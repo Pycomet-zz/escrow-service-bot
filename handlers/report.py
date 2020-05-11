@@ -51,8 +51,6 @@ def trade_complaint(msg):
     User complaint on Trade
     """
 
-    keyboard = refund_menu()
-
     dispute = get_dispute(msg.from_user.id)
 
     add_complaint(
@@ -60,41 +58,27 @@ def trade_complaint(msg):
         text = msg.text,
     )
 
+    users = []
     trade = dispute.trade
 
-    bot.send_message(
-        ADMIN_ID,
-        emoji.emojize(
-            """
-<b>Trade Compliant</b>
-----------------------
-{dispute.compliant}
+    users.append(trade.seller, trade.buyer, ADMIN_ID)    
 
-    ---------------------------------------
-    <b>ID --> {trade.id}</b>
-    <b>Seller ID --> {trade.seller}</b>
-    <b>Buyer ID --> {trade.buyer}</b>
-    <b>Price --> {trade.price} {trade.currency}</b>
-    <b>Preferred method of payment --> {trade.coin}</b>
-    <b>Created on --> {trade.created_at}</b>
-    <b>Payment Status --> {trade.payment_status}</b>
-    <b>Is Open --> {trade.is_open}</b>
+    for user in users:
 
-Do you want to approve refund to buyer? 
-            """,
-            use_aliases=True
-        ),
-        reply_markup=keyboard,
-        parse_mode=telegram.ParseMode.HTML,
-    )
+        bot.send_message(
+            user,
+            emoji.emojize(
+                "<b>New Dispute Ticket Created -- {dispute.id}</b>",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
+        )
 
 
     bot.reply_to(
         msg,
         emoji.emojize(
-            """
-Your complaint has been mailed to the administrator. Please await further instructions regarding this trade.
-            """,
+            "Your complaint has been mailed to the administrator. Please await further instructions regarding this trade",
             use_aliases=True
         )
     )
