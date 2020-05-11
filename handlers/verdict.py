@@ -22,7 +22,7 @@ def call_dispute(msg):
     """Send The Verdict To Buyer And Seller"""
 
     global trade
-    dispute_id = int(msg.text)
+    dispute_id = msg.text
 
     dispute = get_dispute_by_id(dispute_id)
     keyboard = give_verdict()
@@ -34,10 +34,10 @@ def call_dispute(msg):
         bot.send_message(
             msg.from_user.id,
             emoji.emojize(
-                """
+                f"""
 <b>Dispute Ticket -- {dispute.id}</b>
 ----------------------
-{dispute.compliant}
+{dispute.complaint}
 
 
 Trade Info;
@@ -87,9 +87,9 @@ def pass_verdict(msg):
             user,
             emoji.emojize(
                 """
-    :stamp:<b>Administrative Decision On Trade %d</b>
+    :stamp: <b>Administrative Decision On Trade %s</b>
     -----------------------------------------
-    Ticket ID --> %d
+    Ticket ID --> %s
     %s
                 """ % (trade.id, trade.dispute[0].id, message),
                 use_aliases=True

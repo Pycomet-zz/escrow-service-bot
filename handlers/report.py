@@ -58,17 +58,16 @@ def trade_complaint(msg):
         text = msg.text,
     )
 
-    users = []
     trade = dispute.trade
 
-    users.append(trade.seller, trade.buyer, ADMIN_ID)    
+    users = [trade.seller, trade.buyer, int(ADMIN_ID)]  
 
     for user in users:
 
         bot.send_message(
             user,
             emoji.emojize(
-                "<b>New Dispute Ticket Created -- {dispute.id}</b>",
+                f"<b>New Dispute Ticket Created -- {dispute.id}</b>",
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML,

@@ -330,6 +330,7 @@ def create_dispute(user, trade):
 
     session.add(dispute)
     session.add(trade)
+    session.commit()
 
     return dispute
 

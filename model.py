@@ -48,7 +48,7 @@ class Trade(Base):
         if self.dispute == []:
             return "No Dispute"
         else:
-            return "Created on %s " % self.dispute.created_on
+            return "%s Created on %s " % (self.dispute[-1].id, self.dispute[-1].created_on)
 
 
 class Dispute(Base):
@@ -57,7 +57,7 @@ class Dispute(Base):
     """
     __tablename__ = "disputes"
 
-    id = Column(Integer, unique=True, primary_key=True)
+    id = Column(String, unique=True, primary_key=True)
     user = Column(Integer)
     complaint = Column(String)
     created_on = Column(String)
@@ -86,5 +86,5 @@ Session = sessionmaker(bind=engine, autoflush=False)
 
 session = Session()
 
-# import pdb; pdb.set_trace()
+import pdb; pdb.set_trace()
 session.close()
