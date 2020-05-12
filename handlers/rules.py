@@ -12,8 +12,8 @@ def rules(msg):
         msg.from_user.id,
         emoji.emojize(
             f"""
-<b>ESCROW SERVICE RULES</b>
----------------------------
+:scroll: <b>ESCROW SERVICE RULES</b> :scroll:
+----------------------------------------
 1.  Trades can only be created by a seller.
 
 2.  Funds deposited by the buyer are only released to seller after the goods received are affirmed by the buyer.

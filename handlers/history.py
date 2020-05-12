@@ -29,7 +29,7 @@ def trade_history(msg):
             user.id,
             emoji.emojize(
                 """
-        <b>TRADE HISTORY</b>
+        <b>TRADE HISTORY</b> :book:
                 """,
                 use_aliases=True
             ),
@@ -42,7 +42,7 @@ def trade_history(msg):
                 user.id,
                 emoji.emojize(
                     f"""
-<b>SELLER ROLE</b>
+<b>SELLER ROLE</b> :man:
 ------------------
 <b>ID --> {sell.id}</b>
 <b>Price --> {sell.price} {sell.currency}</b>
@@ -50,6 +50,7 @@ def trade_history(msg):
 <b>Created on --> {sell.created_at}</b>
 <b>Payment Complete --> {sell.payment_status}</b>
 <b>Trade still open --> {sell.is_open}</b>
+<b>Affiliate ID --> {sell.affiliate_id}</b>
 
 <b>Dispute Status --> {sell.is_dispute()}</b>
                     """,
@@ -64,7 +65,7 @@ def trade_history(msg):
                 user.id,
                 emoji.emojize(
                     f"""
-<b>BUYER ROLE</b>
+<b>BUYER ROLE</b> :man:
 ------------------
 <b>ID --> {buy.id}</b>
 <b>Price --> {buy.price} {buy.currency}</b>
@@ -72,6 +73,9 @@ def trade_history(msg):
 <b>Created on --> {buy.created_at}</b>
 <b>Payment Complete --> {buy.payment_status}</b>
 <b>Trade still open --> {buy.is_open}</b>
+<b>Affiliate ID --> {buy.affiliate_id}</b>
+
+<b>Dispute Status --> {buy.is_dispute()}</b>
                     """,
                     use_aliases=True
                 ),

@@ -12,7 +12,7 @@ def start_dispute(msg):
 
     question = bot.send_message(
         ADMIN_ID,
-        "What is the Dispute ID ?"
+        emoji.emojize("What is the Dispute ID :grey_question:", use_aliases=True)
     )
     bot.register_next_step_handler(question, call_dispute)
 
@@ -35,9 +35,9 @@ def call_dispute(msg):
             msg.from_user.id,
             emoji.emojize(
                 f"""
-<b>Dispute Ticket -- {dispute.id}</b>
+:ticket: <b>Dispute Ticket -- {dispute.id}</b>
 ----------------------
-{dispute.complaint}
+Complaint --> {dispute.complaint}
 
 
 Trade Info;
@@ -51,7 +51,7 @@ Trade Info;
 <b>Payment Status --> {trade.payment_status}</b>
 <b>Is Open --> {trade.is_open}</b>
 
-Give verdict? 
+Give verdict :grey_question:
                 """,
                 use_aliases=True
             ),
@@ -87,10 +87,11 @@ def pass_verdict(msg):
             user,
             emoji.emojize(
                 """
-    :stamp: <b>Administrative Decision On Trade %s</b>
-    -----------------------------------------
-    Ticket ID --> %s
-    %s
+:ticket: <b>Administrative Decision On Trade %s</b>
+-----------------------------------------
+Ticket ID --> %s
+
+%s
                 """ % (trade.id, trade.dispute[0].id, message),
                 use_aliases=True
             ),
@@ -99,6 +100,6 @@ def pass_verdict(msg):
 
     bot.send_message(
         msg.from_user.id,
-        "Who receives the funds?",
+        "Who receives the funds :grey_question:",
         reply_markup=refunds()
     )

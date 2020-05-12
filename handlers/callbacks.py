@@ -13,19 +13,21 @@ def callback_answer(call):
     """
 
     if call.data == "seller":
-        start_seller(call.from_user)
 
+        start_seller(call)
 
 
     elif call.data == "buyer":
-        start_buyer(call.from_user)
-    
 
+        start_buyer(call)
+
+    elif call.data == "affiliate":
+        start_affiliate(call)
 
 
     elif call.data == "dollar":
         #create trade
-        open_new_trade(call.from_user, "USD")
+        open_new_trade(call, "USD")
         select_coin(call.from_user)
 
 
@@ -33,7 +35,7 @@ def callback_answer(call):
 
     elif call.data == "euro":
         #create trade
-        open_new_trade(call.from_user, "EUR")
+        open_new_trade(call, "EUR")
 
         select_coin(call.from_user)
 
@@ -86,7 +88,7 @@ def callback_answer(call):
         bot.send_message(
             trade.seller,
             emoji.emojize(
-                "<b>TRADE ENDED!!. Your payment has been sent!</b>",
+                ":star: <b>TRADE ENDED!!. Your payment has been sent!</b>",
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML
@@ -96,7 +98,7 @@ def callback_answer(call):
         bot.send_message(
             trade.buyer,
             emoji.emojize(
-                "<b>TRADE ENDED!!</b>",
+                ":star: <b>TRADE ENDED!!</b>",
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML,

@@ -13,7 +13,17 @@ engine = create_engine(
 #    connect_args={'check_same_thread': False},
 
 
+class User(Base):
+    """
+    SqlAlchemy ORM for Users
+    """
+    __tablename__ = "users"
 
+    id = Column(Integer, primary_key=True)
+    chat = Column(String)
+
+    def __repr__(self):
+        return "<User(id='%s')>" % (self.id)
 
 class Trade(Base):
     """
@@ -35,6 +45,7 @@ class Trade(Base):
     created_at = Column(String)
     updated_at = Column(String)
     is_open = Column(Boolean)
+    affiliate_id = Column(String)
 
     receive_address_id = Column(String)
 
@@ -65,6 +76,10 @@ class Dispute(Base):
 
     trade = relationship("Trade", uselist=False)
 
+
+    def __repr__(self):
+        return "<Dispute(id='%s')>" % (self.id)
+
     def is_seller(self):
         if self.user == self.trade[0].seller:
             return True
@@ -78,6 +93,28 @@ class Dispute(Base):
             return False
 
 
+class Affiliate(Base):
+    """
+    SQLAlchemy ORM Affiliate Records Table
+    """
+    __tablename__ = "affiliates"
+
+    id = Column(String, unique=True, primary_key=True)
+    btc_wallet = Column(String)
+    eth_wallet = Column(String)
+    admin = Column(Integer)
+
+    def __repr__(self):
+        return "<Group (id='%s')>" % (self.id)
+
+    @classmethod
+    def check_affiliate(cls, id):
+        info = session.query(Affiliate).filter_by(id=id).first()
+        if not info:
+            return None
+        else:
+            return info
+
 # Base.metadata.drop_all(bind=engine)
 # Base.metadata.create_all(bind=engine)
 
@@ -86,5 +123,5 @@ Session = sessionmaker(bind=engine, autoflush=False)
 
 session = Session()
 
-import pdb; pdb.set_trace()
+# import pdb; pdb.set_trace()
 session.close()

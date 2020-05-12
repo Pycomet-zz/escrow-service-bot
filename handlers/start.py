@@ -7,10 +7,10 @@ def start(msg):
     """
     Starting the escrow service bot
     """
-    keyboard = main_menu()
+    keyboard = main_menu(msg)
 
-    bot.send_message(
-        msg.from_user.id,
+    bot.reply_to(
+        msg,
         emoji.emojize(
             f"""
     Hello {msg.from_user.first_name},

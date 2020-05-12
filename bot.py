@@ -9,14 +9,17 @@ def start_seller(user):
     """
     keyboard = seller_menu()
 
+    user = get_user(msg=user)
+    
     bot.send_message(
         user.id,
         emoji.emojize(
-            ":smile: What would you like to do today?",
+            ":robot: What would you like to do today?",
             use_aliases=True
         ),
         reply_markup=keyboard
     )
+
 
 
 def start_buyer(user):
@@ -25,13 +28,110 @@ def start_buyer(user):
     """
     keyboard = buyer_menu()
 
+    user = get_user(msg=user)
+
     bot.send_message(
         user.id,
         emoji.emojize(
-            ":smile: What would you like to do today?",
+            ":robot: What would you like to do today?",
             use_aliases=True
         ),
         reply_markup=keyboard
+    )
+
+
+
+def start_affiliate(user):
+    """
+    This is the handler to start affiliate options
+    """
+    user = get_user(msg=user)
+
+    question = bot.send_message(
+        user.id,
+        emoji.emojize(
+            """
+:robot: To use escrow service on your group, I would need the following information.
+              
+Please reply with the your Group ID :grey_question: (You can get it @GetGroupIDRobot)
+            """,
+            use_aliases=True
+        )
+    )
+
+    bot.register_next_step_handler(question, add_addresses)
+
+
+def add_addresses(msg):
+
+    group_id = msg.text
+
+    affiliate = create_affiliate(user=msg.from_user.id, id=group_id)
+
+    if affiliate != "Already Exists":
+        question = bot.send_message(
+            msg.from_user.id,
+            emoji.emojize(
+                """
+Please paste in your bitcoin(BTC) receive address :grey_question:
+                """,
+                use_aliases=True))
+
+        bot.register_next_step_handler(question, add_bitcoin_space)
+    
+    else:
+
+        bot.send_message(
+            msg.from_user.id,
+            emoji.emojize(
+                ":construction: This Group Is Already Registered",
+                use_aliases=True
+            )
+        )
+
+
+
+def add_bitcoin_space(msg):
+    "Add Bitcoin Address For Affiliate"
+    wallet = msg.text
+
+    user = get_user(msg=msg)
+
+    add_affiliate_btc(
+        id = user.chat,
+        wallet = wallet
+        )
+
+    question = bot.send_message(
+            msg.from_user.id,
+            emoji.emojize(
+                """
+Please paste in your ethereum(ETH) receive address :grey_question:
+                """,
+                use_aliases=True
+            )
+        )
+
+    bot.register_next_step_handler(question, add_ethereum_space)
+
+
+def add_ethereum_space(msg):
+    "Add Ethereum Address For Affiliate"
+    wallet = msg.text
+
+    user = get_user(msg=msg)
+
+    add_affiliate_eth(
+        id = user.chat,
+        wallet = wallet
+        )
+    
+    bot.send_message(
+        msg.from_user.id,
+        emoji.emojize(
+            ":+1: Congrats!! You can now add Escrow Service(@escrowbbot) to your public group and receive your affiliate charge for trade performed by your members, selecting their roles on the group. Good Luck!!",
+            use_aliases=True
+        )
     )
 
 ######################SELLER GRID#####################
@@ -106,13 +206,13 @@ def process_trade(msg):
         trade.seller,
         emoji.emojize(
             f"""
-Trade Details
------------------
+:memo: <b>Trade Details</b> :memo:
+-----------------------
 
-    <b>ID --> {trade.id}</b>
-    <b>Price --> {trade.price} {trade.currency}</b>
-    <b>Preferred method of payment --> {trade.coin}</b>
-    <b>Created on --> {trade.created_at}</b>
+   :beginner: <b>ID --> {trade.id}</b>
+   :beginner: <b>Price --> {trade.price} {trade.currency}</b>
+   :beginner: <b>Preferred method of payment --> {trade.coin}</b>
+   :beginner: <b>Created on --> {trade.created_at}</b>
 
 Share only the trade ID with your customer to allow his/her join the trade. They would receive all the related information when they join.
             """,
@@ -140,8 +240,9 @@ def validate_pay(msg):
             trade.seller,
             emoji.emojize(
                 f"""
-<b>TRADE ID - {trade.id}</b>                   
-<b>Buyer Payment Confirmed Successfully. Please release the goods to the buyer before being paid</b>
+:memo: <b>TRADE ID - {trade.id}</b> :memo:
+------------------------------------                  
+<b>Buyer Payment Confirmed Successfully :white_check_mark: . Please release the goods to the buyer before being paid</b>
                 """,
                 use_aliases=True
             ),
@@ -153,8 +254,9 @@ def validate_pay(msg):
             trade.buyer,
             emoji.emojize(
                 f"""
-<b>TRADE ID - {trade.id}</b>      
-<b>Payment Confirmed Sucessfully. Seller has been instructed to release the goods to you.</b>
+:memo: <b>TRADE ID - {trade.id}</b> :memo:
+------------------------------------       
+<b>Payment Confirmed Sucessfully :white_check_mark: . Seller has been instructed to release the goods to you.</b>
                 """,
                 use_aliases=True
             ),
@@ -169,8 +271,9 @@ def validate_pay(msg):
             trade.buyer,
             emoji.emojize(
                 f"""
-<b>TRADE ID - {trade.id}</b>  
-<b>Payment Still Pending! Please cross check the transaction hash and try again.</b>
+:memo: <b>TRADE ID - {trade.id}</b> :memo:
+------------------------------------     
+<b>Payment Still Pending! :heavy_exclamation_mark: Please cross check the transaction hash and try again.</b>
                 """,
                 use_aliases=True
             ),
@@ -215,7 +318,7 @@ def refund_coins(msg):
         ADMIN_ID,
         emoji.emojize(
             """
-<b>Refunds Paid</b> 
+<b>Refunds Paid</b> :heavy_check_mark:
             """,
             use_aliases=True
         ),
@@ -233,6 +336,17 @@ def refund_to_seller(msg):
     if trade.payment_status == True:
 
         pay_funds_to_seller(trade)
+
+        bot.send_message(
+            ADMIN_ID,
+            emoji.emojize(
+                """
+<b>Paid To Seller</b> :heavy_check_mark:
+                """,
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
+        )
     
     else:
         bot.send_message(

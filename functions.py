@@ -1,5 +1,5 @@
 from config import *
-from model import Trade, Dispute, session
+from model import User, Trade, Dispute, Affiliate, session
 
 import random
 import string
@@ -11,6 +11,21 @@ accounts = client.get_accounts()
 
 eth_account = accounts.data[4]
 btc_account = accounts.data[5]
+
+
+def get_user(msg):
+    "Stores Chat Information"
+    chat = msg.message.chat.id
+    id = msg.from_user.id
+    
+    user = session.query(User).filter_by(id=id).first()
+    if user:
+        return user
+    else:
+        user = User(id=id, chat=chat)
+        session.add(user)
+        session.commit()
+        return user
 
 def get_coin_price(coin_code, currency_code):
     """
@@ -38,7 +53,7 @@ def generate_id():
 def get_trade(id):
     "Return the trade"
     try:
-        trade = session.query(Trade).filter(Trade.id == id).one()
+        trade = session.query(Trade).filter(Trade.id == id).first()
         return trade
 
     except:
@@ -63,10 +78,54 @@ def get_recent_trade(user):
 
         return trades[position]
 
+def create_affiliate(user, id):
+    "Return a newly created affilate object"
+    check = Affiliate().check_affiliate(id)
+
+    if check == None:
+        affiliate = Affiliate(
+            id = id,
+            admin = user,
+        )
+        session.add(affiliate)
+        session.commit()
+        return affiliate
+    else:
+        return "Already Exists"
+
+def get_affiliate(id):
+    "Returns affiliate"
+    affiliate = Affiliate().check_affiliate(id)
+
+    if affiliate != None:
+        return affiliate
+    else:
+        return None
+
+def add_affiliate_btc(id, wallet):
+    affiliate = session.query(Affiliate).filter_by(id=id).first()
+
+    affiliate.btc_wallet = wallet
+    session.add(affiliate)
+
+def add_affiliate_eth(id, wallet):
+    affiliate = session.query(Affiliate).filter_by(id=id).first()
+
+    affiliate.eth_wallet = wallet
+    session.add(affiliate)
+    session.commit()
+
+
 def open_new_trade(user, currency):
     """
     Returns a new trade
     """
+    user = get_user(msg=user)
+
+    affiliate = get_affiliate(user.chat)
+    if affiliate != None:
+        affiliate = affiliate.id
+
     trade = Trade(
         id =  generate_id(),
         seller = user.id,
@@ -75,6 +134,7 @@ def open_new_trade(user, currency):
         created_at = str(datetime.now()),
         updated_at = str(datetime.now()),
         is_open = True,
+        affiliate_id = affiliate,
         )
 
     session.add(trade)
@@ -199,6 +259,8 @@ def check_payment(trade, hash):
 
 def pay_funds_to_seller(trade):
     "Calculate Fees And Send Funds To Seller"
+    affiliate = Affiliate().check_affiliate(trade.affiliate_id)
+    
     coin_price = get_coin_price(
         coin_code=trade.coin,
         currency_code=trade.currency
@@ -213,12 +275,22 @@ def pay_funds_to_seller(trade):
 
     price = "%.4f" % pay_price
 
+    a_price = "%.4f" % service_charge # Affiliate pay
     if trade.coin == "BTC":
+
         btc_account.send_money(
             to = trade.wallet,
             amount = str(price),
             currency = "BTC"
         )
+        if affiliate != None:
+
+            btc_account.send_money(
+                to = affiliate.btc_wallet,
+                amount = str(a_price),
+                currency = "BTC"
+            )   
+
         close_trade(trade)
 
     elif trade.coion == "ETH":
@@ -227,6 +299,15 @@ def pay_funds_to_seller(trade):
             amount = str(price),
             currency = "ETH",
         )
+
+        if affiliate != None:
+    
+            eth_account.send_money(
+                to = affiliate.eth_wallet,
+                amount = str(a_price),
+                currency = "ETH"
+            )
+
         close_trade(trade)
 
     else:
@@ -245,6 +326,7 @@ def close_trade(trade):
 
 def pay_to_buyer(trade, wallet):
     "Send Funds To Buyer"
+    affiliate = Affiliate().check_affiliate(trade.affiliate_id)
 
     coin_price = get_coin_price(
         coin_code=trade.coin,
@@ -260,12 +342,22 @@ def pay_to_buyer(trade, wallet):
 
     price = "%.4f" % pay_price
 
+    a_price = "%.4f" % service_charge # Affiliate pay
+
     if trade.coin == "BTC":
         btc_account.send_money(
             to = wallet,
             amount = str(price),
             currency = "BTC"
         )
+
+        if affiliate != None:
+    
+            btc_account.send_money(
+                to = affiliate.btc_wallet,
+                amount = str(a_price),
+                currency = "BTC"
+            )   
         close_trade(trade)
 
     elif trade.coin == "ETH":
@@ -274,6 +366,14 @@ def pay_to_buyer(trade, wallet):
             amount = str(price),
             currency = "ETH",
         )
+
+        if affiliate != None:
+        
+            eth_account.send_money(
+                to = affiliate.eth_wallet,
+                amount = str(a_price),
+                currency = "ETH"
+            )
         close_trade(trade)
 
     else:

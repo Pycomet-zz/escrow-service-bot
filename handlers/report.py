@@ -10,7 +10,7 @@ def report_request(msg):
     question = bot.send_message(
         msg.from_user.id,
         emoji.emojize(
-            "What is the ID of the trade you wish to report ? ",
+            "What is the ID of the trade you wish to report :grey_question:",
             use_aliases=True
         )
     )
@@ -30,7 +30,7 @@ def report_trade(msg):
 
         question = bot.send_message(
             msg.from_user.id,
-            f"What is your complaint on <b>Trade -> {msg.text}</b> ? ",
+            f"What is your complaint on <b>Trade -> {msg.text}</b> :grey_question:",
             parse_mode=telegram.ParseMode.HTML,
         )
 
@@ -67,7 +67,7 @@ def trade_complaint(msg):
         bot.send_message(
             user,
             emoji.emojize(
-                f"<b>New Dispute Ticket Created -- {dispute.id}</b>",
+                f":ticket: <b>New Dispute Ticket Created -- {dispute.id}</b>",
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML,
@@ -77,7 +77,7 @@ def trade_complaint(msg):
     bot.reply_to(
         msg,
         emoji.emojize(
-            "Your complaint has been mailed to the administrator. Please await further instructions regarding this trade",
+            ":ticket: Your complaint has been mailed to the administrator. Please await further instructions regarding this trade",
             use_aliases=True
         )
     )

@@ -38,7 +38,7 @@ def join_trade(msg):
 
         coin_value = float(trade.price)/float(coin_price)
 
-        service_charge = 0.01 * float(coin_value)
+        service_charge = 0.02 * float(coin_value)
         fees = (0.0149 * coin_value) * 2
 
         pay_price = float(coin_value) + service_charge + float(fees)
@@ -52,14 +52,14 @@ def join_trade(msg):
             trade.buyer,
             emoji.emojize(
                 f"""
-    Trade Details
-    -----------------
+:memo: <b>Trade Details</b> :memo:
+-----------------------------------
 
-        <b>ID --> {trade.id}</b>
-        <b>Price --> {trade.price} {trade.currency}</b>
-        <b>Preferred method of payment --> {trade.coin}</b>
-        <b>Created on --> {trade.created_at}</b>
-        <b>Payment Complete --> {trade.payment_status}</b>
+    :beginner: <b>ID --> {trade.id}</b>
+    :beginner: <b>Price --> {trade.price} {trade.currency}</b>
+    :beginner: <b>Preferred method of payment --> {trade.coin}</b>
+    :beginner: <b>Created on --> {trade.created_at}</b>
+    :beginner: <b>Payment Complete --> {trade.payment_status}</b>
 
 :point_right: <b>You are expected to pay {price} {trade.coin} to wallet address below to recieve goods from seller</b>
 
