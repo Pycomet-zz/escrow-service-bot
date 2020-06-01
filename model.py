@@ -9,7 +9,7 @@ Base = declarative_base()
 
 engine = create_engine(
     os.getenv("DATABASE_URL"),
-    echo=True)
+    echo=False)
 #    connect_args={'check_same_thread': False},
 
 

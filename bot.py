@@ -103,7 +103,7 @@ def add_bitcoin_space(msg):
         )
 
     question = bot.send_message(
-            msg.from_user.id,
+            user.id,
             emoji.emojize(
                 """
 Please paste in your ethereum(ETH) receive address :grey_question:
