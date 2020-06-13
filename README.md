@@ -20,10 +20,10 @@
 <br />
 <p align="center">
   <a href="https://github.com/Pycomet/EscrowService-Bot">
-    <img src="images/escrowbot.jpg" alt="Logo" width="100" height="100">
+    <img src="images/escrowbot.jpg" alt="Logo" width="150" height="150">
   </a>
 
-  <h3 align="center">Telegram Escrow Service Bot</h3>
+  <h2 align="center">Escrow Service Bot</h2>
 
   <p align="center">
     An awesome bot to ensure fast and secure trades with a hundred percent transparency
@@ -43,8 +43,8 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
-  * [Problem Solved] (#problem-solved)
-  * [Ideal Users] (#ideal-users)
+  * [Problem Solved](#problem-solved)
+  * [Ideal Users](#ideal-users)
   * [Built With](#built-with)
 
 * [Getting Started](#getting-started)
@@ -90,7 +90,7 @@ This is a growing problem and my [Escrow Service Bot](https://github.com/Pycomet
 This section should list any frameworks/APIs used to build this project application.
 
 * [PyTelegramBotAPI](https://pypi.org/project/pyTelegramBotAPI) to build the UI/UX feature for user interaction
-* [Flask] (https://pypi.org/project/Flask) serving the bot as a simple webhook application
+* [Flask](https://pypi.org/project/Flask) serving the bot as a simple webhook application
 * [Heroku](https://heroku.com) server for deployment
 * [Coinbase API](https://developers.coinbase.com) to serve as payment gateway
 
