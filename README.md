@@ -19,9 +19,6 @@
   <a href="" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
-  <a href="#" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/badge/packagist/l/Pycomet/EscrowService-Bot" />
-  </a>
 </p>
 
 
@@ -173,7 +170,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- AUTHOR -->
 ## Author
 
-> Alfred Emmanuel Inyang (Codefred) - alfredemmanuel.herokuapp.com
+* Alfred Emmanuel Inyang (Codefred) - alfredemmanuel.herokuapp.com
 
 
 
