@@ -59,8 +59,7 @@
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [License](#license)
-* [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
+* [Author](#contact)
 
 <!-- PROBLEM SOLVED -->
 ## Problem Solved
@@ -180,8 +179,11 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/Pycomet/EscrowService-Bot/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/Pycomet/EscrowService-Bot/issues) for a list of proposed features (and known issues). Here is the shortlisted prospects;
 
+- More Country Currencies
+
+- More Crytocurrencies for trading (For example; Ripplecoin and others)
 
 
 <!-- CONTRIBUTING -->
@@ -207,7 +209,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- AUTHOR -->
 ## Author
 
-* Alfred Emmanuel Inyang (Codefred) - [![My Website][website]]
+* **Alfred Emmanuel Inyang (Codefred) - [![My Website][website]]**
 
 
 
