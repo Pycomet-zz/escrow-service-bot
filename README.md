@@ -116,17 +116,57 @@ pip install --upgrade pip
 
 ### Installation
 
-1. Get a bot token key from [@BotFather](https://t.me/BotFather)
+1. Open the project's [github page](https://github.com/Pycomet/EscrowService-Bot) and star this project by tapping on the star button at the top right of the page.
 
-2. Create a [Coinbase account](https://coinbase.com) and retrieve your API information. This would be used to set up payment systems for your service bot instance.
+2. Get a bot token key from [@BotFather](https://t.me/BotFather)
 
-3. Clone the repo
+3. Create a [Coinbase account](https://coinbase.com) and retrieve your API information. This would be used to set up payment systems for your service bot instance.
+
+4. Clone this repository
 ```sh
 git clone https://github.com/Pycomet/EscrowService-Bot.git
 ```
 
+5. Open the project directory
+```sh
+cd EscrowService-Bot
+```
 
+6. Create a virtual environment to install all the app dependencies
+```sh
+python -m venv env
 
+// Enter into the virtual environment (Linux)
+source env/bin/activate
+```
+
+7. Install the dependencies
+```sh
+pip install -r requirements.txt
+```
+
+8. Create a `.env` file to house all your credentials
+```sh
+// Bot token from @Botfather
+TOKEN=""
+
+// Coinbase API credentials
+API_KEY=""
+API_SECRET=""
+
+// Your telegram user id
+ADMIN_ID=""
+
+// Database url (here would be based on your personal choice for your database)
+DATABASE_URL=""
+```
+
+9. You are ready to start the application
+```sh
+python main.py
+```
+
+ENJOY!
 
 <!-- USAGE EXAMPLES -->
 ## Usage
