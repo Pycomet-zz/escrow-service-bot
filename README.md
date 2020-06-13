@@ -7,13 +7,22 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
+<!-- [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][https://linkedin.com/in/alfredemmanuelinyang]
+[![LinkedIn][linkedin-shield]][https://linkedin.com/in/alfredemmanuelinyang] -->
 
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-version 1-blue.svg?cacheSeconds=2592000" />
+  <a href="" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/packagist/l/Pycomet/EscrowService-Bot" />
+  </a>
+</p>
 
 
 <!-- PROJECT LOGO -->
@@ -42,15 +51,13 @@
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
+* [Problem Solved](#problem-solved)
 * [About the Project](#about-the-project)
-  * [Problem Solved](#problem-solved)
   * [Ideal Users](#ideal-users)
   * [Built With](#built-with)
-
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-
 * [Usage](#usage)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
@@ -58,7 +65,12 @@
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
 
+<!-- PROBLEM SOLVED -->
+## Problem Solved
 
+In an world where business is mostly done on the internet, customers are more unwilling to buy products from sellers they do not trust or have no personal reference to, knowing they could be mislead or scammed of their money with no trace for refunds.
+
+This is a growing problem and my [Escrow Service Bot](https://github.com/Pycomet/EscrowService-Bot) is aimed at eradicating the problem, thereby giving large trade group owners and sellers more business. And, also giving buyers the confidence to purchase goods without risk involved.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -71,11 +83,6 @@ All payments are being made directly to the parties, currently either through Bi
 
 With an affiliate program part of the structure, administrators of different Telegram Group platforms are also able to use the [Escrow Service Bot](https://github.com/Pycomet/EscrowService-Bot) is conducting save and fast business within their groups smoothly, with each transaction being completed secured and easily traceable.
 
-### Problem Solved
-
-In an world where business is mostly done on the internet, customers are more unwilling to buy products from sellers they do not trust or have no personal reference to, knowing they could be mislead or scammed of their money with no trace for refunds.
-
-This is a growing problem and my [Escrow Service Bot](https://github.com/Pycomet/EscrowService-Bot) is aimed at eradicating the problem, thereby giving large trade group owners and sellers more business. And, also giving buyers the confidence to purchase goods without risk involved.
 
 ### Ideal Users
 
