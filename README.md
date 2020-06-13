@@ -7,12 +7,12 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-<!-- [![Contributors][contributors-shield]][contributors-url]
+[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][https://linkedin.com/in/alfredemmanuelinyang] -->
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-version 1-blue.svg?cacheSeconds=2592000" />
@@ -29,7 +29,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/Pycomet/EscrowService-Bot">
-    <img src="images/escrowbot.jpg" alt="Logo" width="150" height="150">
+    <img src="images/escrowbot.jpg" alt="Logo" width="200" height="200">
   </a>
 
   <h2 align="center">Escrow Service Bot</h2>
@@ -68,7 +68,7 @@
 <!-- PROBLEM SOLVED -->
 ## Problem Solved
 
-In an world where business is mostly done on the internet, customers are more unwilling to buy products from sellers they do not trust or have no personal reference to, knowing they could be mislead or scammed of their money with no trace for refunds.
+In the world we live in now, business is mostly done on the internet and customers are more unwilling to buy products from sellers they do not trust or have no personal reference to. Knowing they could be mislead or scammed of their money with no trace for refunds.
 
 This is a growing problem and my [Escrow Service Bot](https://github.com/Pycomet/EscrowService-Bot) is aimed at eradicating the problem, thereby giving large trade group owners and sellers more business. And, also giving buyers the confidence to purchase goods without risk involved.
 
@@ -146,7 +146,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/Pycomet/EscrowService-Bot/issues) for a list of proposed features (and known issues).
 
 
 
@@ -170,45 +170,25 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 
 
-<!-- CONTACT -->
-## Contact
+<!-- AUTHOR -->
+## Author
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
-
-
+> Alfred Emmanuel Inyang (Codefred) - alfredemmanuel.herokuapp.com
 
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=flat-square
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=flat-square
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=flat-square
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/Pycomet/EscrowService-Bot.svg?style=flat-square
+[contributors-url]: https://github.com/Pycomet/EscrowService-Bot/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Pycomet/EscrowService-Bot.svg?style=flat-square
+[forks-url]: https://github.com/Pycomet/EscrowService-Bot/network/members
+[stars-shield]: https://img.shields.io/github/stars/Pycomet/EscrowService-Bot.svg?style=flat-square
+[stars-url]: https://github.com/Pycomet/EscrowService-Bot/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Pycomet/EscrowService-Bot.svg?style=flat-square
+[issues-url]: https://github.com/Pycomet/EscrowService-Bot/issues
+[license-shield]: https://img.shields.io/github/license/Pycomet/EscrowService-Bot.svg?style=flat-square
+[license-url]: https://github.com/Pycomet/EscrowService-Bot/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[linkedin-url]: https://linkedin.com/in/alfredemmanuelinyang
 [product-screenshot]: images/screenshot.png
