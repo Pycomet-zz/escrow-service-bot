@@ -71,7 +71,7 @@ This is a growing problem and my [Escrow Service Bot](https://github.com/Pycomet
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
 The Escrow Service Bot offers an automated service acting as an escrow platform, able to facilitate a completely save trade environment on which both the seller and buyer can thrive and do business happily.
 
