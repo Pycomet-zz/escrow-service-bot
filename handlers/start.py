@@ -2,7 +2,7 @@ from config import *
 from keyboard import *
 from functions import *
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start', 'escrow'])
 def start(msg):
     """
     Starting the escrow service bot

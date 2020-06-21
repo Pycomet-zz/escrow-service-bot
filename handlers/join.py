@@ -8,6 +8,10 @@ def join_request(msg):
     """
     Lets a user receive trade information by ID
     """
+
+    chat, id = get_received_msg(msg)
+    bot.delete_message(chat, id)
+
     question = bot.send_message(
         msg.from_user.id,
         emoji.emojize(

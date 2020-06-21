@@ -8,6 +8,9 @@ def delete_request(msg):
     """
     This is an option to delete trade by id
     """
+    chat, id = get_received_msg(msg)
+    bot.delete_message(chat, id)
+
     question = bot.send_message(
         msg.from_user.id,
         emoji.emojize(

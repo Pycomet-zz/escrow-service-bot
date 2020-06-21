@@ -8,6 +8,9 @@ def rules(msg):
     List of Rules
     """
 
+    chat, id = get_received_msg(msg)
+    bot.delete_message(chat, id)
+
     bot.send_message(
         msg.from_user.id,
         emoji.emojize(

@@ -7,6 +7,9 @@ def report_request(msg):
     """
     Sends a report to the Admin regarding a particular trade
     """
+    chat, id = get_received_msg(msg)
+    bot.delete_message(chat, id)
+    
     question = bot.send_message(
         msg.from_user.id,
         emoji.emojize(

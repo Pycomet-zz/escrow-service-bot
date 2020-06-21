@@ -9,12 +9,13 @@ import cryptocompare
 client = Client(API_KEY, API_SECRET)
 accounts = client.get_accounts()
 
+
 eth_account = accounts.data[4]
 btc_account = accounts.data[5]
 
 
 def get_user(msg):
-    "Stores Chat Information"
+    "Returns or creates a new user"
     chat = msg.message.chat.id
     id = msg.from_user.id
     
@@ -26,6 +27,12 @@ def get_user(msg):
         session.add(user)
         session.commit()
         return user
+
+def get_received_msg(msg):
+    "Delete This Message"
+    message_id = msg.message_id
+    chat = msg.chat
+    return chat, message_id
 
 def get_coin_price(coin_code, currency_code):
     """
@@ -322,8 +329,6 @@ def close_trade(trade):
     session.commit()
 
 
-
-
 def pay_to_buyer(trade, wallet):
     "Send Funds To Buyer"
     affiliate = Affiliate().check_affiliate(trade.affiliate_id)
@@ -378,6 +383,7 @@ def pay_to_buyer(trade, wallet):
 
     else:
         pass
+
 
 
 
