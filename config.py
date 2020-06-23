@@ -18,7 +18,7 @@ ADMIN_ID = os.getenv("ADMIN_ID")
 API_KEY = os.getenv("API_KEY")
 API_SECRET = os.getenv("API_SECRET")
 
-bot = telebot.AsyncTeleBot(TOKEN, threaded=True)
+bot = telebot.TeleBot(TOKEN, threaded=True)
 
 import importdir
 importdir.do("handlers", globals())
