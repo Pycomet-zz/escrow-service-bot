@@ -58,6 +58,7 @@
 * [Usage](#usage)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
+* [Donation] (#donation)
 * [License](#license)
 * [Author](#contact)
 
@@ -198,6 +199,16 @@ Contributions are what make the open source community such an amazing place to b
 5. Open a Pull Request
 
 
+<!-- DONATION -->
+## Donation
+
+If you are impressed with my project and wish to buy me a cup of coffee, you can donate to the project through any of the means below
+
+- Bitcoin(BTC) -> 3Lr6duZ7ai4G8KpEqAmeiPSKTcUBt31iZ5
+- Etherium(ETH) -> 0x56B7534EED80591033F63DD8D5dCaa3efAC4a92B
+- Bitcoin Cash(BCH) -> qqqvhf966xhtv2ak4t9jpey5tq2f4v54dg0ezwdp5t
+
+Thanks
 
 <!-- LICENSE -->
 ## License
