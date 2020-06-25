@@ -49,7 +49,7 @@ class Trade(Base):
 
     receive_address_id = Column(String)
 
-    dispute = relationship("Dispute", cascade="all")
+    dispute = relationship("Dispute", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "<Trade(id='%s')>" % (self.id)
@@ -72,7 +72,7 @@ class Dispute(Base):
     user = Column(Integer)
     complaint = Column(String)
     created_on = Column(String)
-    trade_id = Column(ForeignKey("trades.id"))
+    trade_id = Column(ForeignKey("trades.id", ondelete="CASCADE"))
 
     trade = relationship("Trade", uselist=False)
 
@@ -102,6 +102,9 @@ class Affiliate(Base):
     id = Column(String, unique=True, primary_key=True)
     btc_wallet = Column(String)
     eth_wallet = Column(String)
+    ltc_wallet = Column(String)
+    xrp_wallet = Column(String)
+    bch_wallet = Column(String)
     admin = Column(Integer)
 
     def __repr__(self):
@@ -125,3 +128,4 @@ session = Session()
 
 # import pdb; pdb.set_trace()
 session.close()
+

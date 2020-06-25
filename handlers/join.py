@@ -10,7 +10,7 @@ def join_request(msg):
     """
 
     chat, id = get_received_msg(msg)
-    bot.delete_message(chat, id)
+    bot.delete_message(chat.id, id)
 
     question = bot.send_message(
         msg.from_user.id,
@@ -19,6 +19,7 @@ def join_request(msg):
             use_aliases=True
         )
     )
+    question = question.wait()
     
     bot.register_next_step_handler(question, join_trade)
 

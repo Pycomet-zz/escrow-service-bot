@@ -9,7 +9,7 @@ def rules(msg):
     """
 
     chat, id = get_received_msg(msg)
-    bot.delete_message(chat, id)
+    bot.delete_message(chat.id, id)
 
     bot.send_message(
         msg.from_user.id,

@@ -12,7 +12,7 @@ def trade_history(msg):
     sells, buys = get_trades(user)
 
     chat, id = get_received_msg(msg)
-    bot.delete_message(chat, id)
+    bot.delete_message(chat.id, id)
 
     if sells == [] and buys == []:
         bot.send_message(

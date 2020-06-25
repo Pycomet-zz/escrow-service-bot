@@ -9,10 +9,11 @@ import cryptocompare
 client = Client(API_KEY, API_SECRET)
 accounts = client.get_accounts()
 
-
 eth_account = accounts.data[4]
-btc_account = accounts.data[5]
-
+btc_account = accounts.data[6]
+ltc_account = accounts.data[1]
+xrp_account = accounts.data[2]
+bch_account = accounts.data[5]
 
 def get_user(msg):
     "Returns or creates a new user"
@@ -111,14 +112,28 @@ def get_affiliate(id):
 
 def add_affiliate_btc(id, wallet):
     affiliate = session.query(Affiliate).filter_by(id=id).first()
-
     affiliate.btc_wallet = wallet
     session.add(affiliate)
 
 def add_affiliate_eth(id, wallet):
     affiliate = session.query(Affiliate).filter_by(id=id).first()
-
     affiliate.eth_wallet = wallet
+    session.add(affiliate)
+    # session.commit()
+
+def add_affiliate_ltc(id, wallet):
+    affiliate = session.query(Affiliate).filter_by(id=id).first()
+    affiliate.ltc_wallet = wallet
+    session.add(affiliate)
+
+def add_affiliate_xrp(id, wallet):
+    affiliate = session.query(Affiliate).filter_by(id=id).first()
+    affiliate.xrp_wallet = wallet
+    session.add(affiliate)
+
+def add_affiliate_bch(id, wallet):
+    affiliate = session.query(Affiliate).filter_by(id=id).first()
+    affiliate.bch_wallet = wallet
     session.add(affiliate)
     session.commit()
 
@@ -159,6 +174,12 @@ def add_coin(user, coin):
         trade.receive_address_id = btc_account.create_address().address
     elif coin == "ETH":
         trade.receive_address_id = eth_account.create_address().address
+    elif coin == "LTC":
+        trade.receive_address_id = ltc_account.create_address().address
+    elif coin == "XRP":
+        trade.receive_address_id = xrp_account.create_address().address
+    elif coin == "BCH":
+        trade.receive_address_id = bch_account.create_address().address
     else:
         pass
 
@@ -197,6 +218,15 @@ def get_receive_address(trade):
     
     elif trade.coin == "ETH":
         wallet = eth_account.get_address(trade.receive_address_id).address
+
+    elif trade.coin == "LTC":
+        wallet = ltc_account.get_address(trade.receive_address_id).address
+
+    elif trade.coin == "XRP":
+        wallet = xrp_account.get_address(trade.receive_address_id).address
+
+    elif trade.coin == "BCH":
+        wallet = bch_account.get_address(trade.receive_address_id).address
 
     else:
         return "ERROR!"
@@ -254,8 +284,16 @@ def check_payment(trade, hash):
         #Check if it is the same
         if trade.coin == "BTC":
             transaction_hash = btc_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
-        else:
+        elif trade.coin == "ETH":
             transaction_hash = eth_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
+        elif trade.coin == "LTC":
+            transaction_hash = ltc_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
+        elif trade.coin == "XRP":
+            transaction_hash = xrp_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
+        elif trade.coin == "BCH":
+            transaction_hash = bch_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
+        else:
+            transaction_hash = ""
 
         if transaction_hash == tx.hash:
             confirm_pay(trade)
@@ -313,6 +351,57 @@ def pay_funds_to_seller(trade):
                 to = affiliate.eth_wallet,
                 amount = str(a_price),
                 currency = "ETH"
+            )
+
+        close_trade(trade)
+
+    elif trade.coion == "LTC":
+        ltc_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "LTC",
+        )
+
+        if affiliate != None:
+    
+            ltc_account.send_money(
+                to = affiliate.ltc_wallet,
+                amount = str(a_price),
+                currency = "LTC"
+            )
+
+        close_trade(trade)
+
+    elif trade.coion == "XRP":
+        xrp_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "XRP",
+        )
+
+        if affiliate != None:
+    
+            xrp_account.send_money(
+                to = affiliate.xrp_wallet,
+                amount = str(a_price),
+                currency = "XRP"
+            )
+
+        close_trade(trade)
+
+    elif trade.coion == "BCH":
+        bch_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "BCH",
+        )
+
+        if affiliate != None:
+    
+            bch_account.send_money(
+                to = affiliate.bch_wallet,
+                amount = str(a_price),
+                currency = "BCH"
             )
 
         close_trade(trade)
@@ -379,6 +468,57 @@ def pay_to_buyer(trade, wallet):
                 amount = str(a_price),
                 currency = "ETH"
             )
+        close_trade(trade)
+
+    elif trade.coion == "LTC":
+        ltc_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "LTC",
+        )
+
+        if affiliate != None:
+    
+            ltc_account.send_money(
+                to = affiliate.ltc_wallet,
+                amount = str(a_price),
+                currency = "LTC"
+            )
+
+        close_trade(trade)
+
+    elif trade.coion == "XRP":
+        xrp_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "XRP",
+        )
+
+        if affiliate != None:
+    
+            xrp_account.send_money(
+                to = affiliate.xrp_wallet,
+                amount = str(a_price),
+                currency = "XRP"
+            )
+
+        close_trade(trade)
+
+    elif trade.coion == "BCH":
+        bch_account.send_money(
+            to = trade.wallet,
+            amount = str(price),
+            currency = "BCH",
+        )
+
+        if affiliate != None:
+    
+            bch_account.send_money(
+                to = affiliate.bch_wallet,
+                amount = str(a_price),
+                currency = "BCH"
+            )
+
         close_trade(trade)
 
     else:

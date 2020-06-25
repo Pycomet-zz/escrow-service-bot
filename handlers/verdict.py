@@ -14,6 +14,7 @@ def start_dispute(msg):
         ADMIN_ID,
         emoji.emojize("What is the Dispute ID :grey_question:", use_aliases=True)
     )
+    question = question.wait()
     bot.register_next_step_handler(question, call_dispute)
 
 
@@ -100,6 +101,9 @@ Ticket ID --> %s
 
     bot.send_message(
         msg.from_user.id,
-        "Who receives the funds :grey_question:",
+        emoji.emojize(
+            "Who are you assigning payout to :grey_question:",
+            use_aliases=True
+        ),
         reply_markup=refunds()
     )

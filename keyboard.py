@@ -43,19 +43,26 @@ def buyer_menu():
 
 def local_currency_menu():
     keyboard = types.InlineKeyboardMarkup(row_width=2)
-    a = types.InlineKeyboardButton(text=emoji.emojize(":dollar: Dollars (USD)", use_aliases=True), callback_data="dollar")
+    a = types.InlineKeyboardButton(text=emoji.emojize(":dollar: US Dollars (USD)", use_aliases=True), callback_data="dollar")
     b = types.InlineKeyboardButton(text=emoji.emojize(":euro: Euros (EUR)", use_aliases=True), callback_data="euro")
+    c = types.InlineKeyboardButton(text=emoji.emojize(":pound: British Pound (EUR)", use_aliases=True), callback_data="pound")
+    d = types.InlineKeyboardButton(text=emoji.emojize(":dollar: Canadian Dollar (CAD)", use_aliases=True), callback_data="c_dollar")
+    e = types.InlineKeyboardButton(text=emoji.emojize(":yen: Japanese Yen (JPY)", use_aliases=True), callback_data="yen")
+    f = types.InlineKeyboardButton(text=emoji.emojize(":euro: Swiss Franc (CHF)", use_aliases=True), callback_data="swiss")
     
-    keyboard.add(a,b)
+    keyboard.add(a,b,c,d,e,f)
     return keyboard
 
 
 def coin_menu():
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     a = types.InlineKeyboardButton(text=emoji.emojize("Bitcoin (BTC)", use_aliases=True), callback_data="btc")
-    b = types.InlineKeyboardButton(text=emoji.emojize("Etherium (ETH)", use_aliases=True), callback_data="eth")
+    b = types.InlineKeyboardButton(text=emoji.emojize("Ethereum (ETH)", use_aliases=True), callback_data="eth")
+    c = types.InlineKeyboardButton(text=emoji.emojize("Litecoin (LTC)", use_aliases=True), callback_data="ltc")
+    d = types.InlineKeyboardButton(text=emoji.emojize("Ripplecoin (XRP)", use_aliases=True), callback_data="xrp")
+    e = types.InlineKeyboardButton(text=emoji.emojize("Bitcoin Cash (BCH)", use_aliases=True), callback_data="bch")
     
-    keyboard.add(a,b)
+    keyboard.add(a,b,c,d,e)
     return keyboard
 
 def give_verdict():
@@ -83,5 +90,6 @@ def refunds():
     keyboard = types.InlineKeyboardMarkup(row_width=1)
     a = types.InlineKeyboardButton(text=emoji.emojize(":man: To Buyer", use_aliases=True), callback_data="refund_to_buyer")
     b = types.InlineKeyboardButton(text=emoji.emojize(":man: To Seller", use_aliases=True), callback_data="pay_to_seller")
-    keyboard.add(a, b)
+    c = types.InlineKeyboardButton(text=emoji.emojize(" :closed_lock_with_key: Close Trade", use_aliases=True), callback_data="close_trade")
+    keyboard.add(a, b, c)
     return keyboard

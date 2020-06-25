@@ -40,102 +40,6 @@ def start_buyer(user):
     )
 
 
-
-def start_affiliate(user):
-    """
-    This is the handler to start affiliate options
-    """
-    user = get_user(msg=user)
-
-    question = bot.send_message(
-        user.id,
-        emoji.emojize(
-            """
-:robot: To use escrow service on your group, I would need the following information.
-              
-Please reply with the your Group ID :grey_question: (You can get it @GetGroupIDRobot)
-            """,
-            use_aliases=True
-        )
-    )
-
-    bot.register_next_step_handler(question, add_addresses)
-
-
-def add_addresses(msg):
-
-    group_id = msg.text
-
-    affiliate = create_affiliate(user=msg.from_user.id, id=group_id)
-
-    if affiliate != "Already Exists":
-        question = bot.send_message(
-            msg.from_user.id,
-            emoji.emojize(
-                """
-Please paste in your bitcoin(BTC) receive address :grey_question:
-                """,
-                use_aliases=True))
-
-        bot.register_next_step_handler(question, add_bitcoin_space)
-    
-    else:
-
-        bot.send_message(
-            msg.from_user.id,
-            emoji.emojize(
-                ":construction: This Group Is Already Registered",
-                use_aliases=True
-            )
-        )
-
-
-
-def add_bitcoin_space(msg):
-    "Add Bitcoin Address For Affiliate"
-    wallet = msg.text
-
-    user = get_user(msg=msg)
-
-    add_affiliate_btc(
-        id = user.chat,
-        wallet = wallet
-        )
-
-    question = bot.send_message(
-            user.id,
-            emoji.emojize(
-                """
-Please paste in your ethereum(ETH) receive address :grey_question:
-                """,
-                use_aliases=True
-            )
-        )
-
-    bot.register_next_step_handler(question, add_ethereum_space)
-
-
-def add_ethereum_space(msg):
-    "Add Ethereum Address For Affiliate"
-    wallet = msg.text
-
-    user = get_user(msg=msg)
-
-    add_affiliate_eth(
-        id = user.chat,
-        wallet = wallet
-        )
-    
-    bot.send_message(
-        msg.from_user.id,
-        emoji.emojize(
-            ":+1: Congrats!! You can now add Escrow Service(@escrowbbot) to your public group and receive your affiliate charge for trade performed by your members, selecting their roles on the group. Good Luck!!",
-            use_aliases=True
-        )
-    )
-
-######################SELLER GRID#####################
-
 def select_coin(user):
     """
     Selecting the right coin option for trade
@@ -152,6 +56,7 @@ def select_coin(user):
     )
 
 
+##############TRADE CREATION
 def trade_price(user):
     """
     Receive user input on trade price
@@ -163,6 +68,7 @@ def trade_price(user):
             use_aliases=True
         )
     )
+    question = question.wait()
     
     bot.register_next_step_handler(question, trade_address)
 
@@ -181,10 +87,12 @@ def trade_address(msg):
     question = bot.send_message(
         msg.from_user.id,
         emoji.emojize(
-            ":money_bag: Paste the wallet address to which you will recieve payment (Confirm the wallet address to make sure it is correct) ",
+            ":money_bag: Paste the wallet address to which you will recieve payment referenced to the coin you selected above (Confirm the wallet address to make sure it is correct) ",
             use_aliases=True
         )
     )
+    question = question.wait()
+
     bot.register_next_step_handler(question, process_trade)
 
 
@@ -222,9 +130,9 @@ Share only the trade ID with your customer to allow his/her join the trade. They
     )
 
 
+
+
 #############APPROVING PAYMENTS
-
-
 def validate_pay(msg):
     "Receives the transaction hash for checking"
     trade = get_recent_trade(msg.from_user)
@@ -294,6 +202,7 @@ def refund_to_buyer(msg):
             trade.buyer,
             f"A refund was requested for your funds on trade {trade.id}. Please paste a wallet address to receive in {trade.coin}"
         )
+        question = question.wait()
         bot.register_next_step_handler(question, refund_coins)
     
     else:
@@ -356,4 +265,27 @@ def refund_to_seller(msg):
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML
+        )
+
+
+
+
+####CLOSE TRADE WITH NO PAYOUTS
+def close_dispute_trade(msg):
+    "Close Order After Dispute & No Body Has Paid"
+    trade = get_recent_trade(msg)
+
+    close_trade(trade)
+
+    users = [trade.seller, trade.buyer]  
+
+    for user in users:
+
+        bot.send_message(
+            user,
+            emoji.emojize(
+                f"<b>Trade {trade.id} Closed</b> :mailbox_closed: ",
+                use_aliases=True
+            ),
+            parse_mode=telegram.ParseMode.HTML,
         )

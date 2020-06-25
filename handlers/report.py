@@ -8,7 +8,7 @@ def report_request(msg):
     Sends a report to the Admin regarding a particular trade
     """
     chat, id = get_received_msg(msg)
-    bot.delete_message(chat, id)
+    bot.delete_message(chat.id, id)
     
     question = bot.send_message(
         msg.from_user.id,
@@ -17,6 +17,7 @@ def report_request(msg):
             use_aliases=True
         )
     )
+    question = question.wait()
     
     bot.register_next_step_handler(question, report_trade)
 
@@ -33,9 +34,13 @@ def report_trade(msg):
 
         question = bot.send_message(
             msg.from_user.id,
-            f"What is your complaint on <b>Trade -> {msg.text}</b> :grey_question:",
+            emoji.emojize(
+                f"What is your complaint on <b>Trade -> {msg.text}</b> :grey_question:",
+                use_aliases=True
+            ),
             parse_mode=telegram.ParseMode.HTML,
         )
+        question = question.wait()
 
         bot.register_next_step_handler(question, trade_complaint)
 
