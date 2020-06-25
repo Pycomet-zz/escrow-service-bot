@@ -58,7 +58,7 @@
 * [Usage](#usage)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
-* [Donation] (#donation)
+* [Donation](#donation)
 * [License](#license)
 * [Author](#contact)
 
