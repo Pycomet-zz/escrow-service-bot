@@ -5,9 +5,9 @@ from telebot import types
 import emoji
 from blockchain import blockexplorer
 from flask import Flask, request
-
 from coinbase.wallet.client import Client
-
+from dotenv import load_dotenv
+load_dotenv()
 
 # Configuration variable
 TOKEN = os.getenv("TOKEN")
