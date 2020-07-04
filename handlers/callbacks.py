@@ -2,6 +2,7 @@ from config import *
 from keyboard import *
 from functions import *
 from bot import *
+from affiliate import *
 
 from handlers.verdict import *
 
