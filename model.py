@@ -65,7 +65,7 @@ class Dispute(Base):
     """
     __tablename__ = "disputes"
 
-    id = Column(Integer, unique=True, primary_key=True)
+    id = Column(String, unique=True, primary_key=True)
     user = Column(Integer)
     complaint = Column(String(162))
     created_on = Column(String(32))
@@ -96,7 +96,7 @@ class Affiliate(Base):
     """
     __tablename__ = "affiliates"
 
-    id = Column(Integer, unique=True, primary_key=True)
+    id = Column(String, unique=True, primary_key=True)
     btc_wallet = Column(String(40))
     eth_wallet = Column(String(40))
     ltc_wallet = Column(String(40))
@@ -118,7 +118,7 @@ class Affiliate(Base):
 # Base.metadata.drop_all(bind=engine)
 # Base.metadata.create_all(bind=engine)
 
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 Session = sessionmaker(bind=engine, autoflush=False)
 
