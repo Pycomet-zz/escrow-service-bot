@@ -12,7 +12,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/Pycomet/EscrowService-Bot">
+  <a href="https://github.com/Pycomet/escrow-service-bot">
     <img src="images/escrowbot.jpg" alt="Logo" width="200" height="200">
   </a>
 
@@ -24,9 +24,9 @@
     <br />
     <a href="https://t.me/escrowbbot">View Demo</a>
     ·
-    <a href="https://github.com/Pycomet/EscrowService-Bot/issues">Report Bug</a>
+    <a href="https://github.com/Pycomet/escrow-service-bot/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Pycomet/EscrowService-Bot/issues">Request New Feature</a>
+    <a href="https://github.com/Pycomet/escrow-service-bot/issues">Request New Feature</a>
   </p>
 </p>
 
@@ -69,7 +69,7 @@
 
 In the world we live in now, business is mostly done on the internet and customers are more unwilling to buy products from sellers they do not trust or have no personal reference to. Knowing they could be mislead or scammed of their money with no trace for refunds.
 
-This is a growing problem and my [Escrow Service Bot](https://github.com/Pycomet/EscrowService-Bot) is aimed at eradicating the problem, thereby giving large trade group owners and sellers more business. And, also giving buyers the confidence to purchase goods without risk involved.
+This is a growing problem and my [Escrow Service Bot](https://github.com/Pycomet/escrow-service-bot) is aimed at eradicating the problem, thereby giving large trade group owners and sellers more business. And, also giving buyers the confidence to purchase goods without risk involved.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -87,7 +87,7 @@ All payments are being made directly to the respective parties, either through B
 - Japanese Yen (JPY)
 - The Swiss Franc (CHF)
 
-With an affiliate program being part of the structure, administrators of different Telegram Group platforms are also able to use the [Escrow Service Bot](https://github.com/Pycomet/EscrowService-Bot) in conducting save and fast business transactions within their groups smoothly, with each transaction being completed secured and easily traceable. Also, each registered group admin is entitled to a charge on every trade carried out by the group members.
+With an affiliate program being part of the structure, administrators of different Telegram Group platforms are also able to use the [Escrow Service Bot](https://github.com/Pycomet/escrow-service-bot) in conducting save and fast business transactions within their groups smoothly, with each transaction being completed secured and easily traceable. Also, each registered group admin is entitled to a charge on every trade carried out by the group members.
 
 
 ### Ideal Users
@@ -125,7 +125,7 @@ pip install --upgrade pip
 
 ### Installation
 
-1. Open the project's [github page](https://github.com/Pycomet/EscrowService-Bot) and star this project by tapping on the star button at the top right of the page.
+1. Open the project's [github page](https://github.com/Pycomet/escrow-service-bot) and star this project by tapping on the star button at the top right of the page.
 
 2. Get a bot token key from [@BotFather](https://t.me/BotFather)
 
@@ -133,12 +133,12 @@ pip install --upgrade pip
 
 4. Clone this repository
 ```sh
-git clone https://github.com/Pycomet/EscrowService-Bot.git
+git clone https://github.com/Pycomet/escrow-service-bot.git
 ```
 
 5. Open the project directory
 ```sh
-cd EscrowService-Bot
+cd escrow-service-bot
 ```
 
 6. Create a virtual environment to install all the app dependencies
@@ -189,7 +189,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/Pycomet/EscrowService-Bot/issues) for a list of proposed features (and known issues). Here is the shortlisted prospects;
+See the [open issues](https://github.com/Pycomet/escrow-service-bot/issues) for a list of proposed features (and known issues). Here is the shortlisted prospects;
 
 - More Country Currencies (Added Successfully!)
 
@@ -240,16 +240,16 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Pycomet/EscrowService-Bot.svg?style=flat-square
-[contributors-url]: https://github.com/Pycomet/EscrowService-Bot/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Pycomet/EscrowService-Bot.svg?style=flat-square
-[forks-url]: https://github.com/Pycomet/EscrowService-Bot/network/members
-[stars-shield]: https://img.shields.io/github/stars/Pycomet/EscrowService-Bot.svg?style=flat-square
-[stars-url]: https://github.com/Pycomet/EscrowService-Bot/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Pycomet/EscrowService-Bot.svg?style=flat-square
-[issues-url]: https://github.com/Pycomet/EscrowService-Bot/issues
-[license-shield]: https://img.shields.io/github/license/Pycomet/EscrowService-Bot.svg?style=flat-square
-[license-url]: https://github.com/Pycomet/EscrowService-Bot/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/Pycomet/escrow-service-bot.svg?style=flat-square
+[contributors-url]: https://github.com/Pycomet/escrow-service-bot/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Pycomet/escrow-service-bot.svg?style=flat-square
+[forks-url]: https://github.com/Pycomet/escrow-service-bot/network/members
+[stars-shield]: https://img.shields.io/github/stars/Pycomet/escrow-service-bot.svg?style=flat-square
+[stars-url]: https://github.com/Pycomet/escrow-service-bot/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Pycomet/escrow-service-bot.svg?style=flat-square
+[issues-url]: https://github.com/Pycomet/escrow-service-bot/issues
+[license-shield]: https://img.shields.io/github/license/Pycomet/escrow-service-bot.svg?style=flat-square
+[license-url]: https://github.com/Pycomet/escrow-service-bot/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/alfredemmanuelinyang
 [product-screenshot]: images/screenshot.png
