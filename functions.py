@@ -17,7 +17,7 @@ bch_account = accounts.data[5]
 
 def get_user(msg):
     "Returns or creates a new user"
-    chat = msg.message.chat.id
+    chat = msg.chat.id
     id = msg.from_user.id
     
     user = session.query(User).filter_by(id=id).first()
