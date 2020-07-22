@@ -13,7 +13,7 @@ def getMessage():
 def webhook():
     bot.remove_webhook()
     bot.set_webhook(url='https://escrowbbot.herokuapp.com/' + TOKEN)
-    return "!", 200
+    return "Escrow Service Bot Active!", 200
 
 
 print("bot polling...")
