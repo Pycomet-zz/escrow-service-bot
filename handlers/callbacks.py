@@ -16,14 +16,15 @@ def callback_answer(call):
     # FIRST OPTIONS
     if call.data == "seller":
         start_seller(call)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "buyer":
         start_buyer(call)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "affiliate":
         start_affiliate(call)
-
-
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
     #CURRENCY OPTIONS
@@ -31,31 +32,37 @@ def callback_answer(call):
         #create trade
         open_new_trade(call, "USD")
         select_coin(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "euro":
         #create trade
         open_new_trade(call, "EUR")
         select_coin(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "pound":
         #create trade
         open_new_trade(call, "GBP")
         select_coin(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "c_dollar":
         #create trade
         open_new_trade(call, "CAD")
         select_coin(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "yen":
         #create trade
         open_new_trade(call, "JPY")
         select_coin(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
     
     elif call.data == "swiss":
         #create trade
         open_new_trade(call, "CHF")
         select_coin(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
 
@@ -66,30 +73,35 @@ def callback_answer(call):
             user=call.from_user,
             coin="BTC")
         trade_price(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
     
     elif call.data == "eth":
         add_coin(
             user=call.from_user,
             coin="ETH")
         trade_price(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "ltc":
         add_coin(
             user=call.from_user,
             coin="LTC")
         trade_price(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "xrp":
         add_coin(
             user=call.from_user,
             coin="XRP")
         trade_price(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "bch":
         add_coin(
             user=call.from_user,
             coin="BCH")
         trade_price(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
 
@@ -103,6 +115,7 @@ def callback_answer(call):
         )
         question = question.wait()
         bot.register_next_step_handler(question, validate_pay)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
 
@@ -116,7 +129,7 @@ def callback_answer(call):
         bot.send_message(
             trade.seller,
             emoji.emojize(
-                ":star: <b>TRADE ENDED!!. Your payment has been sent!</b>",
+                ":star: <b>TRANSACTION COMPLETE AND TRADE CLOSE!!. Your payment is on it's way!</b>",
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML
@@ -126,11 +139,12 @@ def callback_answer(call):
         bot.send_message(
             trade.buyer,
             emoji.emojize(
-                ":star: <b>TRADE ENDED!!</b>",
+                ":star: <b>TRANSACTION COMPLETE AND TRADE CLOSE!!</b>",
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML,
         )
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
 
@@ -142,6 +156,7 @@ def callback_answer(call):
             call.from_user.id,
             "Please contact the seller to send you the goods right away. If seller refuses, report the trade from the menu",
         )
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
     elif call.data == "verdict":
@@ -152,6 +167,7 @@ def callback_answer(call):
         )
         question = question.wait()
         bot.register_next_step_handler(question, pass_verdict)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
 
@@ -160,12 +176,15 @@ def callback_answer(call):
 
     elif call.data == "refund_to_buyer":
         refund_to_buyer(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
     
     elif call.data == "pay_to_seller":
         refund_to_seller(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     elif call.data == "close_trade":
         close_dispute_trade(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
 
     else:
         pass

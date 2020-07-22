@@ -17,7 +17,8 @@ bch_account = accounts.data[5]
 
 def get_user(msg):
     "Returns or creates a new user"
-    chat = msg.from_user.chat.id
+
+    chat = msg.message.chat.id
     id = msg.from_user.id
     
     user = session.query(User).filter_by(id=id).first()
@@ -171,15 +172,15 @@ def add_coin(user, coin):
     trade.coin = str(coin)
 
     if coin == "BTC":
-        trade.receive_address_id = btc_account.create_address().address
+        trade.receive_address_id = btc_account.create_address().id
     elif coin == "ETH":
-        trade.receive_address_id = eth_account.create_address().address
+        trade.receive_address_id = eth_account.create_address().id
     elif coin == "LTC":
-        trade.receive_address_id = ltc_account.create_address().address
+        trade.receive_address_id = ltc_account.create_address().id
     elif coin == "XRP":
-        trade.receive_address_id = xrp_account.create_address().address
+        trade.receive_address_id = xrp_account.create_address().id
     elif coin == "BCH":
-        trade.receive_address_id = bch_account.create_address().address
+        trade.receive_address_id = bch_account.create_address().id
     else:
         pass
 
@@ -212,6 +213,7 @@ def add_buyer(trade, buyer):
 
 def get_receive_address(trade):
     "Return the receive address"
+    import pdb; pdb.set_trace()
 
     if trade.coin == "BTC":
         wallet = btc_account.get_address(trade.receive_address_id).address

@@ -187,6 +187,7 @@ def validate_pay(msg):
             ),
             parse_mode=telegram.ParseMode.HTML
         )
+    bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
 
