@@ -254,6 +254,10 @@ def check_trade(user, trade_id):
 
         return "Not Found"
 
+    elif trade.buyer == trade.seller:
+
+        return "Not Permitted"
+    
     else:
         add_buyer(
             trade=trade,

@@ -33,7 +33,7 @@ def join_trade(msg):
         user=msg.from_user,
         trade_id=trade_id)
 
-    if trade != "Not Found":
+    if trade != "Not Found" or trade != "Not Permitted":
 
         #Amount To Be Paid
         coin_price = get_coin_price(
@@ -60,11 +60,11 @@ def join_trade(msg):
 :memo: <b>Trade Details</b> :memo:
 -----------------------------------
 
-    :beginner: <b>ID --> {trade.id}</b>
-    :beginner: <b>Price --> {trade.price} {trade.currency}</b>
-    :beginner: <b>Preferred method of payment --> {trade.coin}</b>
-    :beginner: <b>Created on --> {trade.created_at}</b>
-    :beginner: <b>Payment Complete --> {trade.payment_status}</b>
+:beginner: <b>ID --> {trade.id}</b>
+:beginner: <b>Price --> {trade.price} {trade.currency}</b>
+:beginner: <b>Preferred method of payment --> {trade.coin}</b>
+:beginner: <b>Created on --> {trade.created_at}</b>
+:beginner: <b>Payment Complete --> {trade.payment_status}</b>
 
 :point_right: <b>You are expected to pay {price} {trade.coin} to wallet address below to recieve goods from seller</b>
 
@@ -86,6 +86,16 @@ def join_trade(msg):
             ),
             parse_mode=telegram.ParseMode.HTML
         )
+
+    elif trade == "Not Permitted":
+
+        bot.send_message(
+            msg.from_user.id,
+            emoji.emojize(
+                ":warning: You can not be a seller and buyer at the same time!",
+                use_aliases=True
+            )
+        ) 
 
     else:
         bot.send_message(
