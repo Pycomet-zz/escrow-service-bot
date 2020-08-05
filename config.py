@@ -4,7 +4,7 @@ import telebot
 from telebot import types
 import emoji
 from blockchain import blockexplorer
-from flask import Flask, request
+from flask import Flask, request, render_template
 from coinbase.wallet.client import Client
 from dotenv import load_dotenv
 load_dotenv()
