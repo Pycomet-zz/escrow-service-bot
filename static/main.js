@@ -8,6 +8,6 @@ const Dashboard = () => {
 
 
 ReactDOM.render(
-<Dashboard />,
-document.getElementById('root')
+    <Dashboard />,
+    document.getElementById('root')
 );
