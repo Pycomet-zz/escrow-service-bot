@@ -18,6 +18,7 @@
   ],
   "dependencies": {
     "react": "^16.1.0",
-    "bootstrap": "^4.5.1"
+    "bootstrap": "^4.5.1",
+    "material-ui": "^4.11.0"
   }
 }

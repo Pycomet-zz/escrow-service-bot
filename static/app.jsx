@@ -3,14 +3,15 @@
 
 // const Table = required("./components/table")
 
-import Dashboard from './components/dashboard'
+// import Dashboard from './components/dashboard'
 
 class App extends React.Component {
 
     render() {
         return (
-            <Dashboard />
-            <Table />
+            <section>
+                <p>React Component Is Active 🤯</p>
+            </section>
         );
     }
 };
