@@ -180,7 +180,7 @@ ENJOY!
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-_Please refer to this article to understand how this service is user -> [Documentation](https://medium.com/@alfredemmanuelinyang/how-telegram-escrow-service-bot-is-bound-to-make-a-huge-impact-on-your-business-c533e7cbd0fb?sk=070a3f1b0292c3bea78a85c86b489ac7)_
+_Please refer to this article to know more about this project and how the bot is used -> [Documentation](https://medium.com/@alfredemmanuelinyang/how-telegram-escrow-service-bot-is-bound-to-make-a-huge-impact-on-your-business-c533e7cbd0fb?sk=070a3f1b0292c3bea78a85c86b489ac7)_
 
 
 
