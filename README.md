@@ -180,9 +180,7 @@ ENJOY!
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+_Please refer to this article to know more about this project and how the bot is used -> [Documentation](https://medium.com/@alfredemmanuelinyang/how-telegram-escrow-service-bot-is-bound-to-make-a-huge-impact-on-your-business-c533e7cbd0fb?sk=070a3f1b0292c3bea78a85c86b489ac7)_
 
 
 

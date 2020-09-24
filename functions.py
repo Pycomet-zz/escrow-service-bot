@@ -213,7 +213,6 @@ def add_buyer(trade, buyer):
 
 def get_receive_address(trade):
     "Return the receive address"
-    import pdb; pdb.set_trace()
 
     if trade.coin == "BTC":
         wallet = btc_account.get_address(trade.receive_address_id).address
