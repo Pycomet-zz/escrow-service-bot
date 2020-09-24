@@ -33,7 +33,7 @@ def join_trade(msg):
         user=msg.from_user,
         trade_id=trade_id)
 
-    if trade != "Not Found" or trade != "Not Permitted":
+    if isinstance(trade, str) != True:
 
         #Amount To Be Paid
         coin_price = get_coin_price(
