@@ -1,7 +1,6 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
+// import Dashboard from './dashboard';
 
-class Dashboard extends React.Component {
+class App extends React.Component {
 
     render() { 
         return (
@@ -14,4 +13,4 @@ class Dashboard extends React.Component {
 };
 
 
-ReactDOM.render(<Dashboard />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

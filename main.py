@@ -1,5 +1,6 @@
-from config import *
 import os
+from api import api_bp
+from config import *
 
 
 app = Flask(__name__)
@@ -28,6 +29,7 @@ def webhook():
 # bot.polling(none_stop=True)
 
 if __name__ == "__main__":
+    app.register_blueprint(api_bp)
     app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
 
