@@ -189,13 +189,13 @@ _Please refer to this article to know more about this project and how the bot is
 
 See the [open issues](https://github.com/Pycomet/broker-service-bot/issues) for a list of proposed features (and known issues). Here is the shortlisted prospects;
 
-- More Country Currencies (Added Successfully!)
-
-- More Crytocurrencies for trading (For example; Ripplecoin and others) (Added Successfully!)
-
 - User account rating based on previous trades
 
-- Website to showcase more details information on the bot along with a dashboard to monitor trades
+- Website to showcase more details information on the bot along with a dashboard to monitor trades (F.A.Q and more)
+
+- Add a button for canceling trades from the buyer's trade memo
+
+- Bot dashboard
 
 <!-- CONTRIBUTING -->
 ## Contributing
