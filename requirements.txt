@@ -5,7 +5,7 @@ chardet==3.0.4
 click==7.1.1
 coinbase==2.1.0
 cryptocompare==0.7.0
-cryptography==2.9.2
+cryptography==3.2
 decorator==4.4.2
 emoji==0.5.4
 enum-compat==0.0.3
