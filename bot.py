@@ -241,6 +241,7 @@ def refund_coins(msg):
 def refund_to_seller(msg):
     "Refund Coins Back To Buyer"
     trade = get_recent_trade(msg)
+    confirm_pay(trade)
 
     if trade.payment_status == True:
 

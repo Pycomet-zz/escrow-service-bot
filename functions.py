@@ -343,7 +343,7 @@ def pay_funds_to_seller(trade):
 
         close_trade(trade)
 
-    elif trade.coion == "ETH":
+    elif trade.coin == "ETH":
         eth_account.send_money(
             to = trade.wallet,
             amount = str(price),
@@ -360,7 +360,7 @@ def pay_funds_to_seller(trade):
 
         close_trade(trade)
 
-    elif trade.coion == "LTC":
+    elif trade.coin == "LTC":
         ltc_account.send_money(
             to = trade.wallet,
             amount = str(price),
@@ -377,7 +377,7 @@ def pay_funds_to_seller(trade):
 
         close_trade(trade)
 
-    elif trade.coion == "XRP":
+    elif trade.coin == "XRP":
         xrp_account.send_money(
             to = trade.wallet,
             amount = str(price),
@@ -394,7 +394,7 @@ def pay_funds_to_seller(trade):
 
         close_trade(trade)
 
-    elif trade.coion == "BCH":
+    elif trade.coin == "BCH":
         bch_account.send_money(
             to = trade.wallet,
             amount = str(price),
