@@ -238,7 +238,6 @@ def refund_coins(msg):
 
 
 ##REFUND PROCES SELLER TO RECEIVE FUNDS
-
 def refund_to_seller(msg):
     "Refund Coins Back To Buyer"
     trade = get_recent_trade(msg)
