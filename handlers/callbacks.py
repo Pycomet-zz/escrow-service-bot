@@ -82,29 +82,6 @@ def callback_answer(call):
         trade_price(call.from_user)
         bot.delete_message(call.message.chat.id, call.message.message_id)
 
-    elif call.data == "ltc":
-        add_coin(
-            user=call.from_user,
-            coin="LTC")
-        trade_price(call.from_user)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
-
-    elif call.data == "xrp":
-        add_coin(
-            user=call.from_user,
-            coin="XRP")
-        trade_price(call.from_user)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
-
-    elif call.data == "bch":
-        add_coin(
-            user=call.from_user,
-            coin="BCH")
-        trade_price(call.from_user)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
-
-
-
 
     # PAYMENT VALIDATION
     elif call.data == "payment_confirmation":

@@ -291,12 +291,6 @@ def check_payment(trade, hash):
             transaction_hash = btc_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
         elif trade.coin == "ETH":
             transaction_hash = eth_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
-        elif trade.coin == "LTC":
-            transaction_hash = ltc_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
-        elif trade.coin == "XRP":
-            transaction_hash = xrp_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
-        elif trade.coin == "BCH":
-            transaction_hash = bch_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
         else:
             transaction_hash = ""
 
@@ -356,57 +350,6 @@ def pay_funds_to_seller(trade):
                 to = affiliate.eth_wallet,
                 amount = str(a_price),
                 currency = "ETH"
-            )
-
-        close_trade(trade)
-
-    elif trade.coin == "LTC":
-        ltc_account.send_money(
-            to = trade.wallet,
-            amount = str(price),
-            currency = "LTC",
-        )
-
-        if affiliate != None:
-    
-            ltc_account.send_money(
-                to = affiliate.ltc_wallet,
-                amount = str(a_price),
-                currency = "LTC"
-            )
-
-        close_trade(trade)
-
-    elif trade.coin == "XRP":
-        xrp_account.send_money(
-            to = trade.wallet,
-            amount = str(price),
-            currency = "XRP",
-        )
-
-        if affiliate != None:
-    
-            xrp_account.send_money(
-                to = affiliate.xrp_wallet,
-                amount = str(a_price),
-                currency = "XRP"
-            )
-
-        close_trade(trade)
-
-    elif trade.coin == "BCH":
-        bch_account.send_money(
-            to = trade.wallet,
-            amount = str(price),
-            currency = "BCH",
-        )
-
-        if affiliate != None:
-    
-            bch_account.send_money(
-                to = affiliate.bch_wallet,
-                amount = str(a_price),
-                currency = "BCH"
             )
 
         close_trade(trade)
@@ -473,57 +416,6 @@ def pay_to_buyer(trade, wallet):
                 amount = str(a_price),
                 currency = "ETH"
             )
-        close_trade(trade)
-
-    elif trade.coion == "LTC":
-        ltc_account.send_money(
-            to = trade.wallet,
-            amount = str(price),
-            currency = "LTC",
-        )
-
-        if affiliate != None:
-    
-            ltc_account.send_money(
-                to = affiliate.ltc_wallet,
-                amount = str(a_price),
-                currency = "LTC"
-            )
-
-        close_trade(trade)
-
-    elif trade.coion == "XRP":
-        xrp_account.send_money(
-            to = trade.wallet,
-            amount = str(price),
-            currency = "XRP",
-        )
-
-        if affiliate != None:
-    
-            xrp_account.send_money(
-                to = affiliate.xrp_wallet,
-                amount = str(a_price),
-                currency = "XRP"
-            )
-
-        close_trade(trade)
-
-    elif trade.coion == "BCH":
-        bch_account.send_money(
-            to = trade.wallet,
-            amount = str(price),
-            currency = "BCH",
-        )
-
-        if affiliate != None:
-    
-            bch_account.send_money(
-                to = affiliate.bch_wallet,
-                amount = str(a_price),
-                currency = "BCH"
-            )
-
         close_trade(trade)
 
     else:

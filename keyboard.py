@@ -58,11 +58,8 @@ def coin_menu():
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     a = types.InlineKeyboardButton(text=emoji.emojize("Bitcoin (BTC)", use_aliases=True), callback_data="btc")
     b = types.InlineKeyboardButton(text=emoji.emojize("Ethereum (ETH)", use_aliases=True), callback_data="eth")
-    c = types.InlineKeyboardButton(text=emoji.emojize("Litecoin (LTC)", use_aliases=True), callback_data="ltc")
-    d = types.InlineKeyboardButton(text=emoji.emojize("Ripplecoin (XRP)", use_aliases=True), callback_data="xrp")
-    e = types.InlineKeyboardButton(text=emoji.emojize("Bitcoin Cash (BCH)", use_aliases=True), callback_data="bch")
     
-    keyboard.add(a,b,c,d,e)
+    keyboard.add(a,b)
     return keyboard
 
 def give_verdict():

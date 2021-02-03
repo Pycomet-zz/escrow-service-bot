@@ -99,9 +99,6 @@ class Affiliate(Base):
     id = Column(String, unique=True, primary_key=True)
     btc_wallet = Column(String(40))
     eth_wallet = Column(String(40))
-    ltc_wallet = Column(String(40))
-    xrp_wallet = Column(String(40))
-    bch_wallet = Column(String(40))
     admin = Column(Integer)
 
     def __repr__(self):
@@ -115,8 +112,8 @@ class Affiliate(Base):
         else:
             return info
 
-# Base.metadata.drop_all(bind=engine)
-# Base.metadata.create_all(bind=engine)
+Base.metadata.drop_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 # Base.metadata.create_all(bind=engine)
 
