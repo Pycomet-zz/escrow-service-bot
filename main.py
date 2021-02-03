@@ -20,7 +20,7 @@ def getMessage():
 @app.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://escrowbbot.herokuapp.com/' + TOKEN)
+    bot.set_webhook(url='https://fg-escrowbot.herokuapp.com/' + TOKEN)
     return "Escrow Service Bot Active!", 200
 
 
