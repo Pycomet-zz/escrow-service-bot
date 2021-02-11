@@ -1,19 +1,22 @@
 from config import *
+from source import BitcoinApi
 from model import User, Trade, Dispute, Affiliate, session
 
 import random
+import requests
 import string
 from datetime import datetime
 import cryptocompare
 
-client = Client(API_KEY, API_SECRET)
-accounts = client.get_accounts()
+client = BitcoinApi()
 
-eth_account = accounts.data[4]
-btc_account = accounts.data[6]
-ltc_account = accounts.data[1]
-xrp_account = accounts.data[2]
-bch_account = accounts.data[5]
+def send_invoice(trade):
+    """
+    Create invoice and extract url
+    """
+    u_id = client.create_invoice(trade)
+    url = client.get_payment_url(trade)
+    return url
 
 def get_user(msg):
     "Returns or creates a new user"
@@ -122,22 +125,6 @@ def add_affiliate_eth(id, wallet):
     session.add(affiliate)
     # session.commit()
 
-def add_affiliate_ltc(id, wallet):
-    affiliate = session.query(Affiliate).filter_by(id=id).first()
-    affiliate.ltc_wallet = wallet
-    session.add(affiliate)
-
-def add_affiliate_xrp(id, wallet):
-    affiliate = session.query(Affiliate).filter_by(id=id).first()
-    affiliate.xrp_wallet = wallet
-    session.add(affiliate)
-
-def add_affiliate_bch(id, wallet):
-    affiliate = session.query(Affiliate).filter_by(id=id).first()
-    affiliate.bch_wallet = wallet
-    session.add(affiliate)
-    session.commit()
-
 
 def open_new_trade(user, currency):
     """
@@ -149,6 +136,14 @@ def open_new_trade(user, currency):
     if affiliate != None:
         affiliate = affiliate.id
 
+    # CREATE FORGING BLOCK STORE
+    mnemonic, address = client.create_wallet()
+
+    xpub = client.get_xpub()
+    trade, token, store = client.create_store(name=f'{user.id}-{xpub}')
+    status = client.connect_store()
+
+    # Create bot trade
     trade = Trade(
         id =  generate_id(),
         seller = user.id,
@@ -158,10 +153,20 @@ def open_new_trade(user, currency):
         updated_at = str(datetime.now()),
         is_open = True,
         affiliate_id = affiliate,
+        mnemonic=mnemonic,
+        xpub=xpub,
+        address=address,
+        trade=trade,
+        token=token,
+        store=store,
+        invoice=""
         )
 
     session.add(trade)
     session.commit()
+
+    print(status)
+    return status
 
 
 def add_coin(user, coin):
@@ -170,19 +175,6 @@ def add_coin(user, coin):
     """
     trade = get_recent_trade(user)
     trade.coin = str(coin)
-
-    if coin == "BTC":
-        trade.receive_address_id = btc_account.create_address().id
-    elif coin == "ETH":
-        trade.receive_address_id = eth_account.create_address().id
-    elif coin == "LTC":
-        trade.receive_address_id = ltc_account.create_address().id
-    elif coin == "XRP":
-        trade.receive_address_id = xrp_account.create_address().id
-    elif coin == "BCH":
-        trade.receive_address_id = bch_account.create_address().id
-    else:
-        pass
 
     session.add(trade)
 
@@ -213,26 +205,7 @@ def add_buyer(trade, buyer):
 
 def get_receive_address(trade):
     "Return the receive address"
-
-    if trade.coin == "BTC":
-        wallet = btc_account.get_address(trade.receive_address_id).address
-    
-    elif trade.coin == "ETH":
-        wallet = eth_account.get_address(trade.receive_address_id).address
-
-    elif trade.coin == "LTC":
-        wallet = ltc_account.get_address(trade.receive_address_id).address
-
-    elif trade.coin == "XRP":
-        wallet = xrp_account.get_address(trade.receive_address_id).address
-
-    elif trade.coin == "BCH":
-        wallet = bch_account.get_address(trade.receive_address_id).address
-
-    else:
-        return "ERROR!"
-
-    return wallet
+    return trade.address
 
 def delete_trade(trade_id):
     "Delete Trade"
@@ -282,23 +255,11 @@ def confirm_pay(trade):
 
 def check_payment(trade, hash):
     "Returns Status Of Payment"
+    status = client.check_status(trade)
 
-    try:
-        tx = blockexplorer.get_tx(hash)
-
-        #Check if it is the same
-        if trade.coin == "BTC":
-            transaction_hash = btc_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
-        elif trade.coin == "ETH":
-            transaction_hash = eth_account.get_address_transactions(trade.receive_address_id).data[-1].network.hash
-        else:
-            transaction_hash = ""
-
-        if transaction_hash == tx.hash:
-            confirm_pay(trade)
-            return "Approved"
-
-    except:
+    if status == 'complete':
+        return "Approved"
+    else:
         return "Pending"
 
 def pay_funds_to_seller(trade):
@@ -320,42 +281,49 @@ def pay_funds_to_seller(trade):
     price = "%.4f" % pay_price
 
     a_price = "%.4f" % service_charge # Affiliate pay
-    if trade.coin == "BTC":
 
-        btc_account.send_money(
-            to = trade.wallet,
-            amount = str(price),
-            currency = "BTC"
-        )
-        if affiliate != None:
+    #
+    #     # #################################################################################
+    #############################################################################################
+    ############################################################################################## #################################################################################
+    #############################################################################################
+    ##############################################################################################
+    # if trade.coin == "BTC":
 
-            btc_account.send_money(
-                to = affiliate.btc_wallet,
-                amount = str(a_price),
-                currency = "BTC"
-            )   
+    #     btc_account.send_money(
+    #         to = trade.wallet,
+    #         amount = str(price),
+    #         currency = "BTC"
+    #     )
+    #     if affiliate != None:
 
-        close_trade(trade)
+    #         btc_account.send_money(
+    #             to = affiliate.btc_wallet,
+    #             amount = str(a_price),
+    #             currency = "BTC"
+    #         )   
 
-    elif trade.coin == "ETH":
-        eth_account.send_money(
-            to = trade.wallet,
-            amount = str(price),
-            currency = "ETH",
-        )
+    #     close_trade(trade)
 
-        if affiliate != None:
+    # elif trade.coin == "ETH":
+    #     eth_account.send_money(
+    #         to = trade.wallet,
+    #         amount = str(price),
+    #         currency = "ETH",
+    #     )
+
+    #     if affiliate != None:
     
-            eth_account.send_money(
-                to = affiliate.eth_wallet,
-                amount = str(a_price),
-                currency = "ETH"
-            )
+    #         eth_account.send_money(
+    #             to = affiliate.eth_wallet,
+    #             amount = str(a_price),
+    #             currency = "ETH"
+    #         )
 
-        close_trade(trade)
+    #     close_trade(trade)
 
-    else:
-        pass
+    # else:
+    #     pass
 
 
 def close_trade(trade):
@@ -386,40 +354,47 @@ def pay_to_buyer(trade, wallet):
 
     a_price = "%.4f" % service_charge # Affiliate pay
 
-    if trade.coin == "BTC":
-        btc_account.send_money(
-            to = wallet,
-            amount = str(price),
-            currency = "BTC"
-        )
+    #
+    #     # #################################################################################
+    #############################################################################################
+    ############################################################################################## #################################################################################
+    #############################################################################################
+    ##############################################################################################
+   
+    # if trade.coin == "BTC":
+    #     btc_account.send_money(
+    #         to = wallet,
+    #         amount = str(price),
+    #         currency = "BTC"
+    #     )
 
-        if affiliate != None:
+    #     if affiliate != None:
     
-            btc_account.send_money(
-                to = affiliate.btc_wallet,
-                amount = str(a_price),
-                currency = "BTC"
-            )   
-        close_trade(trade)
+    #         btc_account.send_money(
+    #             to = affiliate.btc_wallet,
+    #             amount = str(a_price),
+    #             currency = "BTC"
+    #         )   
+    #     close_trade(trade)
 
-    elif trade.coin == "ETH":
-        eth_account.send_money(
-            to = wallet,
-            amount = str(price),
-            currency = "ETH",
-        )
+    # elif trade.coin == "ETH":
+    #     eth_account.send_money(
+    #         to = wallet,
+    #         amount = str(price),
+    #         currency = "ETH",
+    #     )
 
-        if affiliate != None:
+    #     if affiliate != None:
         
-            eth_account.send_money(
-                to = affiliate.eth_wallet,
-                amount = str(a_price),
-                currency = "ETH"
-            )
-        close_trade(trade)
+    #         eth_account.send_money(
+    #             to = affiliate.eth_wallet,
+    #             amount = str(a_price),
+    #             currency = "ETH"
+    #         )
+    #     close_trade(trade)
 
-    else:
-        pass
+    # else:
+    #     pass
 
 
 

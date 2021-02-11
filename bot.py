@@ -110,6 +110,8 @@ def process_trade(msg):
 
     trade = get_recent_trade(msg.from_user)
 
+    payment_link = send_invoice(trade)
+
     bot.send_message(
         trade.seller,
         emoji.emojize(
@@ -118,7 +120,7 @@ def process_trade(msg):
 -----------------------
 
    :beginner: <b>ID --> {trade.id}</b>
-   :beginner: <b>Price --> {trade.price} {trade.currency}</b>
+   :beginner: <b>Payment Portal--> {payment_link}</b>
    :beginner: <b>Preferred method of payment --> {trade.coin}</b>
    :beginner: <b>Created on --> {trade.created_at}</b>
 

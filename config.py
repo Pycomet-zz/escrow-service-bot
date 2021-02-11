@@ -19,6 +19,10 @@ ADMIN_ID = os.getenv("ADMIN_ID")
 API_KEY = os.getenv("API_KEY")
 API_SECRET = os.getenv("API_SECRET")
 
+FORGING_BLOCK_TOKEN = os.getenv("FORGING_BLOCK_TOKEN")
+MAIL = os.getenv("MAIL")
+PASS = os.getenv("PASS")
+
 bot = telebot.AsyncTeleBot(TOKEN, threaded=True)
 
 import importdir

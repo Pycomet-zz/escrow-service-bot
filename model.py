@@ -34,6 +34,15 @@ class Trade(Base):
     buyer = Column(Integer)
     price = Column(Integer)
 
+    # Forging Block info
+    mnemonic = Column(String(200))
+    xpub = Column(String(200))
+    address =  Column(String(50))
+    trade = Column(String(50))
+    token = Column(String(100))
+    store = Column(String(50))
+    invoice = Column(String(50))
+
     currency = Column(String(32))
     coin = Column(String(32))
     wallet = Column(String(50))
@@ -112,8 +121,8 @@ class Affiliate(Base):
         else:
             return info
 
-Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
+# Base.metadata.drop_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 # Base.metadata.create_all(bind=engine)
 
