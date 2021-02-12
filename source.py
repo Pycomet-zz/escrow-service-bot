@@ -13,14 +13,14 @@ class BitcoinApi(object):
     def create_wallet(self):
         # import pdb; pdb.set_trace()
         try:
-            res1 = requests.get("https://wallet-api.forgingblock.io/v1/create-btc-mnemonic")
+            res1 = requests.post("https://wallet-api.forgingblock.io/v1/create-btc-mnemonic")
             self.mnemonic = res1['mnemonic']
 
             payload = {
                 'mnemonic': self.mnemonic,
                 'number': 0
             }
-            res2 = requests.get("https://wallet-api.forgingblock.io/v1/retrieve-btc-wallet-address", params=payload)
+            res2 = requests.post("https://wallet-api.forgingblock.io/v1/retrieve-btc-wallet-address", params=payload)
             self.address = res2['address']
             return self.mnemonic, self.address
 
@@ -31,7 +31,7 @@ class BitcoinApi(object):
         payload = {
             'mnemonic': self.mnemonic,
         }
-        res = requests.get("https://wallet-api.forgingblock.io/v1/generate-btc-xpub", params=payload)
+        res = requests.post("https://wallet-api.forgingblock.io/v1/generate-btc-xpub", params=payload)
         self.xpub = res['xpub']
 
         return self.xpub
@@ -44,7 +44,7 @@ class BitcoinApi(object):
             'xpub': self.xpub,
             'name': name
         }
-        result = requests.get("https://api.forgingblock.io/create-store", params=payload)
+        result = requests.post("https://api.forgingblock.io/create-store", params=payload)
         
         self.trade = result['trade']
         self.token = result['token']
@@ -60,7 +60,7 @@ class BitcoinApi(object):
                 'address': self.address,
                 'store': self.store
             }
-            result = requests.get("https://api.forgingblock.io/connect-wallet-btc-single", params=payload)
+            result = requests.post("https://api.forgingblock.io/connect-wallet-btc-single", params=payload)
             return result['success']
 
         except Exception as e:
@@ -76,7 +76,7 @@ class BitcoinApi(object):
                 'amount': trade.price,
                 'currency': trade.currency,
             }
-            result = requests.get('https://api.forgingblock.io/create-invoice', params=payload)
+            result = requests.post('https://api.forgingblock.io/create-invoice', params=payload)
             
             self.invoice = result['id']
             return self.invoice
@@ -91,7 +91,7 @@ class BitcoinApi(object):
                 'token': trade.token,
                 'invoice': trade.invoice
             }
-            result = requests.get('https://api.forgingblock.io/check-invoice', params=payload)
+            result = requests.post('https://api.forgingblock.io/check-invoice', params=payload)
             return result['payUrl']
 
         except Exception as e:
@@ -104,7 +104,7 @@ class BitcoinApi(object):
                 'token': trade.token,
                 'invoice': trade.invoice
             }
-            result = requests.get('https://api.forgingblock.io/check-invoice-status', params=payload)
+            result = requests.post('https://api.forgingblock.io/check-invoice-status', params=payload)
             return result['status']
 
         except Exception as e:
