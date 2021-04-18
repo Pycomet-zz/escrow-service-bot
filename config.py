@@ -9,7 +9,7 @@ from coinbase.wallet.client import Client
 from dotenv import load_dotenv
 load_dotenv()
 
-DEBUG = True
+DEBUG = False
 
 # Configuration variable
 TOKEN = os.getenv("TOKEN")
