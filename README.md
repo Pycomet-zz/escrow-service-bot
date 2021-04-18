@@ -16,7 +16,7 @@
     <img src="images/escrowbot.jpg" alt="Logo" width="200" height="200">
   </a>
 
-  <h2 align="center">Escrow Service Bot</h2>
+  <h2 align="center">Escrow Service Bot Software</h2>
 
   <p align="center">
     An awesome bot to ensure fast and secure trades with a hundred percent transparency
