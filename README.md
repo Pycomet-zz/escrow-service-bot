@@ -36,6 +36,9 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+  <a href="https://twitter.com/code_fredy" target="_blank">
+    <img alt="Twitter: code_fredy" src="https://img.shields.io/twitter/follow/code_fredy.svg?style=social" />
+  </a>
 
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-version 1-blue.svg?cacheSeconds=2592000" />
