@@ -26,11 +26,19 @@ def trade_delete(msg):
     """
     Deleting the trade
     """
+    user = msg.from_user
     trade_id = msg.text
 
-    status = delete_trade(trade_id)
+    response = seller_delete_trade(user.id, trade_id)
+    
 
     bot.send_message(
-        msg.from_user.id,
-        f"Deleting Trade {trade_id} {status}"
+        user.id,
+        emoji.emojize(
+            f"""
+<b>{response}</b>
+            """,
+            use_aliases=True
+        ),
+        parse_mode=telegram.ParseMode.HTML,
     )

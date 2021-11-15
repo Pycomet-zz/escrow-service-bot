@@ -1,4 +1,5 @@
 from config import *
+from handlers.history import send_all_trades, user_trade_delete
 from keyboard import *
 from functions import *
 from bot import *
@@ -161,6 +162,26 @@ def callback_answer(call):
 
     elif call.data == "close_trade":
         close_dispute_trade(call.from_user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
+
+
+
+
+    elif call.data == "view_all_trades":
+        send_all_trades(call)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
+
+
+    elif call.data == "delete_trade":
+        question = bot.send_message(
+            call.from_user.id,
+            emoji.emojize(
+                ":warning: What is the ID of the trade ? ",
+                use_aliases=True
+            )
+        )
+        question = question.wait()
+        bot.register_next_step_handler(question, user_trade_delete)
         bot.delete_message(call.message.chat.id, call.message.message_id)
 
     else:

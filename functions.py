@@ -217,6 +217,18 @@ def delete_trade(trade_id):
         session.commit()
         return "Complete!"
 
+def seller_delete_trade(user_id, trade_id):
+    "Delete Trade"
+    trade = session.query(Trade).filter_by(id= trade_id).one_or_none()
+
+    if trade is None:
+        return "Trade Not Found"
+    elif trade.seller is not int(user_id): 
+        return "You are not authorized to take this action. Please contact support!"
+    else:
+        session.commit()
+        return "Trade Deleted Successfully"
+
 
 def check_trade(user, trade_id):
     "Return trade info"
@@ -245,6 +257,23 @@ def get_trades(user):
     buys = session.query(Trade).filter(Trade.buyer == user.id).all()
 
     return sells, buys
+
+def get_trades_report(sells:list, buys:list):
+    "Return aggregated data of trades"
+    purchases = len(buys)
+    sales = len(sells)
+    
+    active_buys = [ i for i in buys if i.is_open == False ]
+    active_sells = [ i for i in sells if i.is_open == False ]
+    active = len(active_buys) + len(active_sells)
+
+    trades = purchases + sales
+
+    r_buys = [ i for i in buys if i.dispute is not [] ]
+    r_sells = [ i for i in sells if i.dispute is not [] ]
+    reports = len(r_buys) + len(r_sells)
+
+    return purchases, sales, trades, active, reports
 
 def confirm_pay(trade):
     "Confirm Payment"

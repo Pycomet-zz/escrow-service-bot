@@ -84,9 +84,17 @@ def confirm_goods():
     return keyboard
 
 def refunds():
-    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
     a = types.InlineKeyboardButton(text=emoji.emojize(":man: To Buyer", use_aliases=True), callback_data="refund_to_buyer")
     b = types.InlineKeyboardButton(text=emoji.emojize(":man: To Seller", use_aliases=True), callback_data="pay_to_seller")
     c = types.InlineKeyboardButton(text=emoji.emojize(" :closed_lock_with_key: Close Trade", use_aliases=True), callback_data="close_trade")
     keyboard.add(a, b, c)
+    return keyboard
+
+
+def select_trade():
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    a = types.InlineKeyboardButton(text=emoji.emojize("View Trades", use_aliases=True), callback_data="view_all_trades")
+    b = types.InlineKeyboardButton(text=emoji.emojize("Delete Trade", use_aliases=True), callback_data="delete_trade")
+    keyboard.add(a, b)
     return keyboard
