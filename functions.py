@@ -15,6 +15,11 @@ def send_invoice(trade):
     Create invoice and extract url
     """
     u_id = client.create_invoice(trade)
+
+    trade.invoice = u_id
+    session.add(trade)
+    session.commit()
+
     url = client.get_payment_url(trade)
     return url
 
@@ -137,6 +142,7 @@ def open_new_trade(user, currency):
         affiliate = affiliate.id
 
     # CREATE FORGING BLOCK STORE
+    # import pdb; pdb.set_trace()
     mnemonic, address = client.create_wallet()
 
     xpub = client.get_xpub()
@@ -282,34 +288,38 @@ def confirm_pay(trade):
     session.add(trade)
     session.commit()
 
-def check_payment(trade, hash):
+def check_payment(trade):
     "Returns Status Of Payment"
     status = client.check_status(trade)
+    # import pdb; pdb.set_trace()
 
-    if status == 'complete':
+    if status in ('paid', 'completed', 'complete'):
+        trade.payment_status = True
+        session.add(trade)
+        session.commit()
         return "Approved"
     else:
         return "Pending"
 
-def pay_funds_to_seller(trade):
-    "Calculate Fees And Send Funds To Seller"
-    affiliate = Affiliate().check_affiliate(trade.affiliate_id)
+# def pay_funds_to_seller(trade):
+#     "Calculate Fees And Send Funds To Seller"
+#     affiliate = Affiliate().check_affiliate(trade.affiliate_id)
     
-    coin_price = get_coin_price(
-        coin_code=trade.coin,
-        currency_code=trade.currency
-    )
+#     coin_price = get_coin_price(
+#         coin_code=trade.coin,
+#         currency_code=trade.currency
+#     )
 
-    value = float(trade.price)/float(coin_price)
+#     value = float(trade.price)/float(coin_price)
 
-    service_charge = 0.01 * float(value)
-    fees = 0.0149 * value
+#     service_charge = 0.01 * float(value)
+#     fees = 0.0149 * value
 
-    pay_price = float(value) - service_charge + fees
+#     pay_price = float(value) - service_charge + fees
 
-    price = "%.4f" % pay_price
+#     price = "%.4f" % pay_price
 
-    a_price = "%.4f" % service_charge # Affiliate pay
+#     a_price = "%.4f" % service_charge # Affiliate pay
 
     #
     #     # #################################################################################
@@ -353,6 +363,35 @@ def pay_funds_to_seller(trade):
 
     # else:
     #     pass
+
+
+def pay_funds_to_seller(trade):
+    "Calculate Fees And Send Funds To Seller"
+    affiliate = Affiliate().check_affiliate(trade.affiliate_id)
+    
+    # GET TRADE BALANCE
+
+
+    coin_price = get_coin_price(
+        coin_code=trade.coin,
+        currency_code=trade.currency
+    )
+
+    # CONDITION ON COIN ATTACH TO TRADE
+
+    #   # FETCH GAS FEE FROM WALLET API
+
+    #   # Remove gas fees from payout
+
+    #   # Remove 15% of remaining payout for admin (20% if in affiliate)
+
+    #   # Make seller payout 
+
+    #   # Update all trade parties and admin with trade transaction hash
+
+    ##  ##  ## IF AFFILIATE ( Make 10% agent payout to admin wallet )
+
+    # Close Trade - Update Affiliate Group
 
 
 def close_trade(trade):

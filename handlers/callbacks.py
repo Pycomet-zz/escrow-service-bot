@@ -1,5 +1,6 @@
 from config import *
-from handlers.history import send_all_trades, user_trade_delete
+from handlers.history import *
+from handlers.initiate_trade import *
 from keyboard import *
 from functions import *
 from bot import *
@@ -87,13 +88,14 @@ def callback_answer(call):
     # PAYMENT VALIDATION
     elif call.data == "payment_confirmation":
         #Check payment confirmation
-        question = bot.send_message(
-            call.from_user.id,
-            emoji.emojize(":point_right: Paste the transaction hash for confirmation below", use_aliases=True),
-        )
-        question = question.wait()
-        bot.register_next_step_handler(question, validate_pay)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
+        # question = bot.send_message(
+        #     call.from_user.id,
+        #     emoji.emojize(":point_right: Paste the transaction hash for confirmation below", use_aliases=True),
+        # )
+        # question = question.wait()
+        # bot.register_next_step_handler(question, validate_pay)
+        validate_pay(call)
+        # bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
 

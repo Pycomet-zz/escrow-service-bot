@@ -15,9 +15,9 @@ TOKEN = os.getenv("TOKEN")
 
 ADMIN_ID = os.getenv("ADMIN_ID")
 
-# Coinbase API for payments
-API_KEY = os.getenv("API_KEY")
-API_SECRET = os.getenv("API_SECRET")
+# # Coinbase API for payments
+# API_KEY = os.getenv("API_KEY")
+# API_SECRET = os.getenv("API_SECRET")
 
 FORGING_BLOCK_TOKEN = os.getenv("FORGING_BLOCK_TOKEN")
 MAIL = os.getenv("MAIL")

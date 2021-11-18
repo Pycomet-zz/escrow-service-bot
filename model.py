@@ -24,6 +24,15 @@ class User(Base):
     def __repr__(self):
         return "<User(id='%s')>" % (self.id)
 
+class Agent(Base):
+    """
+    House User Accounts With Wallets
+    """
+    __tablename__ = "agent"
+
+    id = Column(Integer, primary_key=True)~
+
+
 class Trade(Base):
     """
     SqlAlchemy ORM Trade Model
