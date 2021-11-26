@@ -24,13 +24,6 @@ class User(Base):
     def __repr__(self):
         return "<User(id='%s')>" % (self.id)
 
-class Agent(Base):
-    """
-    House User Accounts With Wallets
-    """
-    __tablename__ = "agent"
-
-    id = Column(Integer, primary_key=True)~
 
 
 class Trade(Base):
@@ -43,13 +36,7 @@ class Trade(Base):
     buyer = Column(Integer)
     price = Column(Integer)
 
-    # Forging Block info
-    mnemonic = Column(String(200))
-    xpub = Column(String(200))
     address =  Column(String(50))
-    trade = Column(String(50))
-    token = Column(String(100))
-    store = Column(String(50))
     invoice = Column(String(50))
 
     currency = Column(String(32))
@@ -60,9 +47,9 @@ class Trade(Base):
     created_at = Column(String(32))
     updated_at = Column(String(32))
     is_open = Column(Boolean)
-    affiliate_id = Column(String(39))
+    agent_id = Column(String(50))
 
-    receive_address_id = Column(String(50))
+    # receive_address_id = Column(String(50))
 
     dispute = relationship("Dispute", cascade="all, delete-orphan")
 
@@ -108,16 +95,35 @@ class Dispute(Base):
             return False
 
 
+class Agent(Base):
+    """
+    House User Accounts With Wallets
+    """
+    __tablename__ = "agent"
+
+    id = Column(Integer, primary_key=True)
+    mnemonic = Column(String(200))
+    xpub = Column(String(200))
+    btc_address =  Column(String(50))
+    eth_address =  Column(String(50))
+    trade = Column(String(50))
+    token = Column(String(100))
+    store = Column(String(50))
+    affiliate = relationship("Affiliate", back_populates="agent")
+
+    def __repr__(self):
+        return f"<Agent(id='{self.id}')"
+
+
 class Affiliate(Base):
     """
     SQLAlchemy ORM Affiliate Records Table
     """
     __tablename__ = "affiliates"
 
-    id = Column(String, unique=True, primary_key=True)
-    btc_wallet = Column(String(40))
-    eth_wallet = Column(String(40))
-    admin = Column(Integer)
+    id = Column(String, primary_key=True)
+    agent_id = Column(Integer, ForeignKey('agent.id'))
+    agent = relationship("Agent", back_populates="affiliate")
 
     def __repr__(self):
         return "<Group (id='%s')>" % (self.id)
@@ -129,6 +135,9 @@ class Affiliate(Base):
             return None
         else:
             return info
+
+
+
 
 # Base.metadata.drop_all(bind=engine)
 # Base.metadata.create_all(bind=engine)

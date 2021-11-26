@@ -25,6 +25,9 @@ class BitcoinApi(object):
             self.address = res2['address']
             return self.mnemonic, self.address
 
+
+        ### FETCH ETH ADDRESS
+
         except Exception as e:
             return None
 
@@ -131,24 +134,24 @@ class BitcoinApi(object):
             return "Failed"
 
 
-    def get_btc_balance(address:str) -> object:
+    def get_btc_balance(self, address:str) -> object:
         try:
             payload = {
                 'address': address
             }
             result = requests.post('https://wallet-api.forgingblock.io/v1/find-btc-address-balance', data=payload).json()
-            return result
+            return result['balance']
 
         except Exception as e:
             return "Failed"
 
-    def get_eth_balance(address:str) -> object:
+    def get_eth_balance(self, address:str) -> object:
         try:
             payload = {
                 'address': address
             }
             result = requests.post('https://wallet-api.forgingblock.io/v1/find-eth-address-balance', data=payload).json()
-            return result
+            return result['balance']
 
         except Exception as e:
             return "Failed"

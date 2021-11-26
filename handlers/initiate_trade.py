@@ -24,6 +24,7 @@ def open_trade(msg):
 
 
 
+
 def select_coin(user):
     """
     Selecting the right coin option for trade

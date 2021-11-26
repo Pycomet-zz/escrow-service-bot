@@ -1,10 +1,12 @@
 from config import *
 from handlers.history import *
 from handlers.initiate_trade import *
+from handlers.rules import rules
 from keyboard import *
 from functions import *
 from bot import *
 from affiliate import *
+from agent import *
 
 from handlers.verdict import *
 
@@ -29,6 +31,20 @@ def callback_answer(call):
         bot.delete_message(call.message.chat.id, call.message.message_id)
 
 
+    #AGENT ACTIONS
+    elif call.data == "deposit":
+        pull_agent_address(call)
+
+    elif call.data == "withdraw":
+        pass
+
+    elif call.data == "help":
+        rules(call)
+
+    elif call.data == "agent_trades":
+        pull_agent_trades(call)
+
+
     #CURRENCY OPTIONS
     elif call.data == "dollar":
         #create trade
@@ -41,31 +57,6 @@ def callback_answer(call):
         open_new_trade(call, "EUR")
         select_coin(call.from_user)
         bot.delete_message(call.message.chat.id, call.message.message_id)
-
-    elif call.data == "pound":
-        #create trade
-        open_new_trade(call, "GBP")
-        select_coin(call.from_user)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
-
-    elif call.data == "c_dollar":
-        #create trade
-        open_new_trade(call, "CAD")
-        select_coin(call.from_user)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
-
-    elif call.data == "yen":
-        #create trade
-        open_new_trade(call, "JPY")
-        select_coin(call.from_user)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
-    
-    elif call.data == "swiss":
-        #create trade
-        open_new_trade(call, "CHF")
-        select_coin(call.from_user)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
-
 
 
 

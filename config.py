@@ -3,10 +3,8 @@ import telegram
 import telebot
 from telebot import types
 import emoji
-from blockchain import blockexplorer
 from flask import Flask, Blueprint, make_response, request, render_template
 from flask_restful import Api, Resource
-from coinbase.wallet.client import Client
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -20,6 +18,10 @@ ADMIN_ID = os.getenv("ADMIN_ID")
 # API_SECRET = os.getenv("API_SECRET")
 
 FORGING_BLOCK_TOKEN = os.getenv("FORGING_BLOCK_TOKEN")
+FORGING_BLOCK_STORE = os.getenv("FORGING_BLOCK_STORE")
+FORGING_BLOCK_TRADE = os.getenv("FORGING_BLOCK_TRADE")
+FORGING_BLOCK_ADDRESS = os.getenv("FORGING_BLOCK_ADDRESS")
+
 MAIL = os.getenv("MAIL")
 PASS = os.getenv("PASS")
 
@@ -27,4 +29,3 @@ bot = telebot.AsyncTeleBot(TOKEN, threaded=True)
 
 import importdir
 importdir.do("handlers", globals())
-   

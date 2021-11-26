@@ -1,5 +1,6 @@
 from config import *
 
+
 def main_menu(msg):
     "Return Main Menu Keyboard"
 
@@ -41,16 +42,26 @@ def buyer_menu():
     keyboard.add(a,b,c,d)
     return keyboard
 
+def agent_menu(balance):
+    "Return Agent Options"
+    
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    a = types.InlineKeyboardButton(text=emoji.emojize("Deposit  :inbox_tray:", use_aliases=True), callback_data="deposit")
+    b = types.InlineKeyboardButton(text=emoji.emojize(f"Balance {balance}BTC  :moneybag:", use_aliases=True), callback_data="d")
+    c = types.InlineKeyboardButton(text=emoji.emojize("Withdraw  :outbox_tray:", use_aliases=True), callback_data="withdraw")
+    d = types.InlineKeyboardButton(text=emoji.emojize("Help  :bulb:", use_aliases=True), callback_data="help")
+    e = types.InlineKeyboardButton(text=emoji.emojize("History  :book:", use_aliases=True), callback_data="agent_trades")
+    f = types.InlineKeyboardButton(text=emoji.emojize(":man: Add Bot To Your Group", use_aliases=True), callback_data="affiliate")
+
+    keyboard.add(a,b,c,d,e,f)
+    return keyboard
+
 def local_currency_menu():
     keyboard = types.InlineKeyboardMarkup(row_width=2)
     a = types.InlineKeyboardButton(text=emoji.emojize(":dollar: US Dollars (USD)", use_aliases=True), callback_data="dollar")
     b = types.InlineKeyboardButton(text=emoji.emojize(":euro: Euros (EUR)", use_aliases=True), callback_data="euro")
-    c = types.InlineKeyboardButton(text=emoji.emojize(":pound: British Pound (EUR)", use_aliases=True), callback_data="pound")
-    d = types.InlineKeyboardButton(text=emoji.emojize(":dollar: Canadian Dollar (CAD)", use_aliases=True), callback_data="c_dollar")
-    e = types.InlineKeyboardButton(text=emoji.emojize(":yen: Japanese Yen (JPY)", use_aliases=True), callback_data="yen")
-    f = types.InlineKeyboardButton(text=emoji.emojize(":euro: Swiss Franc (CHF)", use_aliases=True), callback_data="swiss")
     
-    keyboard.add(a,b,c,d,e,f)
+    keyboard.add(a,b)
     return keyboard
 
 

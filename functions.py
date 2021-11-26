@@ -1,6 +1,6 @@
 from config import *
 from source import BitcoinApi
-from model import User, Trade, Dispute, Affiliate, session
+from model import Agent, User, Trade, Dispute, Affiliate, session
 
 import random
 import requests
@@ -37,6 +37,7 @@ def get_user(msg):
         session.add(user)
         session.commit()
         return user
+
 
 def get_received_msg(msg):
     "Delete This Message"
@@ -95,14 +96,16 @@ def get_recent_trade(user):
 
         return trades[position]
 
-def create_affiliate(user, id):
+def create_affiliate(agent, id):
     "Return a newly created affilate object"
     check = Affiliate().check_affiliate(id)
 
     if check == None:
+        import pdb; pdb.set_trace()
         affiliate = Affiliate(
             id = id,
-            admin = user,
+            agent_id = agent.id,
+            agent = agent
         )
         session.add(affiliate)
         session.commit()
@@ -119,21 +122,11 @@ def get_affiliate(id):
     else:
         return None
 
-def add_affiliate_btc(id, wallet):
-    affiliate = session.query(Affiliate).filter_by(id=id).first()
-    affiliate.btc_wallet = wallet
-    session.add(affiliate)
-
-def add_affiliate_eth(id, wallet):
-    affiliate = session.query(Affiliate).filter_by(id=id).first()
-    affiliate.eth_wallet = wallet
-    session.add(affiliate)
-    # session.commit()
 
 
 def open_new_trade(user, currency):
     """
-    Returns a new trade
+    Returns a new trade without Agent
     """
     user = get_user(msg=user)
 
@@ -141,13 +134,6 @@ def open_new_trade(user, currency):
     if affiliate != None:
         affiliate = affiliate.id
 
-    # CREATE FORGING BLOCK STORE
-    # import pdb; pdb.set_trace()
-    mnemonic, address = client.create_wallet()
-
-    xpub = client.get_xpub()
-    trade, token, store = client.create_store(name=f'{user.id}-{xpub}')
-    status = client.connect_store()
 
     # Create bot trade
     trade = Trade(
@@ -159,21 +145,15 @@ def open_new_trade(user, currency):
         updated_at = str(datetime.now()),
         is_open = True,
         affiliate_id = affiliate,
-        mnemonic=mnemonic,
-        xpub=xpub,
-        address=address,
-        trade=trade,
-        token=token,
-        store=store,
+        agent_id = None,
+        address=FORGING_BLOCK_ADDRESS,
         invoice=""
         )
 
     session.add(trade)
     session.commit()
 
-    print(status)
-    return status
-
+    return "Trade Created!"
 
 def add_coin(user, coin):
     """
@@ -526,3 +506,89 @@ def add_complaint(dispute, text):
     dispute.complaint = text
     session.add(dispute)
     session.commit()
+
+
+#######################AGENT FUNCTIONS############################
+
+class AgentAction(object):
+
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def check_agent(self, id:int) -> bool:
+        agent = session.query(Agent).filter_by(id=id).first()
+        if agent is None:
+            return False, None
+        else:
+            return True, agent
+
+    def create_agent(cls, user_id) -> Agent:
+        "Creates agent entity"
+        agent = session.query(Agent).filter_by(id=user_id).first()
+
+        if agent is None:
+
+            # Create wallet and store
+            mnemonic, address = client.create_wallet()
+            xpub = client.get_xpub()
+            trade, token, store = client.create_store(name=f'{xpub}-{address}')
+            client.connect_store()
+
+            ### FETCH ETH ADDRESS
+
+            agent = Agent(
+                id=user_id,
+                mnemonic=mnemonic,
+                xpub=xpub,
+                trade=trade,
+                token=token,
+                store=store,
+                btc_address=address,
+                eth_address=""
+            )
+
+            session.add(agent)
+            session.commit()
+
+        return agent
+
+
+    def create_trade(self, id) -> Trade:
+        "Create a new trade and post to group"
+        agent = self.create_agent(id)
+
+        trade = Trade(
+            id = generate_id(),
+            payment_status = False,
+            created_at = str(datetime.now()),
+            is_open = False,
+            agent_id = agent.id,
+            address = agent.btc_address
+        )
+
+        session.add(trade)
+        session.commit()
+        return trade
+
+    
+    def get_balance(self, agent) -> float:
+        "Fetch bitcoin and ethereum balance"
+        # import pdb; pdb.set_trace()
+        self.btc = client.get_btc_balance(agent.btc_address)
+
+        # self.eth = client.get_eth_balance(agent.eth_address)
+        self.eth = 0.0
+
+        if  self.btc == "Failed":
+            return None, None
+
+        else:
+            return float(self.btc), float(self.eth)
+
+
+    def get_trades(self, id) -> list:
+        "Ftech All Agent Related Trade"
+
+        trades = session.query(Trade).filter_by(agent_id=id).all()
+        return trades
+
