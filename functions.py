@@ -101,7 +101,7 @@ def create_affiliate(agent, id):
     check = Affiliate().check_affiliate(id)
 
     if check == None:
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         affiliate = Affiliate(
             id = id,
             agent_id = agent.id,
@@ -131,9 +131,9 @@ def open_new_trade(user, currency):
     user = get_user(msg=user)
 
     affiliate = get_affiliate(user.chat)
+    # import pdb; pdb.set_trace()
     if affiliate != None:
         affiliate = affiliate.id
-
 
     # Create bot trade
     trade = Trade(
@@ -144,7 +144,6 @@ def open_new_trade(user, currency):
         created_at = str(datetime.now()),
         updated_at = str(datetime.now()),
         is_open = True,
-        affiliate_id = affiliate,
         agent_id = None,
         address=FORGING_BLOCK_ADDRESS,
         invoice=""
@@ -220,11 +219,12 @@ def check_trade(user, trade_id):
     "Return trade info"
 
     trade = session.query(Trade).filter(Trade.id == trade_id).first()
+    
     if trade == None:
 
         return "Not Found"
 
-    elif trade.buyer == trade.seller:
+    elif str(trade.buyer) == trade.seller:
 
         return "Not Permitted"
     
@@ -356,10 +356,12 @@ def pay_funds_to_seller(trade):
         coin_code=trade.coin,
         currency_code=trade.currency
     )
-
+    
+    value = float(trade.price)/float(coin_price)
     # CONDITION ON COIN ATTACH TO TRADE
 
     #   # FETCH GAS FEE FROM WALLET API
+    
 
     #   # Remove gas fees from payout
 
@@ -506,6 +508,8 @@ def add_complaint(dispute, text):
     dispute.complaint = text
     session.add(dispute)
     session.commit()
+    
+    
 
 
 #######################AGENT FUNCTIONS############################
@@ -553,23 +557,38 @@ class AgentAction(object):
         return agent
 
 
-    def create_trade(self, id) -> Trade:
+    def create_trade(self, id, price, wallet) -> Trade:
         "Create a new trade and post to group"
         agent = self.create_agent(id)
+        
 
         trade = Trade(
             id = generate_id(),
             payment_status = False,
             created_at = str(datetime.now()),
-            is_open = False,
+            is_open = True,
             agent_id = agent.id,
-            address = agent.btc_address
+            seller = agent.affiliate[0].id,
+            price = price,
+            currency = "USD",
+            coin = "BTC",
+            wallet =  wallet,
+            address = agent.btc_address,
+            invoice = ""
         )
+        
+        trade = self.get_invoice(trade, agent)
 
         session.add(trade)
         session.commit()
         return trade
 
+    def get_invoice(self, trade, agent):
+        "Cretae and add the invoice to the trade"
+        u_id = client.create_invoice(trade, agent)
+        trade.invoice = u_id
+        return trade
+        
     
     def get_balance(self, agent) -> float:
         "Fetch bitcoin and ethereum balance"
@@ -591,4 +610,3 @@ class AgentAction(object):
 
         trades = session.query(Trade).filter_by(agent_id=id).all()
         return trades
-

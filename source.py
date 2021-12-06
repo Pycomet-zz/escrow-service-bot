@@ -89,14 +89,22 @@ class BitcoinApi(object):
 
 
     
-    def create_invoice(self, trade):
+    def create_invoice(self, trade, agent:None):
+        
+        # 5% Added to Invoice Payment
+        extra = 0.05 * float(trade.price)
 
+        if trade.agent_id != None:
+            extra = 0.08 * float(trade.price)
+        
+        price = trade.price + extra    
+        
         try:
             payload = {
-                'trade': trade.trade,
-                'token': trade.token,
-                'amount': trade.price,
-                'currency': trade.currency,
+                'trade': agent.trade or FORGING_BLOCK_TRADE,
+                'token': agent.token or FORGING_BLOCK_TOKEN,
+                'amount': int(price),
+                'currency': trade.currency.lower(),
             }
             result = requests.post('https://api.forgingblock.io/create-invoice', data=payload).json()
             
@@ -104,13 +112,14 @@ class BitcoinApi(object):
             return self.invoice
 
         except Exception as e:
-            return "Failed"
+            return "Temporary Delay..."
 
-    def get_payment_url(self, trade):
+    def get_payment_url(self, trade, agent:None):
+
         try:
             payload = {
-                'trade': trade.trade,
-                'token': trade.token,
+                'trade': agent.trade or FORGING_BLOCK_TRADE,
+                'token': agent.token or FORGING_BLOCK_TOKEN,
                 'invoice': trade.invoice
             }
             result = requests.post('https://api.forgingblock.io/check-invoice', data=payload).json()
@@ -119,11 +128,11 @@ class BitcoinApi(object):
         except Exception as e:
             return "Failed"
 
-    def check_status(self, trade):
+    def check_status(self, trade, agent:None):
         try:
             payload = {
-                'trade': trade.trade,
-                'token': trade.token,
+                'trade': agent.trade or FORGING_BLOCK_TRADE,
+                'token': agent.token or FORGING_BLOCK_TOKEN,
                 'invoice': trade.invoice
             }
             result = requests.post('https://api.forgingblock.io/check-invoice-status', data=payload).json()

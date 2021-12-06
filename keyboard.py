@@ -8,13 +8,25 @@ def main_menu(msg):
     a = types.InlineKeyboardButton(text=emoji.emojize("I am a Seller :man:", use_aliases=True), callback_data="seller")
     b = types.InlineKeyboardButton(text=emoji.emojize("I am a Buyer :man:", use_aliases=True), callback_data="buyer")
     c = types.InlineKeyboardButton(text=emoji.emojize(":man: Using this service on my group :man:", use_aliases=True), callback_data="affiliate")
-    
-    keyboard.add(a,b)
-    
+
+    # d = types.InlineKeyboardButton(text=emoji.emojize("Join A Trade :man:", use_aliases=True), url="https://t.me/tele_escrowbot?message=start")
+
     if msg.chat.type == "private":
-        keyboard.add(c)
+        keyboard.add(a,b,c)
+    else:
+        # keyboard.add(d)
+        pass
     
     return keyboard
+
+def group_menu():
+    "Return Join Or Sell"
+    
+    keyboard = types.InlineKeyboardMarkup(row_width=2)
+    a = types.InlineKeyboardButton(text=emoji.emojize("Join A Trade :man:", use_aliases=True), url="https://t.me/tele_escrowbot?message=start")
+    keyboard.add(a)
+    return keyboard
+
 
 
 def seller_menu():

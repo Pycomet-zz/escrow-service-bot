@@ -19,7 +19,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    chat = Column(String(9))
+    chat = Column(String(20))
 
     def __repr__(self):
         return "<User(id='%s')>" % (self.id)
@@ -32,7 +32,7 @@ class Trade(Base):
     """
     __tablename__ = 'trades'
     id = Column(String(16), primary_key=True)
-    seller = Column(Integer)
+    seller = Column(String(20))
     buyer = Column(Integer)
     price = Column(Integer)
 

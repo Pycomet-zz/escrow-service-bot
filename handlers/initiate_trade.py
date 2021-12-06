@@ -13,7 +13,7 @@ def open_trade(msg):
     bot.delete_message(chat.id, id)
 
     bot.send_message(
-        msg.from_user.id,
+        msg.chat.id,
         emoji.emojize(
             ":money_bag: To create a new trade today, select which is your local currency of choice... ",
             use_aliases=True

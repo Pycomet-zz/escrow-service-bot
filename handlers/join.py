@@ -34,21 +34,14 @@ def join_trade(msg):
         trade_id=trade_id)
 
     if isinstance(trade, str) != True:
-
+        
         #Amount To Be Paid
         coin_price = get_coin_price(
             coin_code=trade.coin,
             currency_code=trade.currency
         )
-
-        coin_value = float(trade.price)/float(coin_price)
-
-        service_charge = 0.02 * float(coin_value)
-        fees = (0.0149 * coin_value) * 2
-
-        pay_price = float(coin_value) + service_charge + float(fees)
-
-        price = "%.4f" % pay_price
+        
+        payment_url = client.get_payment_url(trade)
 
         receive_wallet = get_receive_address(trade)
 
@@ -57,16 +50,16 @@ def join_trade(msg):
             trade.buyer,
             emoji.emojize(
                 f"""
-:memo: <b>Trade Details</b> :memo:
+:memo: <b>{trade.id} Trade Details</b> 
 -----------------------------------
-
-:beginner: <b>ID --> {trade.id}</b>
 :beginner: <b>Price --> {trade.price} {trade.currency}</b>
 :beginner: <b>Preferred method of payment --> {trade.coin}</b>
 :beginner: <b>Created on --> {trade.created_at}</b>
 :beginner: <b>Payment Complete --> {trade.payment_status}</b>
 
-:point_right: <b>You are expected to pay {price} {trade.coin} to wallet address below to recieve goods from seller</b>
+:point_right: <b>Please follow the url below to make payment on our secured portal. Click the button to confirm after you make payment</b>
+
+{payment_url}
 
 :point_right: {receive_wallet}
 
