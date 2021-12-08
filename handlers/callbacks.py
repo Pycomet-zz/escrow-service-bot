@@ -36,10 +36,24 @@ def callback_answer(call):
         pull_agent_address(call)
 
     elif call.data == "withdraw":
-        pass
+        question = bot.send_message(
+            call.from_user.id,
+            emoji.emojize(":point_right: Paste the address to make payments into (Bitcoin Wallets Only)", use_aliases=True),
+        )
+        question = question.wait()
+        bot.register_next_step_handler(question, pay_withdrawal)
 
     elif call.data == "help":
-        rules(call)
+        bot.send_message(
+            call.from_user.id,
+            emoji.emojize(
+                f"""
+    <b>Please contact @codefred if you run into any technical difficulty</b>
+                """,
+                use_aliases=True
+            ),
+            parse_mode='HTML',
+    )
 
     elif call.data == "agent_trades":
         pull_agent_trades(call)

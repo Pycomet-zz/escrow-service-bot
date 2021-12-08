@@ -97,44 +97,68 @@ class BitcoinApi(object):
         if trade.agent_id != None:
             extra = 0.08 * float(trade.price)
         
-        price = trade.price + extra    
+        price = trade.price + extra
         
         try:
-            payload = {
-                'trade': agent.trade or FORGING_BLOCK_TRADE,
-                'token': agent.token or FORGING_BLOCK_TOKEN,
-                'amount': int(price),
-                'currency': trade.currency.lower(),
-            }
+            if agent is None:
+                payload = {
+                    'trade': FORGING_BLOCK_TRADE,
+                    'token': FORGING_BLOCK_TOKEN,
+                    'amount': int(price),
+                    'currency': trade.currency.lower()
+                }
+            else:
+                payload = {
+                    'trade': agent.trade,
+                    'token': agent.token,
+                    'amount': int(price),
+                    'currency': trade.currency.lower()
+                }
             result = requests.post('https://api.forgingblock.io/create-invoice', data=payload).json()
             
             self.invoice = result['id']
             return self.invoice
 
         except Exception as e:
+            
             return "Temporary Delay..."
 
     def get_payment_url(self, trade, agent:None):
 
         try:
-            payload = {
-                'trade': agent.trade or FORGING_BLOCK_TRADE,
-                'token': agent.token or FORGING_BLOCK_TOKEN,
-                'invoice': trade.invoice
-            }
+            if agent is None:
+                payload = {
+                    'trade': FORGING_BLOCK_TRADE,
+                    'token': FORGING_BLOCK_TOKEN,
+                    'invoice': trade.invoice
+                }
+            else:
+                payload = {
+                    'trade': agent.trade,
+                    'token': agent.token,
+                    'invoice': trade.invoice
+                }
             result = requests.post('https://api.forgingblock.io/check-invoice', data=payload).json()
             return result['url']
 
         except Exception as e:
+            # import pdb; pdb.set_trace()
             return "Failed"
 
     def check_status(self, trade, agent:None):
         try:
-            payload = {
-                'trade': agent.trade or FORGING_BLOCK_TRADE,
-                'token': agent.token or FORGING_BLOCK_TOKEN,
-                'invoice': trade.invoice
-            }
+            if agent is None:
+                payload = {
+                    'trade': FORGING_BLOCK_TRADE,
+                    'token': FORGING_BLOCK_TOKEN,
+                    'invoice': trade.invoice
+                }
+            else:
+                payload = {
+                    'trade': agent.trade,
+                    'token': agent.token,
+                    'invoice': trade.invoice
+                }
             result = requests.post('https://api.forgingblock.io/check-invoice-status', data=payload).json()
             print(result)
             return result['status']

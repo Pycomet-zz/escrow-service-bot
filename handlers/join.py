@@ -40,8 +40,9 @@ def join_trade(msg):
             coin_code=trade.coin,
             currency_code=trade.currency
         )
-        
-        payment_url = client.get_payment_url(trade)
+  
+        agent = get_agent(trade)
+        payment_url = client.get_payment_url(trade, agent)
 
         receive_wallet = get_receive_address(trade)
 

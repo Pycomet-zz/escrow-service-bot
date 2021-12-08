@@ -80,7 +80,7 @@ def send_all_trades(msg):
 <b>Created on --> {sell.created_at}</b>
 <b>Payment Complete --> {sell.payment_status}</b>
 <b>Trade still open --> {sell.is_open}</b>
-<b>Affiliate ID --> {sell.affiliate_id}</b>
+<b>Affiliate ID --> {sell.agent_id}</b>
 
 <b>Dispute Status --> {sell.is_dispute()}</b>
                 """,
@@ -103,7 +103,7 @@ def send_all_trades(msg):
 <b>Created on --> {buy.created_at}</b>
 <b>Payment Complete --> {buy.payment_status}</b>
 <b>Trade still open --> {buy.is_open}</b>
-<b>Affiliate ID --> {buy.affiliate_id}</b>
+<b>Affiliate ID --> {buy.agent_id}</b>
 
 <b>Dispute Status --> {buy.is_dispute()}</b>
                 """,

@@ -14,13 +14,14 @@ def send_invoice(trade):
     """
     Create invoice and extract url
     """
-    u_id = client.create_invoice(trade)
+    agent = get_agent(trade)
+    u_id = client.create_invoice(trade, agent)
 
     trade.invoice = u_id
     session.add(trade)
     session.commit()
 
-    url = client.get_payment_url(trade)
+    url = client.get_payment_url(trade, agent)
     return url
 
 def get_user(msg):
@@ -37,6 +38,12 @@ def get_user(msg):
         session.add(user)
         session.commit()
         return user
+    
+def get_agent(trade):
+    if trade.agent_id is not None:
+        agent: Agent = session.query(Agent).filter_by(id=trade.agent_id).first()
+        return agent
+    return None
 
 
 def get_received_msg(msg):
@@ -81,7 +88,7 @@ def get_recent_trade(user):
     """
     Return a trade matching a seller
     """
-    trades = session.query(Trade).filter(Trade.seller == user.id)
+    trades = session.query(Trade).filter(Trade.seller == str(user.id))
     if trades.count() != 0:
         dates = [trade.updated_at for trade in trades]
         position = dates.index(max(dates))
@@ -208,7 +215,7 @@ def seller_delete_trade(user_id, trade_id):
 
     if trade is None:
         return "Trade Not Found"
-    elif trade.seller is not int(user_id): 
+    elif trade.seller is not str(user_id): 
         return "You are not authorized to take this action. Please contact support!"
     else:
         session.commit()
@@ -239,7 +246,7 @@ def check_trade(user, trade_id):
 def get_trades(user):
     "Retrun list of trades the user is in"
     
-    sells = session.query(Trade).filter(Trade.seller == user.id).all()
+    sells = session.query(Trade).filter(Trade.seller == str(user.id)).all()
     buys = session.query(Trade).filter(Trade.buyer == user.id).all()
 
     return sells, buys
@@ -270,7 +277,8 @@ def confirm_pay(trade):
 
 def check_payment(trade):
     "Returns Status Of Payment"
-    status = client.check_status(trade)
+    agent = get_agent(trade)
+    status = client.check_status(trade, agent)
     # import pdb; pdb.set_trace()
 
     if status in ('paid', 'completed', 'complete'):
@@ -347,7 +355,7 @@ def check_payment(trade):
 
 def pay_funds_to_seller(trade):
     "Calculate Fees And Send Funds To Seller"
-    affiliate = Affiliate().check_affiliate(trade.affiliate_id)
+    # affiliate = Affiliate().check_affiliate(trade.affiliate_id)
     
     # GET TRADE BALANCE
 
@@ -480,15 +488,15 @@ def create_dispute(user, trade):
     )
     trade.dispute.append(dispute)
 
-    if user.id == trade.seller and user.id == trade.buyer:
+    if str(user.id) == trade.seller and user.id == trade.buyer:
         dispute.is_buyer = True
         dispute.is_seller = True
 
-    elif user.id != trade.seller and user.id == trade.buyer:
+    elif str(user.id) != trade.seller and user.id == trade.buyer:
         dispute.is_buyer = True
         dispute.is_seller = False       
 
-    elif user.id == trade.seller and user.id != trade.buyer:
+    elif str(user.id)== trade.seller and user.id != trade.buyer:
         dispute.is_buyer = False
         dispute.is_seller = True
 
@@ -607,6 +615,9 @@ class AgentAction(object):
 
     def get_trades(self, id) -> list:
         "Ftech All Agent Related Trade"
-
-        trades = session.query(Trade).filter_by(agent_id=id).all()
+        all_trades = session.query(Trade).all()
+        trades = []
+        [trades.append(each) for each in all_trades if int(each.agent_id) == id]
+        # import pdb; pdb.set_trace()
         return trades
+

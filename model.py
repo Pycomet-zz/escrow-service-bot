@@ -78,7 +78,7 @@ class Dispute(Base):
 
     trade = relationship("Trade", uselist=False)
 
-
+    
     def __repr__(self):
         return "<Dispute(id='%s')>" % (self.id)
 

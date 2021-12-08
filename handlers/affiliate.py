@@ -28,6 +28,12 @@ def add_addresses(msg):
     group_id = msg.text
     chat = bot.get_chat(group_id)
     chat = chat.wait()
+    
+    if not chat.id:
+        return bot.send_message(
+            msg.from_user.id,
+            "Invalid Group ID"
+        )
 
     agent = AgentAction().create_agent(msg.from_user.id)
     # import pdb; pdb.set_t     race()
@@ -37,7 +43,7 @@ def add_addresses(msg):
         bot.send_message(
             msg.from_user.id,
             emoji.emojize(
-                ":+1: Congrats!! You can now add Escrow Service(@escrowbbot) to your public group and receive your affiliate charge for trade performed by your members, selecting their roles on the group. Good Luck!!",
+                ":+1: Congrats!! You can now add TeleEscrow Service(@tele_escrowbot) to your public group and receive your affiliate charge for trade performed by your members, selecting their roles on the group. Good Luck!!",
                 use_aliases=True
             )
         )

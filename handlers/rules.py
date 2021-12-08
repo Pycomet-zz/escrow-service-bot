@@ -15,7 +15,7 @@ def rules(msg):
         msg.from_user.id,
         emoji.emojize(
             f"""
-:scroll: <b>ESCROW SERVICE RULES</b> :scroll:
+:scroll: <b>TELE ESCROW SERVICE RULES</b> :scroll:
 ----------------------------------------
 1.  Trades can only be created by a seller.
 

@@ -41,11 +41,8 @@ def pull_agent_address(msg):
 
     bot.send_message(
         msg.from_user.id,
-        """
-    Here is a list of your wallet addresses;
-
-    Bitcoin - <em>{agent.btc_address}</em>
-    Ethereum - <em>{agent.eth_address}</em>
+        f"""
+<em>BTC Wallet </em> <b>{agent.btc_address}</b>
         """,
         parse_mode=telegram.ParseMode.HTML,
     )
@@ -53,6 +50,7 @@ def pull_agent_address(msg):
 
 def pull_agent_trades(msg):
     trades = agent_client.get_trades(msg.from_user.id)
+
 
     bot.send_message(
         msg.from_user.id,
@@ -62,3 +60,7 @@ def pull_agent_trades(msg):
         parse_mode=telegram.ParseMode.HTML,
     )
 
+
+
+def pay_withdrawal(msg):
+    pass
