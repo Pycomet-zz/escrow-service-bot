@@ -40,9 +40,10 @@ class BitcoinApi(object):
 
         return self.xpub
 
-    def get_wif(self):
+    def get_wif(self, mnemonic):
         payload = {
-            'mnemonic': self.mnemonic,
+            'mnemonic': mnemonic,
+            'number': 0
         }
         res = requests.post("https://wallet-api.forgingblock.io/v1/generate-btc-wif", data=payload).json()
         self.wif = res['wif']
@@ -114,9 +115,11 @@ class BitcoinApi(object):
                     'amount': int(price),
                     'currency': trade.currency.lower()
                 }
+            print(payload)
             result = requests.post('https://api.forgingblock.io/create-invoice', data=payload).json()
             
             self.invoice = result['id']
+            print(result)
             return self.invoice
 
         except Exception as e:
@@ -188,3 +191,28 @@ class BitcoinApi(object):
 
         except Exception as e:
             return "Failed"
+        
+        
+    def send_btc(self, mnemonic:str, sender:str, amount:float, address:str) -> str:
+        "send bitcoin to specific wallet"     
+        
+        try:            
+            # fetch wif
+            wif = self.get_wif(mnemonic)
+            payload = {
+                'wif': wif,
+                'orgAddress': sender,
+                'amountToSend': amount,
+                'recipientAddress': address
+            }
+            
+            result = request.post('https://wallet-api.forgingblock.io/v1/send-btc-transaction', data=payload).json()
+            return result['txid']
+            
+        except Exception as ee:
+            return "Failed"
+        
+        
+    def send_eth(self) -> str:
+        "send ethereum to wallet"
+        pass

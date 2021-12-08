@@ -289,77 +289,12 @@ def check_payment(trade):
     else:
         return "Pending"
 
-# def pay_funds_to_seller(trade):
-#     "Calculate Fees And Send Funds To Seller"
-#     affiliate = Affiliate().check_affiliate(trade.affiliate_id)
-    
-#     coin_price = get_coin_price(
-#         coin_code=trade.coin,
-#         currency_code=trade.currency
-#     )
 
-#     value = float(trade.price)/float(coin_price)
-
-#     service_charge = 0.01 * float(value)
-#     fees = 0.0149 * value
-
-#     pay_price = float(value) - service_charge + fees
-
-#     price = "%.4f" % pay_price
-
-#     a_price = "%.4f" % service_charge # Affiliate pay
-
-    #
-    #     # #################################################################################
-    #############################################################################################
-    ############################################################################################## #################################################################################
-    #############################################################################################
-    ##############################################################################################
-    # if trade.coin == "BTC":
-
-    #     btc_account.send_money(
-    #         to = trade.wallet,
-    #         amount = str(price),
-    #         currency = "BTC"
-    #     )
-    #     if affiliate != None:
-
-    #         btc_account.send_money(
-    #             to = affiliate.btc_wallet,
-    #             amount = str(a_price),
-    #             currency = "BTC"
-    #         )   
-
-    #     close_trade(trade)
-
-    # elif trade.coin == "ETH":
-    #     eth_account.send_money(
-    #         to = trade.wallet,
-    #         amount = str(price),
-    #         currency = "ETH",
-    #     )
-
-    #     if affiliate != None:
-    
-    #         eth_account.send_money(
-    #             to = affiliate.eth_wallet,
-    #             amount = str(a_price),
-    #             currency = "ETH"
-    #         )
-
-    #     close_trade(trade)
-
-    # else:
-    #     pass
-
-
-def pay_funds_to_seller(trade):
+def pay_funds_to_seller(trade:Trade):
     "Calculate Fees And Send Funds To Seller"
     # affiliate = Affiliate().check_affiliate(trade.affiliate_id)
     
     # GET TRADE BALANCE
-
-
     coin_price = get_coin_price(
         coin_code=trade.coin,
         currency_code=trade.currency
@@ -368,20 +303,39 @@ def pay_funds_to_seller(trade):
     value = float(trade.price)/float(coin_price)
     # CONDITION ON COIN ATTACH TO TRADE
 
-    #   # FETCH GAS FEE FROM WALLET API
+    service_charge = 0.05 * value
+    payout_price = float(value) - float(service_charge)
     
+    if trade.agent_id != None:
+        
+        agent = get_agent(trade)
+        
+        if trade.currency == "BTC":
+            client.send_btc(
+                mnemonic= agent.mnemonic,
+                sender= agent.btc_address,
+                amount= float(payout_price),
+                address= trade.wallet
+            )
+            close_trade(trade)
+            
+        elif trade.currency == "ETH":
+            
+            # SEND TO ETHEREUM WALLET
+            pass
+        
+        
+        else:
+            pass
+        
+    else:
+        
+        # SEND A MESSAGE TO ADMIN TO PAY MANUALLY
+        return None, payout_price       
+        
+    return "Done"
+        
 
-    #   # Remove gas fees from payout
-
-    #   # Remove 15% of remaining payout for admin (20% if in affiliate)
-
-    #   # Make seller payout 
-
-    #   # Update all trade parties and admin with trade transaction hash
-
-    ##  ##  ## IF AFFILIATE ( Make 10% agent payout to admin wallet )
-
-    # Close Trade - Update Affiliate Group
 
 
 def close_trade(trade):
@@ -394,7 +348,6 @@ def close_trade(trade):
 
 def pay_to_buyer(trade, wallet):
     "Send Funds To Buyer"
-    affiliate = Affiliate().check_affiliate(trade.affiliate_id)
 
     coin_price = get_coin_price(
         coin_code=trade.coin,
@@ -402,59 +355,41 @@ def pay_to_buyer(trade, wallet):
     )
 
     value = float(trade.price)/float(coin_price)
+    # CONDITION ON COIN ATTACH TO TRADE
 
-    service_charge = 0.01 * float(value)
-    fees = 0.0149 * value
-
-    pay_price = float(value) - service_charge + fees
-
-    price = "%.4f" % pay_price
-
-    a_price = "%.4f" % service_charge # Affiliate pay
-
-    #
-    #     # #################################################################################
-    #############################################################################################
-    ############################################################################################## #################################################################################
-    #############################################################################################
-    ##############################################################################################
-   
-    # if trade.coin == "BTC":
-    #     btc_account.send_money(
-    #         to = wallet,
-    #         amount = str(price),
-    #         currency = "BTC"
-    #     )
-
-    #     if affiliate != None:
+    service_charge = 0.05 * value
+    payout_price = float(value) - float(service_charge)
     
-    #         btc_account.send_money(
-    #             to = affiliate.btc_wallet,
-    #             amount = str(a_price),
-    #             currency = "BTC"
-    #         )   
-    #     close_trade(trade)
-
-    # elif trade.coin == "ETH":
-    #     eth_account.send_money(
-    #         to = wallet,
-    #         amount = str(price),
-    #         currency = "ETH",
-    #     )
-
-    #     if affiliate != None:
+    if trade.agent_id != None:
         
-    #         eth_account.send_money(
-    #             to = affiliate.eth_wallet,
-    #             amount = str(a_price),
-    #             currency = "ETH"
-    #         )
-    #     close_trade(trade)
-
-    # else:
-    #     pass
-
-
+        agent = get_agent(trade)
+        
+        if trade.currency == "BTC":
+            txid = client.send_btc(
+                mnemonic= agent.mnemonic,
+                sender= agent.btc_address,
+                amount= float(payout_price),
+                address= wallet
+            )
+            close_trade(trade)
+            
+            return txid
+            
+        elif trade.currency == "ETH":
+            
+            # SEND TO ETHEREUM WALLET
+            pass
+        
+        
+        else:
+            pass
+        
+    else:
+        
+        # SEND A MESSAGE TO ADMIN TO PAY MANUALLY
+        return None, payout_price
+        
+    return "Done"
 
 
 #######################DISPUTE############################

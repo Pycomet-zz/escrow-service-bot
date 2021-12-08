@@ -25,7 +25,7 @@ def webhook():
 
 
 print("bot polling...")
-bot.remove_webhook()
+# bot.remove_webhook()
 bot.polling(none_stop=True)
 
 # if __name__ == "__main__":

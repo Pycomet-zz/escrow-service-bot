@@ -13,6 +13,8 @@ TOKEN = os.getenv("TOKEN")
 
 ADMIN_ID = os.getenv("ADMIN_ID")
 
+ADMIN = os.getenv("ADMIN")
+
 # # Coinbase API for payments
 # API_KEY = os.getenv("API_KEY")
 # API_SECRET = os.getenv("API_SECRET")

@@ -132,7 +132,14 @@ def refund_coins(msg):
     wallet = msg.text
     trade = get_recent_trade(msg.from_user)
 
-    pay_to_buyer(trade, wallet)
+    status, _ = pay_to_buyer(trade, wallet)
+    if status is None:
+
+        send_invoice_to_admin(
+            price= _,
+            address= wallet
+        )
+        close_trade(trade)
 
     bot.send_message(
         ADMIN_ID,
@@ -155,7 +162,14 @@ def refund_to_seller(msg):
 
     if trade.payment_status == True:
 
-        pay_funds_to_seller(trade)
+        status, _ = pay_funds_to_seller(trade)
+        if status is None:
+
+            send_invoice_to_admin(
+                price= _,
+                address= wallet
+            )
+            close_trade(trade)
 
         bot.send_message(
             ADMIN_ID,
@@ -200,3 +214,23 @@ def close_dispute_trade(msg):
             ),
             parse_mode=telegram.ParseMode.HTML,
         )
+        
+        
+        
+
+
+def send_invoice_to_admin(price, address):
+    "Send An Invoice For Payment To Admin"
+    admin = f"@{ADMIN}"
+    
+    bot.send_message(
+        admin,
+        f"""
+<b>New Payment Invoice</b>
+
+Cost - {price} BTC
+        
+<em>{address}</em>
+        """,
+        parse_mode="HTML"
+    )
