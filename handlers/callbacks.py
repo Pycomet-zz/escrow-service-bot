@@ -105,7 +105,7 @@ def callback_answer(call):
 
         ##SEND TO SELLER
         bot.send_message(
-            trade.seller,
+            int(trade.seller),
             emoji.emojize(
                 ":star: <b>TRANSACTION COMPLETE AND TRADE CLOSE!!. Your payment is on it's way!</b>",
                 use_aliases=True
