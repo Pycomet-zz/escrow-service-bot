@@ -41,7 +41,8 @@ class Trade(Resource):
                     'Payment status': trade.payment_status,
                     'Last updated on': trade.updated_at,
                     'Date created': trade.created_at,
-                    'Dispute': str(trade.dispute)
+                    'Dispute': str(trade.dispute),
+                    'Agent': trade.agent_id
                 }
 
                 if trade.is_open == False:
