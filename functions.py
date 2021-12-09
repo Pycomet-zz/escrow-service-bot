@@ -281,7 +281,7 @@ def check_payment(trade):
     status = client.check_status(trade, agent)
     # import pdb; pdb.set_trace()
 
-    if status in ('paid', 'completed', 'complete'):
+    if status in ('confirmed', 'paid', 'completed', 'complete'):
         trade.payment_status = True
         session.add(trade)
         session.commit()
