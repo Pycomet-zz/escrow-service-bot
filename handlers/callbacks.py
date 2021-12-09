@@ -101,8 +101,9 @@ def callback_answer(call):
     elif call.data == "goods_received":
         ### Pay The Seller
         trade = get_recent_trade(call.from_user)
-        pay_funds_to_seller(trade)
+        status, _ = pay_funds_to_seller(trade)
 
+        print(status)
         ##SEND TO SELLER
         bot.send_message(
             int(trade.seller),
