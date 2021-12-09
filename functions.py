@@ -333,11 +333,9 @@ def pay_funds_to_seller(trade:Trade):
     else:
         
         # SEND A MESSAGE TO ADMIN TO PAY MANUALLY
-        return None, payout_price       
+        return None, payout_price
         
     return "Done", None
-        
-
 
 
 def close_trade(trade):
