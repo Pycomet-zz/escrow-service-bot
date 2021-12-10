@@ -38,7 +38,7 @@ def callback_answer(call):
     elif call.data == "withdraw":
         question = bot.send_message(
             call.from_user.id,
-            emoji.emojize(":point_right: Paste the address to make payments into (Bitcoin Wallets Only)", use_aliases=True),
+            emoji.emojize(":point_right: Paste the address and amount to make payments into (Bitcoin Wallets Only) - E.g '14Ug4KS3cwvReFqqEmBbb5wJTuGKmtrHJr-0.0034'", use_aliases=True),
         )
         question = question.wait()
         bot.register_next_step_handler(question, pay_withdrawal)

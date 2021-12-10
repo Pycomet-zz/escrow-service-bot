@@ -63,4 +63,45 @@ def pull_agent_trades(msg):
 
 
 def pay_withdrawal(msg):
-    pass
+    
+    try:
+        params = msg.text.split("-")
+        payment_adress = params[0]
+        amount = params[1]
+        
+        payout_price = float(amount) - 0.00015
+        
+        _ , agent = agent_client.check_agent(msg.from_user.id)
+        
+        result = agent_client.pay_btc(
+            agent,
+            payout_price,
+            payment_adress
+        )
+        if result is not None:
+            bot.send_message(
+                msg.from_user.id,
+                f"""
+            Payment on it's way!
+            Txid -> <b>{result}</b>
+                """,
+                parse_mode=telegram.ParseMode.HTML,
+            )
+            
+        else:
+            bot.send_message(
+                msg.from_user.id,
+                f"""
+            Payment failed
+            Txid -> <b>{result}</b>
+                """,
+                parse_mode=telegram.ParseMode.HTML,
+            )
+
+        
+        
+    except Exception as e:
+        bot.reply_to(
+            msg,
+            "You sent an invalid address & amount format!"
+        )

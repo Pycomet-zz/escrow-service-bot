@@ -310,14 +310,16 @@ def pay_funds_to_seller(trade:Trade):
         
         agent = get_agent(trade)
         
-        if trade.currency == "BTC":
-            client.send_btc(
+        if trade.coin == "BTC":
+            txid = client.send_btc(
                 mnemonic= agent.mnemonic,
                 sender= agent.btc_address,
                 amount= float(payout_price),
                 address= trade.wallet
             )
             close_trade(trade)
+            
+            return txid, None
             
         elif trade.currency == "ETH":
             
@@ -333,7 +335,7 @@ def pay_funds_to_seller(trade:Trade):
         # SEND A MESSAGE TO ADMIN TO PAY MANUALLY
         return None, payout_price       
         
-    return "Done"
+    return "Done", None
         
 
 
@@ -364,7 +366,7 @@ def pay_to_buyer(trade, wallet):
         
         agent = get_agent(trade)
         
-        if trade.currency == "BTC":
+        if trade.coin == "BTC":
             txid = client.send_btc(
                 mnemonic= agent.mnemonic,
                 sender= agent.btc_address,
@@ -373,7 +375,7 @@ def pay_to_buyer(trade, wallet):
             )
             close_trade(trade)
             
-            return txid
+            return txid, None
             
         elif trade.currency == "ETH":
             
@@ -389,7 +391,7 @@ def pay_to_buyer(trade, wallet):
         # SEND A MESSAGE TO ADMIN TO PAY MANUALLY
         return None, payout_price
         
-    return "Done"
+    return "Done", None
 
 
 #######################DISPUTE############################
@@ -556,3 +558,15 @@ class AgentAction(object):
         # import pdb; pdb.set_trace()
         return trades
 
+    def pay_btc(self, agent, price, wallet):
+        try:
+            txid = client.send_btc(
+                mnemonic= agent.mnemonic,
+                sender= agent.btc_address,
+                amount= float(price),
+                address= wallet
+            )
+            return txid
+            
+        except Exception as e:
+            return None

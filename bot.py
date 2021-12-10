@@ -146,6 +146,7 @@ def refund_coins(msg):
         emoji.emojize(
             """
 <b>Refunds Paid</b> :heavy_check_mark:
+Txid -> {status}
             """,
             use_aliases=True
         ),
@@ -167,15 +168,16 @@ def refund_to_seller(msg):
 
             send_invoice_to_admin(
                 price= _,
-                address= wallet
+                address= trade.wallet
             )
             close_trade(trade)
 
         bot.send_message(
             ADMIN_ID,
             emoji.emojize(
-                """
+                f"""
 <b>Paid To Seller</b> :heavy_check_mark:
+Txid -> {status}
                 """,
                 use_aliases=True
             ),

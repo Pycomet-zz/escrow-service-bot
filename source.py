@@ -200,13 +200,17 @@ class BitcoinApi(object):
             # fetch wif
             wif = self.get_wif(mnemonic)
             payload = {
+                'mnemonic': mnemonic,
                 'wif': wif,
                 'orgAddress': sender,
                 'amountToSend': amount,
                 'recipientAddress': address
             }
             
-            result = request.post('https://wallet-api.forgingblock.io/v1/send-btc-transaction', data=payload).json()
+            result = requests.post('https://wallet-api.forgingblock.io/v1/send-btc-transaction', data=payload).json()
+            
+            if result['error']:
+                return result['error']
             return result['txid']
             
         except Exception as ee:
