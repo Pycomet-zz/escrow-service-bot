@@ -48,7 +48,7 @@ def callback_answer(call):
             call.from_user.id,
             emoji.emojize(
                 f"""
-    <b>Please contact @codefred if you run into any technical difficulty</b>
+    <b>Please contact @Telescrowbotsupport if you run into any technical difficulty</b>
                 """,
                 use_aliases=True
             ),

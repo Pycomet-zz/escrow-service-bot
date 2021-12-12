@@ -60,6 +60,8 @@ def join_trade(msg):
 
 :point_right: <b>Please follow the url below to make payment on our secured portal. Click the button to confirm after you make payment</b>
 
+You can make your payment to the address below
+
 {payment_url}
 
 :point_right: {receive_wallet}
