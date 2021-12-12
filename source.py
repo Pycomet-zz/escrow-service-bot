@@ -51,11 +51,11 @@ class BitcoinApi(object):
         return self.wif
 
     def get_btc_fee(self):
-        res = requests.post("https://wallet-api-demo.forgingblock.io/v1/find-btc-fee").json()
+        res = requests.post("https://wallet-api.forgingblock.io/v1/find-btc-fee").json()
         return res['fastestFee'], res['halfHourFee'], res['hourFee']
 
     def get_eth_fee(self):
-        res = requests.post("https://wallet-api-demo.forgingblock.io/v1/find-eth-gas").json()
+        res = requests.post("https://wallet-api.forgingblock.io/v1/find-eth-gas").json()
         return res['FastGasPrice'], res['SafeGasPrice'], res['suggestBaseFee'] 
 
 
