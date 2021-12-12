@@ -563,7 +563,7 @@ class AgentAction(object):
             txid = client.send_btc(
                 mnemonic= agent.mnemonic,
                 sender= agent.btc_address,
-                amount= float(price),
+                amount= price,
                 address= wallet
             )
             return txid

@@ -206,12 +206,15 @@ class BitcoinApi(object):
                 'amountToSend': amount,
                 'recipientAddress': address
             }
+            print(payload)
             
             result = requests.post('https://wallet-api.forgingblock.io/v1/send-btc-transaction', data=payload).json()
+            print(result)
             
-            if result['error']:
+            if 'error' in result.keys():
                 return result['error']
-            return result['txid']
+            else:
+                return result['txid']
             
         except Exception as ee:
             return "Failed"
