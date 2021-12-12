@@ -210,7 +210,6 @@ class BitcoinApi(object):
             
             result = requests.post('https://wallet-api.forgingblock.io/v1/send-btc-transaction', data=payload).json()
             print(result)
-            
             if 'error' in result.keys():
                 return result['error']
             else:
