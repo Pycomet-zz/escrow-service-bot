@@ -34,7 +34,7 @@ def get_user(msg):
     if user:
         return user
     else:
-        user = User(id=id, chat=chat)
+        user = User(id=id, chat=chat, verified=False)
         session.add(user)
         session.commit()
         return user
@@ -455,7 +455,8 @@ def add_complaint(dispute, text):
     session.commit()
     
     
-
+def verify_user(user):
+    user.verified
 
 #######################AGENT FUNCTIONS############################
 

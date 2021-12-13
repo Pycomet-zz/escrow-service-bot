@@ -20,6 +20,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     chat = Column(String(20))
+    verified = Column(Boolean())
 
     def __repr__(self):
         return "<User(id='%s')>" % (self.id)
