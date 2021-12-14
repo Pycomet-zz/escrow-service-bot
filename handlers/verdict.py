@@ -11,7 +11,7 @@ def start_dispute(msg):
     "Starts The Ticket Review Session"
 
     question = bot.send_message(
-        'Telescrowbotsupport',
+        '@Telescrowbotsupport',
         emoji.emojize("What is the Dispute ID :grey_question:", use_aliases=True)
     )
     question = question.wait()

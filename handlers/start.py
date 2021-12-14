@@ -7,6 +7,7 @@ def start(msg):
     """
     Starting the escrow service bot
     """
+    print(f"New User - {msg.from_user.username} - {msg.from_user.id}")
     keyboard = main_menu(msg)
 
     bot.reply_to(
