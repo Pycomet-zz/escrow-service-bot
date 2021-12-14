@@ -22,7 +22,7 @@ def start_affiliate(msg):
         )
         
         bot.send_message(
-            '@Telescrowbotsupport',
+            'Telescrowbotsupport',
             f"""
     User ID - {user.id} just attempted adding this bot to a group
             """,
