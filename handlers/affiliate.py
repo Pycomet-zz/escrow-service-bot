@@ -10,7 +10,7 @@ def start_affiliate(msg):
 
     #  WRTIE A PROCESS TO CHECK ADMIN AND SEND REQUEST TO PROCESS WITH USER
     username = msg.from_user.username
-    if user.id is not ADMIN_ID or user.verified == False:
+    if user.id != ADMIN_ID or user.verified == False:
         bot.send_message(
             user.id,
             emoji.emojize(

@@ -10,7 +10,7 @@ trade = ""
 def start_dispute(msg):
     "Starts The Ticket Review Session"
 
-    if msg.from_user.id is ADMIN_ID:
+    if msg.from_user.id == ADMIN_ID:
         question = bot.send_message(
             ADMIN_ID,
             emoji.emojize("What is the Dispute ID :grey_question:", use_aliases=True)
@@ -35,9 +35,8 @@ def call_dispute(msg):
     dispute = get_dispute_by_id(dispute_id)
     keyboard = give_verdict()
 
-    trade = dispute.trade
-
-    if dispute != "No Dispute":
+    if dispute != None:
+        trade = dispute.trade
 
         bot.send_message(
             msg.from_user.id,
