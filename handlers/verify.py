@@ -7,7 +7,7 @@ def verify(msg):
     Verifying an Agent account
     """
     
-    if msg.from_user.id is not ["Telescrowbotsupport"]:
+    if msg.from_user.id is not ADMIN_ID:
         bot.reply_to(
             msg,
             "You are not authorized to use this command."

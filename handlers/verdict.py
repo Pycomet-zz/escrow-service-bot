@@ -10,12 +10,19 @@ trade = ""
 def start_dispute(msg):
     "Starts The Ticket Review Session"
 
-    question = bot.send_message(
-        '@Telescrowbotsupport',
-        emoji.emojize("What is the Dispute ID :grey_question:", use_aliases=True)
-    )
-    question = question.wait()
-    bot.register_next_step_handler(question, call_dispute)
+    if msg.from_user.id is ADMIN_ID:
+        question = bot.send_message(
+            ADMIN_ID,
+            emoji.emojize("What is the Dispute ID :grey_question:", use_aliases=True)
+        )
+        question = question.wait()
+        bot.register_next_step_handler(question, call_dispute)
+        
+    else:
+        bot.reply_to(
+            msg,
+            "You are not authorised for this command"
+        )
 
 
 

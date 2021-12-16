@@ -10,7 +10,7 @@ def start_affiliate(msg):
 
     #  WRTIE A PROCESS TO CHECK ADMIN AND SEND REQUEST TO PROCESS WITH USER
     username = msg.from_user.username
-    if username is not ["Telescrowbotsupport"] or user.verified == False:
+    if user.id is not ADMIN_ID or user.verified == False:
         bot.send_message(
             user.id,
             emoji.emojize(
@@ -22,7 +22,7 @@ def start_affiliate(msg):
         )
         
         bot.send_message(
-            'Telescrowbotsupport',
+            ADMIN_ID,
             f"""
     User ID - {user.id} just attempted adding this bot to a group
             """,
