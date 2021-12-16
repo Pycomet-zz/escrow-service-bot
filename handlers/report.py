@@ -68,7 +68,7 @@ def trade_complaint(msg):
 
     trade = dispute.trade
 
-    users = [trade.seller, trade.buyer, 'Telescrowbotsupport']  
+    users = [trade.seller, trade.buyer, ADMIN_ID]  
 
     for user in users:
 

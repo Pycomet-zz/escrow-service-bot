@@ -142,7 +142,7 @@ def refund_coins(msg):
         close_trade(trade)
 
     bot.send_message(
-        'Telescrowbotsupport',
+        ADMIN_ID,
         emoji.emojize(
             """
 <b>Refunds Paid</b> :heavy_check_mark:
@@ -173,7 +173,7 @@ def refund_to_seller(msg):
             close_trade(trade)
 
         bot.send_message(
-            "Telescrowbotsupport",
+            ADMIN_ID,
             emoji.emojize(
                 f"""
 <b>Paid To Seller</b> :heavy_check_mark:
