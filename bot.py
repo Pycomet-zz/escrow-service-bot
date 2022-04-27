@@ -10,16 +10,15 @@ def start_seller(user):
     keyboard = seller_menu()
 
     user = get_user(msg=user)
-    
+
     bot.send_message(
         user.id,
         emoji.emojize(
-            ":robot: What would you like to do today?",
+            "Welcome! :robot: What would you like to do today?",
             use_aliases=True
         ),
         reply_markup=keyboard
     )
-
 
 
 def start_buyer(user):
@@ -40,9 +39,7 @@ def start_buyer(user):
     )
 
 
-
-
-#############APPROVING PAYMENTS
+# APPROVING PAYMENTS
 def validate_pay(msg):
     "Receives the transaction hash for checking"
     trade = get_recent_trade(msg.from_user)
@@ -53,7 +50,7 @@ def validate_pay(msg):
 
     if status == "Approved":
 
-        ##SEND CONFIRMATION TO SELLER
+        # SEND CONFIRMATION TO SELLER
         bot.send_message(
             trade.seller,
             emoji.emojize(
@@ -67,7 +64,7 @@ def validate_pay(msg):
             parse_mode=telegram.ParseMode.HTML
         )
 
-        ##SEND CONFIRMATION TO BUYER
+        # SEND CONFIRMATION TO BUYER
         bot.send_message(
             trade.buyer,
             emoji.emojize(
@@ -84,7 +81,7 @@ def validate_pay(msg):
 
     else:
 
-        ##SEND ALERT TO SELLER
+        # SEND ALERT TO SELLER
         bot.send_message(
             trade.buyer,
             emoji.emojize(
@@ -100,8 +97,7 @@ def validate_pay(msg):
     # bot.delete_message(msg.chat.id, msg.message_id)
 
 
-
-##REFUND PROCESS FOR BUYER
+# REFUND PROCESS FOR BUYER
 
 def refund_to_buyer(msg):
     "Refund Coins Back To Buyer"
@@ -115,16 +111,17 @@ def refund_to_buyer(msg):
         )
         question = question.wait()
         bot.register_next_step_handler(question, refund_coins)
-    
+
     else:
         bot.send_message(
             msg.id,
-              emoji.emojize(
+            emoji.emojize(
                 ":warning: Buyer Has Not Made Payments Yet!!",
                 use_aliases=True
             ),
             parse_mode=telegram.ParseMode.HTML
         )
+
 
 def refund_coins(msg):
     "Payout refund"
@@ -136,8 +133,8 @@ def refund_coins(msg):
     if status is None:
 
         send_invoice_to_admin(
-            price= _,
-            address= wallet
+            price=_,
+            address=wallet
         )
         close_trade(trade)
 
@@ -154,8 +151,7 @@ Txid -> {status}
     )
 
 
-
-##PAYOUT FUNDS TO SELLER 
+# PAYOUT FUNDS TO SELLER
 def refund_to_seller(msg):
     "Refund Coins Back To Buyer"
     trade = get_recent_trade(msg)
@@ -167,8 +163,8 @@ def refund_to_seller(msg):
         if status is None:
 
             send_invoice_to_admin(
-                price= _,
-                address= trade.wallet
+                price=_,
+                address=trade.wallet
             )
             close_trade(trade)
 
@@ -183,11 +179,11 @@ Txid -> {status}
             ),
             parse_mode=telegram.ParseMode.HTML,
         )
-    
+
     else:
         bot.send_message(
             msg.id,
-              emoji.emojize(
+            emoji.emojize(
                 ":warning: Buyer Has Not Made Payments Yet!!",
                 use_aliases=True
             ),
@@ -195,16 +191,14 @@ Txid -> {status}
         )
 
 
-
-
-####CLOSE TRADE WITH NO PAYOUTS
+# CLOSE TRADE WITH NO PAYOUTS
 def close_dispute_trade(msg):
     "Close Order After Dispute & No Body Has Paid"
     trade = get_recent_trade(msg)
 
     close_trade(trade)
 
-    users = [trade.seller, trade.buyer]  
+    users = [trade.seller, trade.buyer]
 
     for user in users:
 
@@ -216,15 +210,12 @@ def close_dispute_trade(msg):
             ),
             parse_mode=telegram.ParseMode.HTML,
         )
-        
-        
-        
 
 
 def send_invoice_to_admin(price, address):
     "Send An Invoice For Payment To Admin"
     admin = f"@{ADMIN}"
-    
+
     bot.send_message(
         admin,
         f"""
