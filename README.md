@@ -254,4 +254,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/alfredemmanuelinyang
 [product-screenshot]: images/screenshot.png
-[website]: https://alfredemmanuel.herokuapp.com
+[website]: https://codefred.me
